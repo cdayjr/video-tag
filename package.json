@@ -1,0 +1,39 @@
+{
+  "name": "video-tag",
+  "version": "1.0.0",
+  "description": "JavaScript to load third-party embed scripts for various video services.",
+  "main": "index.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && parcel build video-tag.ts --target=browser --no-source-maps",
+    "test": "npm run clean && parcel test.html --target=browser"
+  },
+  "author": "Chad Wade Day, Jr.",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.2.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "autoprefixer": "^9.4.3",
+    "css-mqpacker": "^7.0.0",
+    "cssnano": "^4.1.7",
+    "husky": "^1.3.0",
+    "node-sass": "^4.11.0",
+    "parcel-bundler": "^1.11.0",
+    "postcss": "^7.0.7",
+    "postcss-import": "^12.0.1",
+    "postcss-modules": "^1.4.1",
+    "postcss-preset-env": "^6.5.0",
+    "postcss-syntax": "^0.34.0",
+    "prettier": "^1.15.3",
+    "stylelint": "^9.9.0",
+    "stylelint-config-standard": "^18.2.0",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "style": "0.0.3"
+  }
+}
