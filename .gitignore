@@ -8,9 +8,6 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 
-# Build files
-dist
-
 # Temp files
 var
 .cache

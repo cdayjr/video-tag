@@ -10,7 +10,7 @@
 
   &::before {
     display: block;
-    content: "";
+    content: '';
     padding-top: 56.25%; // this gets us the 16:9 aspect ratio
   }
 

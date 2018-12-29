@@ -1,16 +1,28 @@
 {
   "name": "video-tag",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "index.ts",
   "scripts": {
+    "autofix": "npm run prettier && npm run stylelint-fix && npm run tslint-fix",
+    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && parcel build video-tag.ts --target=browser --no-source-maps",
-    "test": "npm run clean && parcel test.html --target=browser"
+    "lint": " npm run stylelint && npm run tslint",
+    "pre-commit": "npm run autofix && npm run lint && npm run build",
+    "prettier": "prettier --write --single-quote ./src/**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql}",
+    "stylelint": "stylelint \"./src/**/*.{c,sa,sc,le}ss\"",
+    "stylelint-fix": "stylelint --fix \"./src/**/*.{c,sa,sc,le}ss\"",
+    "test": "npm run clean && parcel test.html --target=browser",
+    "tslint": "tslint ./src/**/*.ts",
+    "tslint-fix": "tslint ./src/**/*.ts --fix"
   },
-  "author": "Chad Wade Day, Jr.",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit"
+    }
+  },
+  "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
   "license": "MIT",
-  "private": true,
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
@@ -35,5 +47,13 @@
   },
   "dependencies": {
     "style": "0.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdayjr/video-tag.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cdayjr/video-tag/issues"
+  },
+  "homepage": "https://github.com/cdayjr/video-tag"
 }
