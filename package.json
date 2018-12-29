@@ -1,8 +1,8 @@
 {
   "name": "video-tag",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "JavaScript to load third-party embed scripts for various video services.",
-  "main": "index.ts",
+  "main": "src/video-tag.ts",
   "scripts": {
     "autofix": "npm run prettier && npm run stylelint-fix && npm run tslint-fix",
     "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",
@@ -44,9 +44,6 @@
     "tslint": "^5.12.0",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.2"
-  },
-  "dependencies": {
-    "style": "0.0.3"
   },
   "repository": {
     "type": "git",
