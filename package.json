@@ -3,7 +3,7 @@
   "version": "0.3.0-dev",
   "private": true,
   "description": "JavaScript to load third-party embed scripts for various video services.",
-  "main": "src/video-tag.ts",
+  "main": "dist/video-tag.js",
   "scripts": {
     "autofix": "npm run prettier && npm run stylelint-fix && npm run tslint-fix",
     "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",

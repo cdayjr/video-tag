@@ -3,7 +3,7 @@ import VideoProvider from "../VideoProvider.ts";
 /**
  * YouTube video provider
  */
-export class YouTube extends VideoProvider {
+export default class YouTube extends VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    *
@@ -112,5 +112,3 @@ export class YouTube extends VideoProvider {
     return iframe;
   }
 }
-
-export default YouTube;

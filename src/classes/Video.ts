@@ -1,4 +1,4 @@
-import providers from "./providers/index.ts";
+import { providers } from "./providers.ts";
 import style from "./Video.scss";
 import VideoProvider from "./VideoProvider.ts";
 
@@ -6,7 +6,7 @@ import VideoProvider from "./VideoProvider.ts";
  * Class for handling all functions related towards parsing Video URLs
  * into their embed URLs.
  */
-export class Video {
+export default class Video {
   /**
    * Stores what video provider this object contains.
    */
@@ -145,5 +145,3 @@ export class Video {
     return undefined;
   }
 }
-
-export default Video;

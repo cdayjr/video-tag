@@ -1,6 +1,6 @@
 import VideoProvider from "../VideoProvider.ts";
 
-export class Vimeo extends VideoProvider {
+export default class Vimeo extends VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
@@ -75,5 +75,3 @@ export class Vimeo extends VideoProvider {
     return iframe;
   }
 }
-
-export default Vimeo;

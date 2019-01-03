@@ -1,7 +1,7 @@
 /**
  * What a video provider class should look like.
  */
-export abstract class VideoProvider {
+export default abstract class VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
@@ -123,5 +123,3 @@ export abstract class VideoProvider {
     return `${hours}h${minutes}m${seconds}s`;
   }
 }
-
-export default VideoProvider;

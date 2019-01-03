@@ -1,6 +1,6 @@
 import VideoProvider from "../VideoProvider.ts";
 
-export class Twitch extends VideoProvider {
+export default class Twitch extends VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
@@ -93,5 +93,3 @@ export class Twitch extends VideoProvider {
     return iframe;
   }
 }
-
-export default Twitch;
