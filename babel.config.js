@@ -1,11 +1,15 @@
 const presets = [
   [
-    '@babel/env',
+    "@babel/env",
     {
-      target: '> 0.25%, not dead',
-      useBuiltIns: 'usage'
+      target: "> 0.25%, not dead",
+      useBuiltIns: "usage"
     }
   ]
 ];
 
-module.exports = { presets };
+const plugins = ["transform-modern-regexp"];
+
+module.exports = {
+  presets
+};

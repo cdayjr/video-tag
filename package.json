@@ -1,6 +1,7 @@
 {
   "name": "video-tag",
-  "version": "0.2.1",
+  "version": "0.3.0-dev",
+  "private": true,
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "src/video-tag.ts",
   "scripts": {
@@ -9,7 +10,7 @@
     "clean": "rm -rf ./dist",
     "lint": " npm run stylelint && npm run tslint",
     "pre-commit": "npm run autofix && npm run lint && npm run build",
-    "prettier": "prettier --write --single-quote ./src/**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql}",
+    "prettier": "prettier --write ./src/**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql}",
     "stylelint": "stylelint \"./src/**/*.{c,sa,sc,le}ss\"",
     "stylelint-fix": "stylelint --fix \"./src/**/*.{c,sa,sc,le}ss\"",
     "test": "npm run clean && parcel test.html --target=browser",
@@ -28,6 +29,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.0",
     "autoprefixer": "^9.4.3",
+    "babel-plugin-transform-modern-regexp": "^0.0.6",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^4.1.7",
     "husky": "^1.3.0",
