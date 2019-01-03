@@ -13,15 +13,19 @@ export class Vimeo extends VideoProvider {
   }
 
   /**
-   * Each provider should have a string to identify it.
+   * Get the provider string.
    */
-  protected static providerString = "Vimeo";
+  public static getProviderString(): string {
+    return "Vimeo";
+  }
 
   /**
    * Build an object from the source URL
    */
   constructor(source: string) {
-    if (this.getHostName(source)) {
+    super();
+
+    if (Vimeo.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 

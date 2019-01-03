@@ -13,6 +13,10 @@ export class Video {
   private provider: VideoProvider | undefined = undefined;
 
   /**
+   * Stores the provider string.
+   */
+
+  /**
    * Build a Video object. All you need is an URL, but providng a provider
    * means you can get by with just a video ID.
    *
@@ -57,7 +61,7 @@ export class Video {
     if (this.provider instanceof VideoProvider) {
       const videoElement = this.provider.getElement();
       videoElement.classList.add(style.videoEmbed);
-      containre.appendChild(videoElement);
+      container.appendChild(videoElement);
     } else {
       const message = document.createElement("p");
       message.textContent = "Invalid Video";

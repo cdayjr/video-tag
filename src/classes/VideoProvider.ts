@@ -12,13 +12,30 @@ export abstract class VideoProvider {
    * Get the provider string.
    */
   public static getProviderString(): string {
-    return this.providerString;
+    return "Invalid";
   }
 
   /**
-   * Each provider should have a string to identify it.
+   * Get the host from a URL.
+   *
+   * @param source - A URL to figure out the host from.
+   *
+   * @return The host string, defaults to "" if host can't be found.
    */
-  protected static providerString: string = "Invalid";
+  protected static getHostName(source: string): string {
+    const test: HTMLAElement = document.createElement("a");
+    test.setAttribute("href", source);
+
+    if (
+      source.startsWith(window.location.protocol) ||
+      test.protocol !== window.location.protocol ||
+      source.search(window.location.hostname) > -1
+    ) {
+      return test.hostname;
+    }
+
+    return "";
+  }
 
   /**
    * All options related to the video, including its ID.
@@ -43,32 +60,17 @@ export abstract class VideoProvider {
   }
 
   /**
+   * Get the provider string, non-static version.
+   */
+  public getProviderString(): string {
+    return this.constructor.getProviderString();
+  }
+
+  /**
    * Get the options
    */
   public exportOptions(): string {
     return this.options.toString();
-  }
-
-  /**
-   * Get the host from a URL.
-   *
-   * @param source - A URL to figure out the host from.
-   *
-   * @return The host string, defaults to "" if host can't be found.
-   */
-  protected getHostName(source: string): string {
-    const test: HTMLAElement = document.createElement("a");
-    test.setAttribute("href", source);
-
-    if (
-      source.startsWith(window.location.protocol) ||
-      test.protocol !== window.location.protocol ||
-      source.search(window.location.hostname) > -1
-    ) {
-      return test.hostname;
-    }
-
-    return "";
   }
 
   /**
@@ -85,19 +87,19 @@ export abstract class VideoProvider {
     let count = 0;
     if (match) {
       if (match.groups.hours) {
-        const hours = parseInt(match.group.hours, 10);
+        const hours = parseInt(match.groups.hours, 10);
         if (hours > 0) {
           count += hours * 60 * 60;
         }
       }
-      if (match.group.minutes) {
-        const minutes = parseInt(match.group.minutes, 10);
+      if (match.groups.minutes) {
+        const minutes = parseInt(match.groups.minutes, 10);
         if (minutes > 0) {
           count += minutes * 60;
         }
       }
-      if (match.group.seconds) {
-        const seconds = parseInt(match.group.seconds, 10);
+      if (match.groups.seconds) {
+        const seconds = parseInt(match.groups.seconds, 10);
         if (seconds > 0) {
           count += seconds;
         }

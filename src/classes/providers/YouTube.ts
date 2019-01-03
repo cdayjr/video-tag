@@ -19,9 +19,11 @@ export class YouTube extends VideoProvider {
   }
 
   /**
-   * Each provider should have a string to identify it.
+   * Get the provider string.
    */
-  protected static providerString = "YouTube";
+  public static getProviderString(): string {
+    return "YouTube";
+  }
 
   /**
    * Build an object from the source string
@@ -29,7 +31,9 @@ export class YouTube extends VideoProvider {
    * @param source The video source- usually an URL
    */
   constructor(source: string) {
-    if (this.getHostName(source)) {
+    super();
+
+    if (YouTube.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 

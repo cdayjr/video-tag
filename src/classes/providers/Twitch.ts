@@ -13,15 +13,19 @@ export class Twitch extends VideoProvider {
   }
 
   /**
-   * Each provider should have a string to identify it.
+   * Get the provider string.
    */
-  protected static providerString = "Twitch";
+  public static getProviderString(): string {
+    return "Twitch";
+  }
 
   /**
    * Build an object from the source URL
    */
   constructor(source: string) {
-    if (super.getHostName(source)) {
+    super();
+
+    if (Twitch.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
@@ -64,10 +68,6 @@ export class Twitch extends VideoProvider {
   }
 
   public getElement(): HTMLIFrameElement {
-    if (!this.options.get("id") || !this.options.get("channel")) {
-      return null;
-    }
-
     let sourceAddress = "";
     if (this.options.get("channel")) {
       // stream embed
