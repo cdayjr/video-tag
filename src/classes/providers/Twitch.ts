@@ -33,6 +33,14 @@ export default class Twitch extends VideoProvider {
         /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(?<id>\d+))|embed\/)?(?<channel>\w+)?/
       );
       if (match) {
+        // temporary until regex named groups are supported
+        if (!match.groups) {
+          match.groups = {
+            channel: match[2],
+            id: match[1]
+          };
+        }
+
         if (match.groups.channel) {
           this.options.set("channel", match.groups.channel);
         } else if (match.groups.id) {

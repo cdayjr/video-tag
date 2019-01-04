@@ -86,6 +86,15 @@ export default abstract class VideoProvider {
     );
     let count = 0;
     if (match) {
+      // temporary until regex named groups are supported
+      if (!match.groups) {
+        match.groups = {
+          hours: match[1],
+          minutes: match[2],
+          seconds: match[3]
+        };
+      }
+
       if (match.groups.hours) {
         const hours = parseInt(match.groups.hours, 10);
         if (hours > 0) {

@@ -41,10 +41,19 @@ export default class YouTube extends VideoProvider {
       const match = source.match(
         /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(?<id>.+)(?:\?|$)/
       );
-      if (match && match.groups.id) {
-        this.options.set("id", match.groups.id);
-        // No more options to set.
-        return;
+      if (match) {
+        // temporary until regex named groups are supported
+        if (!match.groups) {
+          match.groups = {
+            id: match[1]
+          };
+        }
+
+        if (match.groups.id) {
+          this.options.set("id", match.groups.id);
+          // No more options to set.
+          return;
+        }
       }
 
       // Regular URL, what most people will have.
@@ -81,8 +90,17 @@ export default class YouTube extends VideoProvider {
 
       // youtu.be short URLs.
       const match3 = source.match(/https?:\/\/youtu\.be\/(?<id>.+$)/);
-      if (match3 && match3.groups.id) {
-        this.options.set("id", match3.groups.id);
+      if (match3) {
+        // temporary until regex named groups are supported
+        if (!match3.groups) {
+          match3.groups = {
+            id: match3[1]
+          };
+        }
+
+        if (match3.groups.id) {
+          this.options.set("id", match3.groups.id);
+        }
       }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
       // With no URL to go off of maybe it's a video ID?

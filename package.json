@@ -54,5 +54,20 @@
   "bugs": {
     "url": "https://github.com/cdayjr/video-tag/issues"
   },
-  "homepage": "https://github.com/cdayjr/video-tag"
+  "homepage": "https://github.com/cdayjr/video-tag",
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": ["> 0.25%", "not dead"],
+          "useBuiltIns": "usage"
+        }
+      ]
+    ],
+    "plugins": ["transform-modern-regexp"]
+  }
 }

@@ -32,16 +32,25 @@ export default class Vimeo extends VideoProvider {
       const match = source.match(
         /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:video\/)?(?<id>\d+)\??(?:.*)?$/
       );
-      if (match && match.groups.id) {
-        this.options.set("id", match.groups.id);
+      if (match) {
+        // temporary until regex named groups are supported
+        if (!match.groups) {
+          match.groups = {
+            id: match[1]
+          };
+        }
 
-        if (link.hash) {
-          // Vimeo time params are stored in the hash section of the
-          // URL, URLSearchParams doesn't strip the starting #
-          // so we gotta do that ourselves.
-          const params = new URLSearchParams(link.hash.substr(1));
-          if (params.get("t")) {
-            this.options.set("start", this.timeToSeconds(params.get("t")));
+        if (match.groups.id) {
+          this.options.set("id", match.groups.id);
+
+          if (link.hash) {
+            // Vimeo time params are stored in the hash section of the
+            // URL, URLSearchParams doesn't strip the starting #
+            // so we gotta do that ourselves.
+            const params = new URLSearchParams(link.hash.substr(1));
+            if (params.get("t")) {
+              this.options.set("start", this.timeToSeconds(params.get("t")));
+            }
           }
         }
       }
