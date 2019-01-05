@@ -1,4 +1,4 @@
-import { providers } from "./providers.ts";
+import providers from "./providers.ts";
 import style from "./Video.scss";
 import VideoProvider from "./VideoProvider.ts";
 

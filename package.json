@@ -56,18 +56,25 @@
   },
   "homepage": "https://github.com/cdayjr/video-tag",
   "dependencies": {
-    "@babel/polyfill": "^7.2.5"
+    "@babel/polyfill": "^7.2.5",
+    "core-js": "^2.6.1",
+    "regenerator-runtime": "^0.13.1"
   },
   "babel": {
     "presets": [
       [
         "@babel/preset-env",
         {
-          "targets": ["> 0.25%", "not dead"],
+          "targets": [
+            "> 0.25%",
+            "not dead"
+          ],
           "useBuiltIns": "usage"
         }
       ]
     ],
-    "plugins": ["transform-modern-regexp"]
+    "plugins": [
+      "transform-modern-regexp"
+    ]
   }
 }

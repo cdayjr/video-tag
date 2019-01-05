@@ -5,4 +5,4 @@ import YouTube from "./providers/YouTube.ts";
 /**
  * An array of available providers
  */
-export const providers = [Twitch, Vimeo, YouTube];
+export default [Twitch, Vimeo, YouTube];

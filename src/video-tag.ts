@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import Video from "./classes/Video.ts";
 
 (() => {
@@ -14,7 +15,7 @@ import Video from "./classes/Video.ts";
    * @return An HTMLDivElement array.
    */
   const getVideoTags = (): HTMLDivElement[] => {
-    return document.querySelectorAll(selector);
+    return Array.from(document.querySelectorAll(selector));
   };
 
   /**

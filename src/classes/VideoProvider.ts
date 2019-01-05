@@ -1,3 +1,5 @@
+import URLSearchParams from "./URLSearchParams.ts";
+
 /**
  * What a video provider class should look like.
  */

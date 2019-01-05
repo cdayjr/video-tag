@@ -1,3 +1,4 @@
+import URLSearchParams from "../URLSearchParams.ts";
 import VideoProvider from "../VideoProvider.ts";
 
 export default class Vimeo extends VideoProvider {
