@@ -1,6 +1,6 @@
 {
   "name": "video-tag",
-  "version": "0.3.0-dev",
+  "version": "0.3.0",
   "private": true,
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "dist/video-tag.js",
