@@ -107,11 +107,24 @@ export default class Video {
    * @return Provider - A Provider enum value.
    */
   private guessProvider(source: string): VideoProvider | undefined {
-    const provider = providers.find(currentProvider => {
-      return currentProvider.isProvider(source);
-    });
-    if (provider) {
-      return new provider(source);
+    if (Array.find) {
+      const provider = providers.find(currentProvider => {
+        return currentProvider.isProvider(source);
+      });
+      if (provider) {
+        return new provider(source);
+      }
+    } else {
+      // IE11
+      let provider;
+      providers.forEach(currentProvider => {
+        if (!provider && currentProvider.isProvider(source)) {
+          provider = currentProvider;
+        }
+      });
+      if (provider) {
+        return new provider(source);
+      }
     }
 
     return undefined;
@@ -132,14 +145,31 @@ export default class Video {
       return undefined;
     }
 
-    const provider = providers.find(currentProvider => {
-      return (
-        providerString.toLowerCase() ===
-        currentProvider.getProviderString().toLowerCase()
-      );
-    });
-    if (provider) {
-      return new provider(source);
+    if (Array.find) {
+      const provider = providers.find(currentProvider => {
+        return (
+          providerString.toLowerCase() ===
+          currentProvider.getProviderString().toLowerCase()
+        );
+      });
+      if (provider) {
+        return new provider(source);
+      }
+    } else {
+      // IE11
+      let provider;
+      providers.forEach(currentProvider => {
+        if (
+          !provider &&
+          providerString.toLowerCase() ===
+            currentProvider.getProviderString().toLowerCase()
+        ) {
+          provider = currentProvider;
+        }
+      });
+      if (provider) {
+        return new provider(source);
+      }
     }
 
     return undefined;

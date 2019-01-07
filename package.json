@@ -1,6 +1,6 @@
 {
   "name": "video-tag",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "dist/video-tag.js",
@@ -55,11 +55,7 @@
     "url": "https://github.com/cdayjr/video-tag/issues"
   },
   "homepage": "https://github.com/cdayjr/video-tag",
-  "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "core-js": "^2.6.1",
-    "regenerator-runtime": "^0.13.1"
-  },
+  "dependencies": {},
   "babel": {
     "presets": [
       [

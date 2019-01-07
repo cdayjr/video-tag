@@ -5,3 +5,5 @@ extends:
 rules:
   trailing-comma: never
   no-parameter-reassignment: true
+  # for of causes issues in IE11 even with polyfill..
+  prefer-for-of: false

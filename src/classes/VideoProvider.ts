@@ -28,8 +28,11 @@ export default abstract class VideoProvider {
     const test: HTMLAElement = document.createElement("a");
     test.setAttribute("href", source);
 
+    // Wish IE11 supported `String.startsWith`
+    const protocolMatch = new RegExp(`^${window.location.protocol}`, "i");
+
     if (
-      source.startsWith(window.location.protocol) ||
+      source.match(protocolMatch) ||
       test.protocol !== window.location.protocol ||
       source.search(window.location.hostname) > -1
     ) {
