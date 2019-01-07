@@ -17,7 +17,7 @@ import Video from "./classes/Video.ts";
     if (Array.from) {
       return Array.from(document.querySelectorAll(selector));
     } else {
-      // For IE11
+      // For browsers without `Array.from`
       const elements: NodeList<HTMLDivElement> = document.querySelectorAll(
         selector
       );

@@ -54,16 +54,11 @@
     "url": "https://github.com/cdayjr/video-tag/issues"
   },
   "homepage": "https://github.com/cdayjr/video-tag",
-  "dependencies": {},
   "babel": {
     "presets": [
       [
         "@babel/preset-env",
         {
-          "targets": [
-            "> 0.25%",
-            "not dead"
-          ],
           "useBuiltIns": "usage"
         }
       ]
@@ -71,5 +66,11 @@
     "plugins": [
       "transform-modern-regexp"
     ]
-  }
+  },
+  "browserslist": [
+    "> 0.25%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead"
+  ]
 }

@@ -115,13 +115,15 @@ export default class Video {
         return new provider(source);
       }
     } else {
-      // IE11
+      // For browsers without `Array.find`
       let provider;
-      providers.forEach(currentProvider => {
-        if (!provider && currentProvider.isProvider(source)) {
+      for (let i = 0; i < providers.length; ++i) {
+        const currentProvider = providers[i];
+        if (currentProvider.isProvider(source)) {
           provider = currentProvider;
+          break;
         }
-      });
+      }
       if (provider) {
         return new provider(source);
       }
@@ -156,17 +158,18 @@ export default class Video {
         return new provider(source);
       }
     } else {
-      // IE11
+      // For browsers without `Array.find`
       let provider;
-      providers.forEach(currentProvider => {
+      for (let i = 0; i < providers.length; ++i) {
+        const currentProvider = providers[i];
         if (
-          !provider &&
           providerString.toLowerCase() ===
-            currentProvider.getProviderString().toLowerCase()
+          currentProvider.getProviderString().toLowerCase()
         ) {
           provider = currentProvider;
+          break;
         }
-      });
+      }
       if (provider) {
         return new provider(source);
       }

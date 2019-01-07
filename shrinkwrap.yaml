@@ -1,7 +1,3 @@
-dependencies:
-  '@babel/polyfill': 7.2.5
-  core-js: 2.6.1
-  regenerator-runtime: 0.13.1
 devDependencies:
   '@babel/cli': 7.2.3
   '@babel/core': 7.2.2
@@ -1012,13 +1008,6 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-m48Y0lMhrbXEJnVUaYly29jRXbQ3ksxPrS1Tg8t+MHqzXhtBYAvI51euOBaoAlZLPHsieY9XPVMf80a5x0cPcA==
-  /@babel/polyfill/7.2.5:
-    dependencies:
-      core-js: 2.6.1
-      regenerator-runtime: 0.12.1
-    dev: false
-    resolution:
-      integrity: sha512-8Y/t3MWThtMLYr0YNC/Q76tqN1w30+b0uQMeFUYauG2UGTR19zyUtFrAzT23zNtBxPp+LbE5E/nwV/q/r3y6ug==
   /@babel/preset-env/7.2.3:
     dependencies:
       '@babel/helper-module-imports': 7.0.0
@@ -2157,6 +2146,7 @@ packages:
     resolution:
       integrity: sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
   /core-js/2.6.1:
+    dev: true
     resolution:
       integrity: sha512-L72mmmEayPJBejKIWe2pYtGis5r0tQ5NaJekdhyXgeMQTpJoBsH0NL4ElY2LfSoV15xeQWKQ+XTTOZdyero5Xg==
   /core-util-is/1.0.2:
@@ -6538,12 +6528,9 @@ packages:
     resolution:
       integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
   /regenerator-runtime/0.12.1:
+    dev: true
     resolution:
       integrity: sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
-  /regenerator-runtime/0.13.1:
-    dev: false
-    resolution:
-      integrity: sha512-5KzMIyPLvfdPmvsdlYsHqITrDfK9k7bmvf97HvHSN4810i254ponbxCQ1NukpRWlu6en2MBWzAlhDExEKISwAA==
   /regenerator-transform/0.13.3:
     dependencies:
       private: 0.1.8
@@ -8046,11 +8033,9 @@ shrinkwrapVersion: 3
 specifiers:
   '@babel/cli': ^7.2.0
   '@babel/core': ^7.2.2
-  '@babel/polyfill': ^7.2.5
   '@babel/preset-env': ^7.2.0
   autoprefixer: ^9.4.3
   babel-plugin-transform-modern-regexp: ^0.0.6
-  core-js: ^2.6.1
   css-mqpacker: ^7.0.0
   cssnano: ^4.1.7
   husky: ^1.3.0
@@ -8062,7 +8047,6 @@ specifiers:
   postcss-preset-env: ^6.5.0
   postcss-syntax: ^0.34.0
   prettier: ^1.15.3
-  regenerator-runtime: ^0.13.1
   stylelint: ^9.9.0
   stylelint-config-standard: ^18.2.0
   tslint: ^5.12.0

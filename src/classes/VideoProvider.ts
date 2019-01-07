@@ -28,7 +28,7 @@ export default abstract class VideoProvider {
     const test: HTMLAElement = document.createElement("a");
     test.setAttribute("href", source);
 
-    // Wish IE11 supported `String.startsWith`
+    // Since `String.startsWith` isn't supported everywhere, this will do
     const protocolMatch = new RegExp(`^${window.location.protocol}`, "i");
 
     if (
