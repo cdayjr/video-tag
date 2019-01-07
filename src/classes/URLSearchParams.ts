@@ -39,10 +39,11 @@ export default window.URLSearchParams ||
     public toString(): string {
       let paramString = "";
       this.forEach((value, key) => {
-        paramString +=
-          encodeURIComponent(key) + "=" + encodeURIComponent(value) + "&";
+        paramString += `${encodeURIComponent(key)}=${encodeURIComponent(
+          value
+        )}&`;
       });
-      if (0 < paramString.length) {
+      if (paramString.length > 0) {
         paramString = paramString.slice(0, -1);
       }
 

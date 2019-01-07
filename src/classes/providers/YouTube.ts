@@ -34,7 +34,7 @@ export default class YouTube extends VideoProvider {
   constructor(source: string) {
     super();
 
-    if (YouTube.getHostName(source)) {
+    if (this.constructor.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
@@ -72,7 +72,7 @@ export default class YouTube extends VideoProvider {
           }
         } else if (params.get("t")) {
           // parse time...
-          let timeCount = this.timeToSeconds(params.get("t"));
+          let timeCount = this.constructor.timeToSeconds(params.get("t"));
           if (0 >= timeCount) {
             // Sometimes it could just be a string of raw seconds.
             timeCount = 0;

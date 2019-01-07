@@ -26,7 +26,7 @@ export default class Vimeo extends VideoProvider {
   constructor(source: string) {
     super();
 
-    if (Vimeo.getHostName(source)) {
+    if (this.constructor.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
@@ -50,7 +50,10 @@ export default class Vimeo extends VideoProvider {
             // so we gotta do that ourselves.
             const params = new URLSearchParams(link.hash.substr(1));
             if (params.get("t")) {
-              this.options.set("start", this.timeToSeconds(params.get("t")));
+              this.options.set(
+                "start",
+                this.constructor.timeToSeconds(params.get("t"))
+              );
             }
           }
         }
@@ -77,7 +80,9 @@ export default class Vimeo extends VideoProvider {
     )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`;
 
     if (this.options.get("start")) {
-      sourceAddress += `#t=${this.secondsToTime(this.options.get("start"))}`;
+      sourceAddress += `#t=${this.constructor.secondsToTime(
+        this.options.get("start")
+      )}`;
     }
 
     iframe.src = sourceAddress;

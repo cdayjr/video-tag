@@ -43,49 +43,13 @@ export default abstract class VideoProvider {
   }
 
   /**
-   * All options related to the video, including its ID.
-   */
-  protected options: URLSearchParams = new URLSearchParams();
-
-  /**
-   * Build the object from the source URL
-   */
-  abstract constructor(source: string);
-
-  /**
-   * Get the video element
-   */
-  public abstract getElement(): HTMLIFrameElement;
-
-  /**
-   * Import options
-   */
-  public importOptions(options: string): void {
-    this.options = new URLSearchParams(options);
-  }
-
-  /**
-   * Get the provider string, non-static version.
-   */
-  public getProviderString(): string {
-    return this.constructor.getProviderString();
-  }
-
-  /**
-   * Get the options
-   */
-  public exportOptions(): string {
-    return this.options.toString();
-  }
-
-  /**
    * Convert a time string to a number of seconds.
    *
    * @param time - The time string, such as "0h1m5s".
    *
    * @return The number of seconds in the time string, such as "65".
    */
-  protected timeToSeconds(time: string): number {
+  protected static timeToSeconds(time: string): number {
     const match = time.match(
       /(?<hours>\d+h)?(?<minutes>\d+m)?(?<seconds>\d+s)?/
     );
@@ -130,10 +94,46 @@ export default abstract class VideoProvider {
    *
    * @return The time string, such as "0h1m5s".
    */
-  protected secondsToTime(totalSeconds: number): string {
+  protected static secondsToTime(totalSeconds: number): string {
     const hours = Math.floor(totalSeconds / (60 * 60));
     const minutes = Math.floor((totalSeconds - hours * 60 * 60) / 60);
     const seconds = totalSeconds - (hours * 60 * 60 + minutes * 60);
     return `${hours}h${minutes}m${seconds}s`;
+  }
+
+  /**
+   * All options related to the video, including its ID.
+   */
+  protected options: URLSearchParams = new URLSearchParams();
+
+  /**
+   * Build the object from the source URL
+   */
+  abstract constructor(source: string);
+
+  /**
+   * Get the video element
+   */
+  public abstract getElement(): HTMLIFrameElement;
+
+  /**
+   * Import options
+   */
+  public importOptions(options: string): void {
+    this.options = new URLSearchParams(options);
+  }
+
+  /**
+   * Get the provider string, non-static version.
+   */
+  public getProviderString(): string {
+    return this.constructor.getProviderString();
+  }
+
+  /**
+   * Get the options
+   */
+  public exportOptions(): string {
+    return this.options.toString();
   }
 }

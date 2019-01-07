@@ -26,7 +26,7 @@ export default class Twitch extends VideoProvider {
   constructor(source: string) {
     super();
 
-    if (Twitch.getHostName(source)) {
+    if (this.constructor.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
@@ -59,7 +59,10 @@ export default class Twitch extends VideoProvider {
             }
           }
           if (params.get("t")) {
-            this.options.set("start", this.timeToSeconds(params.get("t")));
+            this.options.set(
+              "start",
+              this.constructor.timeToSeconds(params.get("t"))
+            );
           }
         }
       }
@@ -89,7 +92,9 @@ export default class Twitch extends VideoProvider {
         "id"
       )}`;
       if (this.options.get("start")) {
-        sourceAddress += `&t=${this.secondsToTime(this.options.get("start"))}`;
+        sourceAddress += `&t=${this.constructor.secondsToTime(
+          this.options.get("start")
+        )}`;
       }
     }
 
