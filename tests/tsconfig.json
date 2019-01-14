@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "lib": ["ES2018", "DOM", "ScriptHost"],
     "strict": true,
     "jsx": "react",
@@ -18,6 +18,6 @@
       }
     ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*", "../src/**/*"],
+  "exclude": ["../node_modules"]
 }

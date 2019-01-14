@@ -21,13 +21,13 @@ export default class Video {
    *  provided, you'll want to share this. A string like "YouTube" or "Vimeo".
    *
    */
-  public constructor(source: string, providerString?: string) {
-    if (providerString) {
+  public constructor(source?: string, providerString?: string) {
+    if (source && providerString) {
       this.provider = (this.constructor as typeof Video).getProviderFromString(
         source.trim(),
         providerString.trim()
       );
-    } else {
+    } else if (source) {
       this.provider = (this.constructor as typeof Video).guessProvider(
         source.trim()
       );
@@ -128,12 +128,13 @@ export default class Video {
       if (videoElement) {
         videoElement.classList.add(style.videoEmbed);
         container.appendChild(videoElement);
+        return container;
       }
-    } else {
-      const message = document.createElement("p");
-      message.textContent = "Invalid Video";
-      container.appendChild(message);
     }
+
+    const message = document.createElement("p");
+    message.textContent = "Invalid Video";
+    container.appendChild(message);
 
     return container;
   }

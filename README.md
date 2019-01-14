@@ -19,21 +19,35 @@ the `video-tag` class. If the tag has a `data-source` attribute with a URL in
 it. An example would be:
 
 ```html
-<div class="video-tag" data-source="https://www.youtube.com/watch?v=g4Hbz2jLxvQ"></div>
+<div
+  class="video-tag"
+  data-source="https://www.youtube.com/watch?v=g4Hbz2jLxvQ"
+></div>
 ```
 
 This is the bare minimum, of course, so a fallback link to the source is
 recommended like so:
 
 ```html
-<div class="video-tag" data-source="https://www.youtube.com/watch?v=g4Hbz2jLxvQ"><a class="video-tag-fallback" href="https://www.youtube.com/watch?v=58OabCRCx_Q">https://www.youtube.com/watch?v=58OabCRCx_Q</a></div>
+<div
+  class="video-tag"
+  data-source="https://www.youtube.com/watch?v=g4Hbz2jLxvQ"
+>
+  <a
+    class="video-tag-fallback"
+    href="https://www.youtube.com/watch?v=58OabCRCx_Q"
+    >https://www.youtube.com/watch?v=58OabCRCx_Q</a
+  >
+</div>
 ```
 
 For [Jcink Forum Hosting](https://jcink.net), a 1 paramater video tag with the
 following content:
 
 ```html
-<div class="video-tag" data-source="(PARAM1)"><a class="video-tag-fallback" href="(PARAM1)">(PARAM1)</a></div>
+<div class="video-tag" data-source="(PARAM1)">
+  <a class="video-tag-fallback" href="(PARAM1)">(PARAM1)</a>
+</div>
 ```
 
 should be sufficient if you have the JavaScript and CSS loaded in your board

@@ -22,10 +22,13 @@ module.exports = {
     "typescript/no-array-constructor": 2,
     "typescript/no-empty-interface": 2,
     "typescript/no-explicit-any": 2,
-    "typescript/no-inferrable-types": [2, {
-      "ignoreProperties": true,
-      "ignoreParameters": true
-    }],
+    "typescript/no-inferrable-types": [
+      2,
+      {
+        ignoreProperties: true,
+        ignoreParameters: true
+      }
+    ],
     "typescript/no-namespace": 2,
     "typescript/no-non-null-assertion": 2,
     "typescript/no-parameter-properties": 2,
@@ -41,7 +44,7 @@ module.exports = {
   },
   settings: {
     "import/resolver": {
-      "typescript": {},
+      typescript: {}
     }
   }
 };

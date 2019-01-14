@@ -1,5 +1,6 @@
+.cache
 .git
-node_modules
 dist
+node_modules
 shrinkwrap.yaml
 var
