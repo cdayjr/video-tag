@@ -2,27 +2,9 @@ import VideoProvider from "../VideoProvider";
 
 export default class Vimeo extends VideoProvider {
   /**
-   * Let us know if this is a valid provider for the source
-   * (usually a URL)
-   */
-  public static isProvider(source: string): boolean {
-    // First test if it's an URL
-    const hostName: string = this.getHostName(source);
-
-    return !!hostName.match(/^(?:.+\.)?vimeo\.com$/);
-  }
-
-  /**
-   * Get the provider string.
-   */
-  public static getProviderString(): string {
-    return "Vimeo";
-  }
-
-  /**
    * Build an object from the source URL
    */
-  constructor(source: string) {
+  public constructor(source: string) {
     super(source);
 
     if ((this.constructor as typeof VideoProvider).getHostName(source)) {
@@ -63,6 +45,27 @@ export default class Vimeo extends VideoProvider {
     }
   }
 
+  /**
+   * Let us know if this is a valid provider for the source
+   * (usually a URL)
+   */
+  public static isProvider(source: string): boolean {
+    // First test if it's an URL
+    const hostName: string = this.getHostName(source);
+
+    return !!hostName.match(/^(?:.+\.)?vimeo\.com$/);
+  }
+
+  /**
+   * Get the provider string.
+   */
+  public static getProviderString(): string {
+    return "Vimeo";
+  }
+
+  /**
+   * Return the video element
+   */
   public getElement(): HTMLIFrameElement | null {
     if (!this.options.get("id")) {
       return null;

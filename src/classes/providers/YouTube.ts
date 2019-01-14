@@ -5,32 +5,11 @@ import VideoProvider from "../VideoProvider";
  */
 export default class YouTube extends VideoProvider {
   /**
-   * Let us know if this is a valid provider for the source
-   *
-   * @param source The source URL of the video
-   *
-   * @return `true` if it's a valid source, `false` otherwise.
-   */
-  public static isProvider(source: string): boolean {
-    // First test if it's an URL
-    const hostName: string = this.getHostName(source);
-
-    return !!hostName.match(/^(?:.+\.)?youtu(?:be(?:-nocookie)?\.com|\.be)$/);
-  }
-
-  /**
-   * Get the provider string.
-   */
-  public static getProviderString(): string {
-    return "YouTube";
-  }
-
-  /**
    * Build an object from the source string
    *
    * @param source The video source- usually an URL
    */
-  constructor(source: string) {
+  public constructor(source: string) {
     super(source);
 
     if ((this.constructor as typeof VideoProvider).getHostName(source)) {
@@ -105,6 +84,30 @@ export default class YouTube extends VideoProvider {
     }
   }
 
+  /**
+   * Let us know if this is a valid provider for the source
+   *
+   * @param source The source URL of the video
+   *
+   * @return `true` if it's a valid source, `false` otherwise.
+   */
+  public static isProvider(source: string): boolean {
+    // First test if it's an URL
+    const hostName: string = this.getHostName(source);
+
+    return !!hostName.match(/^(?:.+\.)?youtu(?:be(?:-nocookie)?\.com|\.be)$/);
+  }
+
+  /**
+   * Get the provider string.
+   */
+  public static getProviderString(): string {
+    return "YouTube";
+  }
+
+  /**
+   * Return the video element
+   */
   public getElement(): HTMLIFrameElement | null {
     if (!this.options.get("id")) {
       return null;

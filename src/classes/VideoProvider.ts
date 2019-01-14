@@ -19,6 +19,13 @@ export default abstract class VideoProvider {
   }
 
   /**
+   * Get the provider string, non-static version.
+   */
+  public getProviderString(): string {
+    return (this.constructor as typeof VideoProvider).getProviderString();
+  }
+
+  /**
    * Create a Map object from an param string
    */
   protected static mapFromString(input: string): Map<string, string> {
@@ -26,14 +33,16 @@ export default abstract class VideoProvider {
 
     const items = paramString.split("&");
     const result = new Map<string, string>();
-    items.forEach(item => {
-      if (item.search("=") > -1) {
-        const [key, value] = item.split("=");
-        result.set(decodeURIComponent(key), decodeURIComponent(value));
-      } else {
-        result.set(decodeURIComponent(item), "");
+    items.forEach(
+      (item): void => {
+        if (item.search("=") > -1) {
+          const [key, value] = item.split("=");
+          result.set(decodeURIComponent(key), decodeURIComponent(value));
+        } else {
+          result.set(decodeURIComponent(item), "");
+        }
       }
-    });
+    );
 
     return result;
   }
@@ -43,9 +52,13 @@ export default abstract class VideoProvider {
    */
   protected static stringFromMap(input: Map<string, string>): string {
     let paramString = "";
-    input.forEach((value, key) => {
-      paramString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
-    });
+    input.forEach(
+      (value, key): void => {
+        paramString += `${encodeURIComponent(key)}=${encodeURIComponent(
+          value
+        )}&`;
+      }
+    );
     if (paramString.length > 0) {
       paramString = paramString.slice(0, -1);
     }
@@ -137,7 +150,7 @@ export default abstract class VideoProvider {
    * Build the object from the source URL
    */
   /* eslint-disable-next-line no-useless-constructor, no-empty-function, no-unused-vars */
-  constructor(source: string) {
+  public constructor(source: string) {
     return; // eslint-disable-line no-useless-return
   }
 
@@ -153,13 +166,6 @@ export default abstract class VideoProvider {
     this.options = (this.constructor as typeof VideoProvider).mapFromString(
       options
     );
-  }
-
-  /**
-   * Get the provider string, non-static version.
-   */
-  public getProviderString(): string {
-    return (this.constructor as typeof VideoProvider).getProviderString();
   }
 
   /**

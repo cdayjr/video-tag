@@ -2,27 +2,9 @@ import VideoProvider from "../VideoProvider";
 
 export default class Twitch extends VideoProvider {
   /**
-   * Let us know if this is a valid provider for the source
-   * (usually a URL)
-   */
-  public static isProvider(source: string): boolean {
-    // First test if it's an URL
-    const hostName: string = this.getHostName(source);
-
-    return !!hostName.match(/^(?:.+\.)?twitch\.tv$/);
-  }
-
-  /**
-   * Get the provider string.
-   */
-  public static getProviderString(): string {
-    return "Twitch";
-  }
-
-  /**
    * Build an object from the source URL
    */
-  constructor(source: string) {
+  public constructor(source: string) {
     super(source);
 
     if ((this.constructor as typeof VideoProvider).getHostName(source)) {
@@ -74,6 +56,27 @@ export default class Twitch extends VideoProvider {
     }
   }
 
+  /**
+   * Let us know if this is a valid provider for the source
+   * (usually a URL)
+   */
+  public static isProvider(source: string): boolean {
+    // First test if it's an URL
+    const hostName: string = this.getHostName(source);
+
+    return !!hostName.match(/^(?:.+\.)?twitch\.tv$/);
+  }
+
+  /**
+   * Get the provider string.
+   */
+  public static getProviderString(): string {
+    return "Twitch";
+  }
+
+  /**
+   * Return the video element
+   */
   public getElement(): HTMLIFrameElement | null {
     let sourceAddress = "";
     if (this.options.get("channel")) {

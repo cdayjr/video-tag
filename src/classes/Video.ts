@@ -8,6 +8,33 @@ import VideoProvider from "./VideoProvider";
  */
 export default class Video {
   /**
+   * Stores what video provider this object contains.
+   */
+  private provider: VideoProvider | undefined = undefined;
+
+  /**
+   * Build a Video object. All you need is an URL, but providng a provider
+   * means you can get by with just a video ID.
+   *
+   * @param source - The video URL or ID.
+   * @param provider - We can figure this out form an URL, but if an ID is
+   *  provided, you'll want to share this. A string like "YouTube" or "Vimeo".
+   *
+   */
+  public constructor(source: string, providerString?: string) {
+    if (providerString) {
+      this.provider = (this.constructor as typeof Video).getProviderFromString(
+        source.trim(),
+        providerString.trim()
+      );
+    } else {
+      this.provider = (this.constructor as typeof Video).guessProvider(
+        source.trim()
+      );
+    }
+  }
+
+  /**
    * Make an educated guess for what a provider should be from a provided URL-
    * useful when provider isn't manually provided.
    *
@@ -63,37 +90,6 @@ export default class Video {
     }
 
     return undefined;
-  }
-
-  /**
-   * Stores what video provider this object contains.
-   */
-  private provider: VideoProvider | undefined = undefined;
-
-  /**
-   * Stores the provider string.
-   */
-
-  /**
-   * Build a Video object. All you need is an URL, but providng a provider
-   * means you can get by with just a video ID.
-   *
-   * @param source - The video URL or ID.
-   * @param provider - We can figure this out form an URL, but if an ID is
-   *  provided, you'll want to share this. A string like "YouTube" or "Vimeo".
-   *
-   */
-  constructor(source: string, providerString?: string) {
-    if (providerString) {
-      this.provider = (this.constructor as typeof Video).getProviderFromString(
-        source.trim(),
-        providerString.trim()
-      );
-    } else {
-      this.provider = (this.constructor as typeof Video).guessProvider(
-        source.trim()
-      );
-    }
   }
 
   /**

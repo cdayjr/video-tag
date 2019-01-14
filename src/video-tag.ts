@@ -1,6 +1,6 @@
 import Video from "./classes/Video";
 
-(() => {
+((): void => {
   /**
    * Video tags are `div` elements (`HTMLDivElement`) with the `video-tag` class,
    * a `data-source` attribute, and no `data-options` attribute (`data-options`
