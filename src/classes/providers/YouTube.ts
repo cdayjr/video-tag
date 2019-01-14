@@ -1,5 +1,4 @@
-import URLSearchParams from "../URLSearchParams.ts";
-import VideoProvider from "../VideoProvider.ts";
+import VideoProvider from "../VideoProvider";
 
 /**
  * YouTube video provider
@@ -32,26 +31,21 @@ export default class YouTube extends VideoProvider {
    * @param source The video source- usually an URL
    */
   constructor(source: string) {
-    super();
+    super(source);
 
-    if (this.constructor.getHostName(source)) {
+    if ((this.constructor as typeof VideoProvider).getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
       // embed URLs- typically people won't have these but good to check.
       const match = source.match(
-        /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(?<id>.+)(?:\?|$)/
+        /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(.+)(?:\?|$)/
       );
       if (match) {
-        // temporary until regex named groups are supported
-        if (!match.groups) {
-          match.groups = {
-            id: match[1]
-          };
-        }
+        const [, idMatch] = match;
 
-        if (match.groups.id) {
-          this.options.set("id", match.groups.id);
+        if (idMatch) {
+          this.options.set("id", idMatch);
           // No more options to set.
           return;
         }
@@ -60,29 +54,34 @@ export default class YouTube extends VideoProvider {
       // Regular URL, what most people will have.
       const match2 = source.match(/https?:\/\/(?:.+\.)?youtube\.com\/watch\?/);
       if (match2) {
-        const params = new URLSearchParams(link.search);
+        const params = (this.constructor as typeof VideoProvider).mapFromString(
+          link.search
+        );
         if (params.get("v")) {
-          this.options.set("id", params.get("v"));
+          this.options.set("id", String(params.get("v")));
         }
         if (params.get("start")) {
           // start parameter overrides t and is always pure seconds.
-          const timeCount = parseInt(params.get("start"), 10);
+          const timeCount = parseInt(String(params.get("start")), 10);
           if (timeCount > 0) {
-            this.options.set("start", timeCount);
+            this.options.set("start", String(timeCount));
           }
         } else if (params.get("t")) {
           // parse time...
-          let timeCount = this.constructor.timeToSeconds(params.get("t"));
-          if (0 >= timeCount) {
+          let timeCount = (this
+            .constructor as typeof VideoProvider).timeToSeconds(
+            String(params.get("t"))
+          );
+          if (timeCount <= 0) {
             // Sometimes it could just be a string of raw seconds.
             timeCount = 0;
-            const seconds = parseInt(params.get("t"), 10);
+            const seconds = parseInt(String(params.get("t")), 10);
             if (seconds > 0) {
               timeCount += seconds;
             }
           }
           if (timeCount > 0) {
-            this.options.set("start", "" + timeCount);
+            this.options.set("start", String(timeCount));
           }
         }
 
@@ -90,17 +89,12 @@ export default class YouTube extends VideoProvider {
       }
 
       // youtu.be short URLs.
-      const match3 = source.match(/https?:\/\/youtu\.be\/(?<id>.+$)/);
+      const match3 = source.match(/https?:\/\/youtu\.be\/(.+$)/);
       if (match3) {
-        // temporary until regex named groups are supported
-        if (!match3.groups) {
-          match3.groups = {
-            id: match3[1]
-          };
-        }
+        const [, idMatch] = match3;
 
-        if (match3.groups.id) {
-          this.options.set("id", match3.groups.id);
+        if (idMatch) {
+          this.options.set("id", idMatch);
         }
       }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
@@ -111,7 +105,11 @@ export default class YouTube extends VideoProvider {
     }
   }
 
-  public getElement(): HTMLIFrameElement {
+  public getElement(): HTMLIFrameElement | null {
+    if (!this.options.get("id")) {
+      return null;
+    }
+
     let sourceAddress = `https://www.youtube-nocookie.com/embed/${this.options.get(
       "id"
     )}`;

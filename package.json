@@ -5,16 +5,19 @@
   "main": "dist/video-tag.js",
   "scripts": {
     "autofix": "npm run prettier && npm run stylelint-fix && npm run eslint-fix",
-    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",
+    "build": "npm run typed-css-modules && npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",
     "clean": "rm -rf ./dist",
-    "lint": " npm run stylelint && npm run eslint",
+    "lint": "npm run stylelint && npm run ts-check && npm run eslint",
     "pre-commit": "npm run autofix && npm run lint && npm run build",
     "prettier": "prettier --write ./src/**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql}",
     "stylelint": "stylelint \"./src/**/*.{c,sa,sc,le}ss\"",
     "stylelint-fix": "stylelint --fix \"./src/**/*.{c,sa,sc,le}ss\"",
-    "test": "npm run clean && parcel test.html --target=browser",
+    "test": "npm run typed-css-modules && jest",
+    "demo": "npm run typed-css-modules && npm run clean && parcel test.html --target=browser",
     "eslint": "eslint ./src/**/*.ts",
-    "eslint-fix": "eslint ./src/**/*.ts --fix"
+    "eslint-fix": "eslint ./src/**/*.ts --fix",
+    "typed-css-modules": "tcm -c -p src/**/*.scss",
+    "ts-check": "tsc --noEmit --project tsconfig.json"
   },
   "husky": {
     "hooks": {
@@ -27,19 +30,28 @@
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.0",
+    "@microsoft/tsdoc": "^0.12.4",
+    "@types/css": "^0.0.31",
+    "@types/jest": "^23.3.12",
     "autoprefixer": "^9.4.3",
-    "babel-plugin-transform-modern-regexp": "^0.0.6",
+    "babel-jest": "^23.6.0",
     "css-mqpacker": "^7.0.0",
     "cssnano": "^4.1.7",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-import-resolver-node": "^0.3.2",
+    "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-compat": "^2.6.3",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.3",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-tslint": "^3.1.0",
     "husky": "^1.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^23.6.0",
+    "jest-css-modules-transform": "^2.1.1",
+    "jest-environment-jsdom": "^23.4.0",
     "node-sass": "^4.11.0",
     "parcel-bundler": "^1.11.0",
     "postcss": "^7.0.7",
@@ -50,10 +62,13 @@
     "prettier": "^1.15.3",
     "stylelint": "^9.9.0",
     "stylelint-config-standard": "^18.2.0",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.12.0",
     "tslint-config-prettier": "^1.17.0",
+    "typed-css-modules": "^0.3.7",
     "typescript": "^3.2.2",
-    "typescript-eslint-parser": "^21.0.2"
+    "typescript-eslint-parser": "^21.0.2",
+    "typescript-plugin-css-modules": "^1.0.5"
   },
   "repository": {
     "type": "git",
@@ -71,9 +86,6 @@
           "useBuiltIns": "usage"
         }
       ]
-    ],
-    "plugins": [
-      "transform-modern-regexp"
     ]
   },
   "browserslist": [
@@ -81,5 +93,29 @@
     "last 2 versions",
     "Firefox ESR",
     "not dead"
-  ]
+  ],
+  "jest": {
+    "clearMocks": true,
+    "coverageDirectory": "coverage",
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "testMatch": [
+      "**/*.test.+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "\\.(css|scss|less|styl)$": "jest-css-modules-transform"
+    }
+  },
+  "dependencies": {
+    "classes": "^0.3.0"
+  }
 }

@@ -1,6 +1,6 @@
-import providers from "./providers.ts";
-import style from "./Video.scss";
-import VideoProvider from "./VideoProvider.ts";
+import providers from "../providers";
+import style from "./Video.style.scss";
+import VideoProvider from "./VideoProvider";
 
 /**
  * Class for handling all functions related towards parsing Video URLs
@@ -16,26 +16,16 @@ export default class Video {
    * @return Provider - A Provider enum value.
    */
   private static guessProvider(source: string): VideoProvider | undefined {
-    if (Array.find) {
-      const Provider = providers.find(currentProvider =>
-        currentProvider.isProvider(source)
-      );
-      if (Provider) {
-        return new Provider(source);
+    let Provider;
+    for (let i = 0; i < providers.length; ++i) {
+      const currentProvider = providers[i];
+      if (currentProvider.isProvider(source)) {
+        Provider = currentProvider;
+        break;
       }
-    } else {
-      // For browsers without `Array.find`
-      let Provider;
-      for (let i = 0; i < providers.length; i += 1) {
-        const currentProvider = providers[i];
-        if (currentProvider.isProvider(source)) {
-          Provider = currentProvider;
-          break;
-        }
-      }
-      if (Provider) {
-        return new Provider(source);
-      }
+    }
+    if (Provider) {
+      return new Provider(source);
     }
 
     return undefined;
@@ -56,31 +46,20 @@ export default class Video {
       return undefined;
     }
 
-    if (Array.find) {
-      const Provider = providers.find(
-        currentProvider =>
-          providerString.toLowerCase() ===
-          currentProvider.getProviderString().toLowerCase()
-      );
-      if (Provider) {
-        return new Provider(source);
+    // For browsers without `Array.find`
+    let Provider;
+    for (let i = 0; i < providers.length; ++i) {
+      const currentProvider = providers[i];
+      if (
+        providerString.toLowerCase() ===
+        currentProvider.getProviderString().toLowerCase()
+      ) {
+        Provider = currentProvider;
+        break;
       }
-    } else {
-      // For browsers without `Array.find`
-      let Provider;
-      for (let i = 0; i < providers.length; i += 1) {
-        const currentProvider = providers[i];
-        if (
-          providerString.toLowerCase() ===
-          currentProvider.getProviderString().toLowerCase()
-        ) {
-          Provider = currentProvider;
-          break;
-        }
-      }
-      if (Provider) {
-        return new Provider(source);
-      }
+    }
+    if (Provider) {
+      return new Provider(source);
     }
 
     return undefined;
@@ -106,12 +85,14 @@ export default class Video {
    */
   constructor(source: string, providerString?: string) {
     if (providerString) {
-      this.provider = this.constructor.getProviderFromString(
+      this.provider = (this.constructor as typeof Video).getProviderFromString(
         source.trim(),
         providerString.trim()
       );
     } else {
-      this.provider = this.constructor.guessProvider(source.trim());
+      this.provider = (this.constructor as typeof Video).guessProvider(
+        source.trim()
+      );
     }
   }
 
@@ -122,9 +103,18 @@ export default class Video {
    * @param providerString - A string representing the provider, ex. "YouTube" or "Vimeo".
    * @param optionsString - A string representing the options, ex. "id=666&start=15".
    */
-  public importOptions(providerString: string, optionsString: string): void {
-    this.provider = this.constructor.getProviderFromString(providerString);
-    this.provider.importOptions(optionsString);
+  public importOptions(
+    source: string,
+    providerString: string,
+    optionsString: string
+  ): void {
+    this.provider = (this.constructor as typeof Video).getProviderFromString(
+      source.trim(),
+      providerString.trim()
+    );
+    if (this.provider) {
+      this.provider.importOptions(optionsString);
+    }
   }
 
   /**
@@ -134,13 +124,15 @@ export default class Video {
    *  for the video.
    */
   public getElement(): HTMLDivElement {
-    const container: HTMLDivElemenet = document.createElement("div");
+    const container: HTMLDivElement = document.createElement("div");
     container.classList.add(style.videoContainer);
 
     if (this.provider instanceof VideoProvider) {
       const videoElement = this.provider.getElement();
-      videoElement.classList.add(style.videoEmbed);
-      container.appendChild(videoElement);
+      if (videoElement) {
+        videoElement.classList.add(style.videoEmbed);
+        container.appendChild(videoElement);
+      }
     } else {
       const message = document.createElement("p");
       message.textContent = "Invalid Video";

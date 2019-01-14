@@ -1,7 +1,7 @@
 // responsive embed css taken straight outta Bootstrap
 // https://github.com/twbs/bootstrap/blob/v4.2.1/scss/utilities/_embed.scss
 
-.videoContainer {
+.video-container {
   display: block;
   max-height: 100vh;
   max-width: 100vw;
@@ -16,7 +16,7 @@
     padding-top: 56.25%; // this gets us the 16:9 aspect ratio
   }
 
-  .videoEmbed {
+  .video-embed {
     border: 0;
     bottom: 0;
     height: 100%;

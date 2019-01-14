@@ -1,4 +1,4 @@
-import Video from "./classes/Video.ts";
+import Video from "./classes/Video";
 
 (() => {
   /**
@@ -13,21 +13,8 @@ import Video from "./classes/Video.ts";
    *
    * @return An HTMLDivElement array.
    */
-  const getVideoTags = (): HTMLDivElement[] => {
-    if (Array.from) {
-      return Array.from(document.querySelectorAll(selector));
-    } else {
-      // For browsers without `Array.from`
-      const elements: NodeList<HTMLDivElement> = document.querySelectorAll(
-        selector
-      );
-      const result = [];
-      for (let i = 0; i < elements.length; ++i) {
-        result.push(elements[i]);
-      }
-      return result;
-    }
-  };
+  const getVideoTags = (): NodeListOf<HTMLDivElement> =>
+    document.querySelectorAll(selector);
 
   /**
    * Parse a video tag and fill it with the video embed code.
@@ -36,6 +23,9 @@ import Video from "./classes/Video.ts";
    * @param A video tag.
    */
   const parseVideoTag = (tag: HTMLDivElement): void => {
+    if (!tag.dataset.source) {
+      return;
+    }
     const video: Video = new Video(tag.dataset.source, tag.dataset.provider);
 
     // Remove child elements from tag
@@ -47,7 +37,9 @@ import Video from "./classes/Video.ts";
     tag.appendChild(video.getElement());
 
     // Update data
+    /* eslint-disable-next-line no-param-reassign */
     tag.dataset.provider = video.getProvider();
+    /* eslint-disable-next-line no-param-reassign */
     tag.dataset.options = video.exportOptions();
   };
 
@@ -55,7 +47,11 @@ import Video from "./classes/Video.ts";
    * Find all the video tags on the page and parse each of them.
    */
   const parseVideoTags = (): void => {
-    getVideoTags().forEach(parseVideoTag);
+    const videoTags = getVideoTags();
+    for (let i = 0; i < videoTags.length; ++i) {
+      const videoTag = videoTags[i];
+      parseVideoTag(videoTag);
+    }
   };
 
   document.addEventListener("DOMContentLoaded", parseVideoTags);

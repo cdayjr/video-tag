@@ -1,5 +1,4 @@
-import URLSearchParams from "../URLSearchParams.ts";
-import VideoProvider from "../VideoProvider.ts";
+import VideoProvider from "../VideoProvider";
 
 export default class Vimeo extends VideoProvider {
   /**
@@ -24,35 +23,34 @@ export default class Vimeo extends VideoProvider {
    * Build an object from the source URL
    */
   constructor(source: string) {
-    super();
+    super(source);
 
-    if (this.constructor.getHostName(source)) {
+    if ((this.constructor as typeof VideoProvider).getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
       const match = source.match(
-        /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:video\/)?(?<id>\d+)\??(?:.*)?$/
+        /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:video\/)?(\d+)\??(?:.*)?$/
       );
       if (match) {
-        // temporary until regex named groups are supported
-        if (!match.groups) {
-          match.groups = {
-            id: match[1]
-          };
-        }
+        const [, idMatch] = match;
 
-        if (match.groups.id) {
-          this.options.set("id", match.groups.id);
+        if (idMatch) {
+          this.options.set("id", idMatch);
 
           if (link.hash) {
-            // Vimeo time params are stored in the hash section of the
-            // URL, URLSearchParams doesn't strip the starting #
-            // so we gotta do that ourselves.
-            const params = new URLSearchParams(link.hash.substr(1));
+            const params = (this
+              .constructor as typeof VideoProvider).mapFromString(
+              link.hash.substr(1)
+            );
             if (params.get("t")) {
               this.options.set(
                 "start",
-                this.constructor.timeToSeconds(params.get("t"))
+                String(
+                  (this.constructor as typeof VideoProvider).timeToSeconds(
+                    String(params.get("t"))
+                  )
+                )
               );
             }
           }
@@ -65,7 +63,7 @@ export default class Vimeo extends VideoProvider {
     }
   }
 
-  public getElement(): HTMLIFrameElement {
+  public getElement(): HTMLIFrameElement | null {
     if (!this.options.get("id")) {
       return null;
     }
@@ -80,8 +78,9 @@ export default class Vimeo extends VideoProvider {
     )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`;
 
     if (this.options.get("start")) {
-      sourceAddress += `#t=${this.constructor.secondsToTime(
-        this.options.get("start")
+      sourceAddress += `#t=${(this
+        .constructor as typeof VideoProvider).secondsToTime(
+        parseInt(String(this.options.get("start")), 10)
       )}`;
     }
 

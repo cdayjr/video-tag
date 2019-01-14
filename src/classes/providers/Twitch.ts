@@ -1,5 +1,4 @@
-import URLSearchParams from "../URLSearchParams.ts";
-import VideoProvider from "../VideoProvider.ts";
+import VideoProvider from "../VideoProvider";
 
 export default class Twitch extends VideoProvider {
   /**
@@ -24,62 +23,58 @@ export default class Twitch extends VideoProvider {
    * Build an object from the source URL
    */
   constructor(source: string) {
-    super();
+    super(source);
 
-    if (this.constructor.getHostName(source)) {
+    if ((this.constructor as typeof VideoProvider).getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
       const match = source.match(
-        /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(?<id>\d+))|embed\/)?(?<channel>\w+)?/
+        /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(\d+))|embed\/)?(\w+)?/
       );
       if (match) {
-        // temporary until regex named groups are supported
-        if (!match.groups) {
-          match.groups = {
-            channel: match[2],
-            id: match[1]
-          };
-        }
+        const [, idMatch, channelMatch] = match;
 
-        if (match.groups.channel) {
-          this.options.set("channel", match.groups.channel);
-        } else if (match.groups.id) {
+        if (channelMatch) {
+          this.options.set("channel", channelMatch);
+        } else if (idMatch) {
           // If video ID is gathered this way, we need to
           // manually add a `v` in front.
-          this.options.set("id", `v${match.groups.id}`);
+          this.options.set("id", `v${idMatch}`);
         }
         if (link.search) {
-          const params = new URLSearchParams(link.search);
+          const params = (this
+            .constructor as typeof VideoProvider).mapFromString(link.search);
           if (!this.options.get("channel") && !this.options.get("id")) {
             if (params.get("channel")) {
-              this.options.set("channel", params.get("channel"));
+              this.options.set("channel", String(params.get("channel")));
             } else if (params.get("video")) {
-              this.options.set("id", params.get("video"));
+              this.options.set("id", String(params.get("video")));
             }
           }
           if (params.get("t")) {
             this.options.set(
               "start",
-              this.constructor.timeToSeconds(params.get("t"))
+              String(
+                (this.constructor as typeof VideoProvider).timeToSeconds(
+                  String(params.get("t"))
+                )
+              )
             );
           }
         }
       }
+    } else if (source.match(/^\d+$/)) {
+      this.options.set("id", `v${source}`);
+    } else if (source.match(/^v\d+$/)) {
+      this.options.set("id", source);
     } else {
-      // Could just be a video ID.
-      if (source.match(/^\d+$/)) {
-        this.options.set("id", `v${source}`);
-      } else if (source.match(/^v\d+$/)) {
-        this.options.set("id", source);
-      } else {
-        // Just assume it's a channel?
-        this.options.set("channel", source);
-      }
+      // Just assume it's a channel?
+      this.options.set("channel", source);
     }
   }
 
-  public getElement(): HTMLIFrameElement {
+  public getElement(): HTMLIFrameElement | null {
     let sourceAddress = "";
     if (this.options.get("channel")) {
       // stream embed
@@ -92,10 +87,13 @@ export default class Twitch extends VideoProvider {
         "id"
       )}`;
       if (this.options.get("start")) {
-        sourceAddress += `&t=${this.constructor.secondsToTime(
-          this.options.get("start")
+        sourceAddress += `&t=${(this
+          .constructor as typeof VideoProvider).secondsToTime(
+          parseInt(String(this.options.get("start")), 10)
         )}`;
       }
+    } else {
+      return null;
     }
 
     const iframe = document.createElement("iframe");
