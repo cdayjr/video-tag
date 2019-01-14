@@ -5,16 +5,9 @@ module.exports = {
     "plugin:compat/recommended",
     "plugin:jest/recommended"
   ],
-  plugins: ["prettier", "tslint", "compat", "jest", "import"],
+  plugins: ["prettier", "compat", "jest", "import"],
   parser: "typescript-eslint-parser",
   rules: {
-    "tslint/config": [
-      "warn",
-      {
-        lintFile: "./.tslint.yaml",
-        configFile: "./tsconfig.json"
-      }
-    ],
     "no-plusplus": 0
   },
   env: {

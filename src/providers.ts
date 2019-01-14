@@ -5,6 +5,4 @@ import YouTube from "./classes/providers/YouTube";
 /**
  * An array of available providers
  */
-const providers = [Twitch, Vimeo, YouTube];
-
-export default providers;
+export default [Twitch, Vimeo, YouTube];
