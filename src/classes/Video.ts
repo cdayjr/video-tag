@@ -133,6 +133,7 @@ export default class Video {
     }
 
     const message = document.createElement("p");
+    message.classList.add(style.errorMessage);
     message.textContent = "Invalid Video";
     container.appendChild(message);
 
