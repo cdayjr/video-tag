@@ -103,7 +103,7 @@ export default class Video {
     source: string,
     providerString: string,
     optionsString: string
-  ): void {
+  ) {
     this.provider = (this.constructor as typeof Video).getProviderFromString(
       source.trim(),
       providerString.trim()

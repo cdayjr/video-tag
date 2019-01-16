@@ -18,14 +18,24 @@ export default class YouTube extends VideoProvider {
 
       // embed URLs- typically people won't have these but good to check.
       const match = source.match(
-        /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(.+)(?:\?|$)/
+        /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(.+?)(?:\?|$)/
       );
       if (match) {
         const [, idMatch] = match;
 
         if (idMatch) {
           this.options.set("id", idMatch);
-          // No more options to set.
+
+          const params = (this
+            .constructor as typeof VideoProvider).mapFromString(link.search);
+
+          if (params.get("start")) {
+            const timeCount = parseInt(String(params.get("start")), 10);
+            if (timeCount > 0) {
+              this.options.set("start", String(timeCount));
+            }
+          }
+
           return;
         }
       }

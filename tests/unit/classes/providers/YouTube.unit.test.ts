@@ -1,6 +1,6 @@
 import YouTube from "../../../../src/classes/providers/YouTube";
 
-test("getProviderString is YouTube", (): void => {
+test("getProviderString is YouTube", () => {
   expect(YouTube.getProviderString()).toBe("YouTube");
 
   // test non-static variant
@@ -8,122 +8,161 @@ test("getProviderString is YouTube", (): void => {
   expect(youtube.getProviderString()).toBe("YouTube");
 });
 
-test("Test empty source returns an empty getElement", (): void => {
+test("Test empty source returns an empty getElement", () => {
   const youtube = new YouTube("");
 
   expect(youtube.getElement()).toBeNull();
 });
 
-test("Test importOptions and exportOptions with ? prefix", (): void => {
+test("Test importOptions and exportOptions with ? prefix", () => {
   const youtube = new YouTube("");
 
   const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
 
   youtube.importOptions(`?${initialString}`);
 
-  expect(youtube.exportOptions()).toBe(
-    "test=test&test2=2&test3=true&test4=&test5=&test6=test"
-  );
+  const query = new URLSearchParams(youtube.exportOptions());
+  const queryObject: { [key: string]: string } = {};
+  query.forEach((value, key) => {
+    queryObject[key] = value;
+  });
+
+  expect(queryObject).toEqual({
+    test: "test",
+    test2: "2",
+    test3: "true",
+    test4: "",
+    test5: "",
+    test6: "test"
+  });
 });
 
-test("Test importOptions and exportOptions without ? prefix", (): void => {
+test("Test importOptions and exportOptions without ? prefix", () => {
   const youtube = new YouTube("");
 
   const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
 
   youtube.importOptions(initialString);
 
-  expect(youtube.exportOptions()).toBe(
-    "test=test&test2=2&test3=true&test4=&test5=&test6=test"
-  );
+  const query = new URLSearchParams(youtube.exportOptions());
+  const queryObject: { [key: string]: string } = {};
+  query.forEach((value, key) => {
+    queryObject[key] = value;
+  });
+
+  expect(queryObject).toEqual({
+    test: "test",
+    test2: "2",
+    test3: "true",
+    test4: "",
+    test5: "",
+    test6: "test"
+  });
 });
 
-test("Classic URL", (): void => {
-  const videoID = "g4Hbz2jLxvQ";
-  const youtube = new YouTube(`https://www.youtube.com/watch?v=${videoID}`);
+const inputs: { [key: string]: string }[] = [
+  // regular url
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  },
+  // http
+  {
+    source: "http://www.youtube.com/watch?v=g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  },
+  // no www
+  {
+    source: "https://youtube.com/watch?v=g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  },
+  // extra param
+  {
+    source: "https://youtube.com/watch?v=g4Hbz2jLxvQ&test=test",
+    id: "g4Hbz2jLxvQ"
+  },
+  // youtu.be
+  {
+    source: "https://youtu.be/g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  },
+  // with timestamp
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
+    id: "g4Hbz2jLxvQ",
+    t: "0m10s",
+    start: "10"
+  },
+  // with start only
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=10",
+    id: "g4Hbz2jLxvQ",
+    start: "10"
+  },
+  // with start and timestamps (start will take precedence)
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10m&start=10&t=10m",
+    id: "g4Hbz2jLxvQ",
+    start: "10"
+  },
+  // embed url
+  {
+    source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  },
+  // embed url with timestamp
+  {
+    source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
+    id: "g4Hbz2jLxvQ",
+    start: "10"
+  },
+  // id alone
+  {
+    source: "g4Hbz2jLxvQ",
+    id: "g4Hbz2jLxvQ"
+  }
+];
 
-  expect(youtube.exportOptions()).toBe(`id=${videoID}`);
+inputs.forEach(input => {
+  test(`${input.source} is handled correctly`, () => {
+    const youtube = new YouTube(input.source);
 
-  const youtubeElement = youtube.getElement();
+    const inputOptions: { [key: string]: string } = {
+      id: input.id
+    };
 
-  expect(youtubeElement instanceof HTMLElement).toBeTruthy();
-  if (youtubeElement) {
+    if (undefined !== input.start) {
+      inputOptions.start = input.start;
+    }
+
+    const query = new URLSearchParams(youtube.exportOptions());
+    const queryObject: { [key: string]: string } = {};
+    query.forEach((value, key) => {
+      queryObject[key] = value;
+    });
+
+    expect(queryObject).toEqual(inputOptions);
+
+    const youtubeElement = youtube.getElement();
+
+    expect(youtubeElement).toBeInstanceOf(HTMLElement);
+
     expect(youtubeElement.tagName).toBe("IFRAME");
     expect(youtubeElement.getAttribute("allowfullscreen")).toBe("");
     expect(youtubeElement.getAttribute("allow")).toBe(
       "accelerometer; encrypted-media; gyroscope; picture-in-picture"
     );
-    expect(youtubeElement.getAttribute("src")).toBe(
-      `https://www.youtube-nocookie.com/embed/${videoID}`
-    );
-  }
-});
 
-test("Youtu.be URL", (): void => {
-  const videoID = "g4Hbz2jLxvQ";
-  const youtube = new YouTube(`https://youtu.be/${videoID}`);
+    let regexString = `^https:\\/\\/www\\.youtube-nocookie\\.com\\/embed\\/${
+      input.id
+    }`;
 
-  expect(youtube.exportOptions()).toBe(`id=${videoID}`);
+    if (undefined !== input.start) {
+      regexString += `\\?start=${input.start}$`;
+    } else {
+      regexString += "$";
+    }
 
-  const youtubeElement = youtube.getElement();
-
-  expect(youtubeElement instanceof HTMLElement).toBeTruthy();
-  if (youtubeElement) {
-    expect(youtubeElement.tagName).toBe("IFRAME");
-    expect(youtubeElement.getAttribute("allowfullscreen")).toBe("");
-    expect(youtubeElement.getAttribute("allow")).toBe(
-      "accelerometer; encrypted-media; gyroscope; picture-in-picture"
-    );
-    expect(youtubeElement.getAttribute("src")).toBe(
-      `https://www.youtube-nocookie.com/embed/${videoID}`
-    );
-  }
-});
-
-test("URL with timestamp", (): void => {
-  const videoID = "g4Hbz2jLxvQ";
-  const timestampString = "0m10s";
-  const timestampSeconds = "10";
-  const youtube = new YouTube(
-    `https://www.youtube.com/watch?v=${videoID}&t=${timestampString}`
-  );
-
-  expect(youtube.exportOptions()).toBe(
-    `id=${videoID}&start=${timestampSeconds}`
-  );
-
-  const youtubeElement = youtube.getElement();
-
-  expect(youtubeElement instanceof HTMLElement).toBeTruthy();
-  if (youtubeElement) {
-    expect(youtubeElement.tagName).toBe("IFRAME");
-    expect(youtubeElement.getAttribute("allowfullscreen")).toBe("");
-    expect(youtubeElement.getAttribute("allow")).toBe(
-      "accelerometer; encrypted-media; gyroscope; picture-in-picture"
-    );
-    expect(youtubeElement.getAttribute("src")).toBe(
-      `https://www.youtube-nocookie.com/embed/${videoID}?start=${timestampSeconds}`
-    );
-  }
-});
-
-test("Video ID", (): void => {
-  const videoID = "g4Hbz2jLxvQ";
-  const youtube = new YouTube(videoID);
-
-  expect(youtube.exportOptions()).toBe(`id=${videoID}`);
-
-  const youtubeElement = youtube.getElement();
-
-  expect(youtubeElement instanceof HTMLElement).toBeTruthy();
-  if (youtubeElement) {
-    expect(youtubeElement.tagName).toBe("IFRAME");
-    expect(youtubeElement.getAttribute("allowfullscreen")).toBe("");
-    expect(youtubeElement.getAttribute("allow")).toBe(
-      "accelerometer; encrypted-media; gyroscope; picture-in-picture"
-    );
-    expect(youtubeElement.getAttribute("src")).toBe(
-      `https://www.youtube-nocookie.com/embed/${videoID}`
-    );
-  }
+    expect(youtubeElement.getAttribute("src")).toMatch(new RegExp(regexString));
+  });
 });

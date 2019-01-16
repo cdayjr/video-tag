@@ -3,7 +3,6 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "lib": ["ES2018", "DOM", "ScriptHost"],
-    "strict": true,
     "jsx": "react",
     "module": "esnext",
     "noImplicitAny": true,

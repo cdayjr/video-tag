@@ -11,7 +11,12 @@ module.exports = {
     "no-plusplus": 0,
     "typescript/adjacent-overload-signatures": 2,
     "typescript/class-name-casing": 2,
-    "typescript/explicit-function-return-type": 2,
+    "typescript/explicit-function-return-type": [
+      2,
+      {
+        allowExpressions: true
+      }
+    ],
     "typescript/explicit-member-accessibility": 2,
     "typescript/generic-type-naming": 2,
     "typescript/interface-name-prefix": 2,

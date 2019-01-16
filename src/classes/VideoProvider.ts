@@ -33,16 +33,14 @@ export default abstract class VideoProvider {
 
     const items = paramString.split("&");
     const result = new Map<string, string>();
-    items.forEach(
-      (item): void => {
-        if (item.search("=") > -1) {
-          const [key, value] = item.split("=");
-          result.set(decodeURIComponent(key), decodeURIComponent(value));
-        } else {
-          result.set(decodeURIComponent(item), "");
-        }
+    items.forEach(item => {
+      if (item.search("=") > -1) {
+        const [key, value] = item.split("=");
+        result.set(decodeURIComponent(key), decodeURIComponent(value));
+      } else {
+        result.set(decodeURIComponent(item), "");
       }
-    );
+    });
 
     return result;
   }
@@ -52,13 +50,9 @@ export default abstract class VideoProvider {
    */
   protected static stringFromMap(input: Map<string, string>): string {
     let paramString = "";
-    input.forEach(
-      (value, key): void => {
-        paramString += `${encodeURIComponent(key)}=${encodeURIComponent(
-          value
-        )}&`;
-      }
-    );
+    input.forEach((value, key) => {
+      paramString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+    });
     if (paramString.length > 0) {
       paramString = paramString.slice(0, -1);
     }
@@ -162,7 +156,7 @@ export default abstract class VideoProvider {
   /**
    * Import options
    */
-  public importOptions(options: string): void {
+  public importOptions(options: string) {
     this.options = (this.constructor as typeof VideoProvider).mapFromString(
       options
     );

@@ -94,7 +94,7 @@
     "coverageDirectory": "coverage",
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.json"
+        "tsConfig": "./tests/tsconfig.json"
       }
     },
     "moduleFileExtensions": [

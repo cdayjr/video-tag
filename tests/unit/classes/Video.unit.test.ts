@@ -1,19 +1,19 @@
 import Video from "../../../src/classes/Video";
 import style from "../../../src/classes/Video.style.scss";
 
-test("Video can be created with no arguments", (): void => {
+test("Video can be created with no arguments", () => {
   const video = new Video();
 
-  expect(video instanceof Video).toBeTruthy();
+  expect(video).toBeInstanceOf(Video);
 });
 
-test("getProvider returns valid string", (): void => {
+test("getProvider returns valid string", () => {
   const video = new Video();
 
   expect(video.getProvider()).toBe("Invalid");
 });
 
-test('getElement returns "Invalid Video"', (): void => {
+test('getElement returns "Invalid Video"', () => {
   const video = new Video();
   const videoElement = video.getElement();
 
@@ -22,15 +22,14 @@ test('getElement returns "Invalid Video"', (): void => {
 
   const errorMessage = videoElement.querySelector(`*`);
 
-  expect(errorMessage instanceof HTMLElement).toBeTruthy();
-  if (errorMessage) {
-    expect(errorMessage.tagName).toBe("P");
-    expect(errorMessage.classList.contains(style.errorMessage)).toBeTruthy();
-    expect(errorMessage.textContent).toBe("Invalid Video");
-  }
+  expect(errorMessage).toBeInstanceOf(HTMLElement);
+
+  expect(errorMessage.tagName).toBe("P");
+  expect(errorMessage.classList.contains(style.errorMessage)).toBeTruthy();
+  expect(errorMessage.textContent).toBe("Invalid Video");
 });
 
-test("exportOptions returns nothing", (): void => {
+test("exportOptions returns nothing", () => {
   const video = new Video();
 
   expect(video.exportOptions()).toBeFalsy();
