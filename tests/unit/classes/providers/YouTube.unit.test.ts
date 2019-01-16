@@ -1,5 +1,13 @@
 import YouTube from "../../../../src/classes/providers/YouTube";
 
+const paramStringToObject = (input: string): { [key: string]: string } => {
+  const output: { [key: string]: string } = {};
+  new URLSearchParams(input).forEach((value, key) => {
+    output[key] = value;
+  });
+  return output;
+};
+
 test("getProviderString is YouTube", () => {
   expect(YouTube.getProviderString()).toBe("YouTube");
 
@@ -21,13 +29,7 @@ test("Test importOptions and exportOptions with ? prefix", () => {
 
   youtube.importOptions(`?${initialString}`);
 
-  const query = new URLSearchParams(youtube.exportOptions());
-  const queryObject: { [key: string]: string } = {};
-  query.forEach((value, key) => {
-    queryObject[key] = value;
-  });
-
-  expect(queryObject).toEqual({
+  expect(paramStringToObject(youtube.exportOptions())).toEqual({
     test: "test",
     test2: "2",
     test3: "true",
@@ -37,43 +39,45 @@ test("Test importOptions and exportOptions with ? prefix", () => {
   });
 });
 
-test("Test importOptions and exportOptions without ? prefix", () => {
+test("Test importOptions and exportOptions without ? prefix and duplicate keys", () => {
   const youtube = new YouTube("");
 
-  const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
+  const initialString =
+    "test=test&test2=2&test3=true&test4&test5=&test6=test&test=test2&test4=4";
 
   youtube.importOptions(initialString);
 
-  const query = new URLSearchParams(youtube.exportOptions());
-  const queryObject: { [key: string]: string } = {};
-  query.forEach((value, key) => {
-    queryObject[key] = value;
-  });
-
-  expect(queryObject).toEqual({
-    test: "test",
+  expect(paramStringToObject(youtube.exportOptions())).toEqual({
+    test: "test2",
     test2: "2",
     test3: "true",
-    test4: "",
+    test4: "4",
     test5: "",
     test6: "test"
   });
 });
+
+interface Options {
+  id: string;
+  start?: string;
+}
 
 const youtubeExpect = "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ";
 const youtubeWithStartExpect =
   "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10";
-const youtubeOptions: { [key: string]: string } = {
+const youtubeOptions: Options = {
   id: "g4Hbz2jLxvQ"
 };
 
-const youtubeOptionsWithStart: { [key: string]: string } = {
+const youtubeOptionsWithStart: Options = {
   id: "g4Hbz2jLxvQ",
   start: "10"
 };
 
 const inputs: {
-  [key: string]: string | { [key: string]: string };
+  source: string;
+  expect: string;
+  options: Options;
 }[] = [
   // regular url
   {
@@ -145,15 +149,9 @@ const inputs: {
 
 inputs.forEach(input => {
   test(`${input.source} is handled correctly`, () => {
-    const youtube = new YouTube(input.source as string);
+    const youtube = new YouTube(input.source);
 
-    const query = new URLSearchParams(youtube.exportOptions());
-    const queryObject: { [key: string]: string } = {};
-    query.forEach((value, key) => {
-      queryObject[key] = value;
-    });
-
-    expect(queryObject).toEqual(input.options);
+    expect(paramStringToObject(youtube.exportOptions())).toEqual(input.options);
 
     const youtubeElement = youtube.getElement();
 
@@ -165,6 +163,25 @@ inputs.forEach(input => {
       "accelerometer; encrypted-media; gyroscope; picture-in-picture"
     );
 
-    expect(youtubeElement.getAttribute("src")).toEqual(input.expect as string);
+    expect(youtubeElement.getAttribute("src")).toBe(input.expect);
+  });
+});
+
+const invalidInputs: string[] = [
+  "abcdefghijklmnopqrstuvwxyz",
+  "abc",
+  "A+C=E#G%I^K",
+  "https://www.youtube.com/watch?z=g4Hbz2jLxvQ",
+  "https://www.youtube.com/embeg/g4Hbz2jLxvQ?t=0m10s",
+  "https://vimeo.com/16679115#t=600s",
+  "https://www.twitch.tv/videos/355193670?t=02h16m51s",
+  "https://www.twitch.tv/impactwrestling"
+];
+
+invalidInputs.forEach(input => {
+  test(`Incorrect Source: ${input}`, () => {
+    const youtube = new YouTube(input);
+    expect(youtube.exportOptions()).toBeFalsy();
+    expect(youtube.getElement()).toBeNull();
   });
 });
