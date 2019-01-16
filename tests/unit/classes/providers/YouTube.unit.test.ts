@@ -60,102 +60,86 @@ test("Test importOptions and exportOptions without ? prefix", () => {
   });
 });
 
+const youtubeExpect = "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ";
+const youtubeWithStartExpect =
+  "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10";
+const youtubeOptions: { [key: string]: string } = {
+  id: "g4Hbz2jLxvQ"
+};
+
+const youtubeOptionsWithStart: { [key: string]: string } = {
+  id: "g4Hbz2jLxvQ",
+  start: "10"
+};
+
 const inputs: {
-  [key: string]: RegExp | string | { [key: string]: string };
+  [key: string]: string | { [key: string]: string };
 }[] = [
   // regular url
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // http
   {
     source: "http://www.youtube.com/watch?v=g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // no www
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // extra param
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ&test=test",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // youtu.be
   {
     source: "https://youtu.be/g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
-  },
-  // with timestamp
-  {
-    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
-    options: {
-      id: "g4Hbz2jLxvQ",
-
-      start: "10"
-    },
-    t: "0m10s"
-  },
-  // with start only
-  {
-    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=10",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
-    options: {
-      id: "g4Hbz2jLxvQ",
-      start: "10"
-    }
-  },
-  // with start and timestamps (start will take precedence)
-  {
-    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10m&start=10&t=10m",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
-    options: {
-      id: "g4Hbz2jLxvQ",
-      start: "10"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // embed url
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
-  },
-  // embed url with timestamp
-  {
-    source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
-    options: {
-      id: "g4Hbz2jLxvQ",
-      start: "10"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // id alone
   {
     source: "g4Hbz2jLxvQ",
-    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
-    options: {
-      id: "g4Hbz2jLxvQ"
-    }
+    expect: youtubeExpect,
+    options: youtubeOptions
+  },
+  // with timestamp
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
+    expect: youtubeWithStartExpect,
+    options: youtubeOptionsWithStart
+  },
+  // with start only
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=10",
+    expect: youtubeWithStartExpect,
+    options: youtubeOptionsWithStart
+  },
+  // with start and timestamps (start will take precedence)
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10m&start=10&t=10m",
+    expect: youtubeWithStartExpect,
+    options: youtubeOptionsWithStart
+  },
+  // embed url with timestamp
+  {
+    source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
+    expect: youtubeWithStartExpect,
+    options: youtubeOptionsWithStart
   }
 ];
 
@@ -181,6 +165,6 @@ inputs.forEach(input => {
       "accelerometer; encrypted-media; gyroscope; picture-in-picture"
     );
 
-    expect(youtubeElement.getAttribute("src")).toMatch(input.match as RegExp);
+    expect(youtubeElement.getAttribute("src")).toEqual(input.expect as string);
   });
 });
