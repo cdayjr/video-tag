@@ -60,80 +60,108 @@ test("Test importOptions and exportOptions without ? prefix", () => {
   });
 });
 
-const inputs: { [key: string]: string }[] = [
+const inputs: {
+  [key: string]: RegExp | string | { [key: string]: string };
+}[] = [
   // regular url
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // http
   {
     source: "http://www.youtube.com/watch?v=g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // no www
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // extra param
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ&test=test",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // youtu.be
   {
     source: "https://youtu.be/g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // with timestamp
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
-    id: "g4Hbz2jLxvQ",
-    t: "0m10s",
-    start: "10"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
+    options: {
+      id: "g4Hbz2jLxvQ",
+
+      start: "10"
+    },
+    t: "0m10s"
   },
   // with start only
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=10",
-    id: "g4Hbz2jLxvQ",
-    start: "10"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
+    options: {
+      id: "g4Hbz2jLxvQ",
+      start: "10"
+    }
   },
   // with start and timestamps (start will take precedence)
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10m&start=10&t=10m",
-    id: "g4Hbz2jLxvQ",
-    start: "10"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
+    options: {
+      id: "g4Hbz2jLxvQ",
+      start: "10"
+    }
   },
   // embed url
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   },
   // embed url with timestamp
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
-    id: "g4Hbz2jLxvQ",
-    start: "10"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ\?start=10$/,
+    options: {
+      id: "g4Hbz2jLxvQ",
+      start: "10"
+    }
   },
   // id alone
   {
     source: "g4Hbz2jLxvQ",
-    id: "g4Hbz2jLxvQ"
+    match: /^https:\/\/www\.youtube-nocookie\.com\/embed\/g4Hbz2jLxvQ$/,
+    options: {
+      id: "g4Hbz2jLxvQ"
+    }
   }
 ];
 
 inputs.forEach(input => {
   test(`${input.source} is handled correctly`, () => {
-    const youtube = new YouTube(input.source);
-
-    const inputOptions: { [key: string]: string } = {
-      id: input.id
-    };
-
-    if (undefined !== input.start) {
-      inputOptions.start = input.start;
-    }
+    const youtube = new YouTube(input.source as string);
 
     const query = new URLSearchParams(youtube.exportOptions());
     const queryObject: { [key: string]: string } = {};
@@ -141,7 +169,7 @@ inputs.forEach(input => {
       queryObject[key] = value;
     });
 
-    expect(queryObject).toEqual(inputOptions);
+    expect(queryObject).toEqual(input.options);
 
     const youtubeElement = youtube.getElement();
 
@@ -153,16 +181,6 @@ inputs.forEach(input => {
       "accelerometer; encrypted-media; gyroscope; picture-in-picture"
     );
 
-    let regexString = `^https:\\/\\/www\\.youtube-nocookie\\.com\\/embed\\/${
-      input.id
-    }`;
-
-    if (undefined !== input.start) {
-      regexString += `\\?start=${input.start}$`;
-    } else {
-      regexString += "$";
-    }
-
-    expect(youtubeElement.getAttribute("src")).toMatch(new RegExp(regexString));
+    expect(youtubeElement.getAttribute("src")).toMatch(input.match as RegExp);
   });
 });
