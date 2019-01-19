@@ -94,27 +94,28 @@ export default abstract class VideoProvider {
    */
   protected static timeToSeconds(time: string): number {
     const match = time.match(/(\d+h)?(\d+m)?(\d+s)?/);
-    let count = 0;
-    if (match) {
-      const [, hoursMatch, minutesMatch, secondsMatch] = match;
 
-      if (hoursMatch) {
-        const hours = parseInt(hoursMatch, 10);
-        if (hours > 0) {
-          count += hours * 60 * 60;
-        }
+    // @ts-ignore 2488
+    const [, hoursMatch, minutesMatch, secondsMatch] = match;
+
+    let count = 0;
+
+    if (hoursMatch) {
+      const hours = parseInt(hoursMatch, 10);
+      if (hours > 0) {
+        count += hours * 60 * 60;
       }
-      if (minutesMatch) {
-        const minutes = parseInt(minutesMatch, 10);
-        if (minutes > 0) {
-          count += minutes * 60;
-        }
+    }
+    if (minutesMatch) {
+      const minutes = parseInt(minutesMatch, 10);
+      if (minutes > 0) {
+        count += minutes * 60;
       }
-      if (secondsMatch) {
-        const seconds = parseInt(secondsMatch, 10);
-        if (seconds > 0) {
-          count += seconds;
-        }
+    }
+    if (secondsMatch) {
+      const seconds = parseInt(secondsMatch, 10);
+      if (seconds > 0) {
+        count += seconds;
       }
     }
 

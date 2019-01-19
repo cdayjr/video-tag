@@ -106,6 +106,11 @@ const inputs: {
     options: vimeoOptions
   },
   {
+    source: "https://vimeo.com/16679115#nontimestampparam=true",
+    expect: vimeoExpect,
+    options: vimeoOptions
+  },
+  {
     source: "https://vimeo.com/16679115#t=600s",
     expect: vimeoWithStartExpect,
     options: vimeoOptionsWithStart

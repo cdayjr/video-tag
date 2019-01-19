@@ -121,11 +121,29 @@ const inputs: {
     expect: youtubeExpect,
     options: youtubeOptions
   },
+  // with bogus timestamp
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=bogus",
+    expect: youtubeExpect,
+    options: youtubeOptions
+  },
   // with timestamp
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
     expect: youtubeWithStartExpect,
     options: youtubeOptionsWithStart
+  },
+  // with timestamp of seconds only
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10",
+    expect: youtubeWithStartExpect,
+    options: youtubeOptionsWithStart
+  },
+  // with bogus start only
+  {
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=bogus",
+    expect: youtubeExpect,
+    options: youtubeOptions
   },
   // with start only
   {
@@ -144,6 +162,18 @@ const inputs: {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
     expect: youtubeWithStartExpect,
     options: youtubeOptionsWithStart
+  },
+  // embed url with bogus timestamp
+  {
+    source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=bogus",
+    expect: youtubeExpect,
+    options: youtubeOptions
+  },
+  // embed url with t timestamp parameter (no timestamp read, invalid syntax)
+  {
+    source: "https://www.youtube.com/embed/g4Hbz2jLxvQ?t=0m10s",
+    expect: youtubeExpect,
+    options: youtubeOptions
   }
 ];
 
@@ -161,6 +191,7 @@ const invalidInputs: string[] = [
   "A+C=E#G%I^K",
   "https://www.youtube.com/watch?z=g4Hbz2jLxvQ",
   "https://www.youtube.com/embeg/g4Hbz2jLxvQ?t=0m10s",
+  "https://youtu.be/",
   "https://vimeo.com/16679115#t=600s",
   "https://www.twitch.tv/videos/355193670?t=02h16m51s",
   "https://www.twitch.tv/impactwrestling"

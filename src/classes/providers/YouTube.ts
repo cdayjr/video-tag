@@ -23,21 +23,20 @@ export default class YouTube extends VideoProvider {
       if (match) {
         const [, idMatch] = match;
 
-        if (idMatch) {
-          this.options.set("id", idMatch);
+        this.options.set("id", idMatch);
 
-          const params = (this
-            .constructor as typeof VideoProvider).mapFromString(link.search);
+        const params = (this.constructor as typeof VideoProvider).mapFromString(
+          link.search
+        );
 
-          if (params.get("start")) {
-            const timeCount = parseInt(String(params.get("start")), 10);
-            if (timeCount > 0) {
-              this.options.set("start", String(timeCount));
-            }
+        if (params.get("start")) {
+          const timeCount = parseInt(String(params.get("start")), 10);
+          if (timeCount > 0) {
+            this.options.set("start", String(timeCount));
           }
-
-          return;
         }
+
+        return;
       }
 
       // Regular URL, what most people will have.
@@ -57,19 +56,17 @@ export default class YouTube extends VideoProvider {
           }
         } else if (params.get("t")) {
           // parse time...
-          let timeCount = (this
+          const timeCount = (this
             .constructor as typeof VideoProvider).timeToSeconds(
             String(params.get("t"))
           );
-          if (timeCount <= 0) {
+          if (timeCount === 0) {
             // Sometimes it could just be a string of raw seconds.
-            timeCount = 0;
             const seconds = parseInt(String(params.get("t")), 10);
             if (seconds > 0) {
-              timeCount += seconds;
+              this.options.set("start", String(seconds));
             }
-          }
-          if (timeCount > 0) {
+          } else {
             this.options.set("start", String(timeCount));
           }
         }
@@ -82,9 +79,7 @@ export default class YouTube extends VideoProvider {
       if (match3) {
         const [, idMatch] = match3;
 
-        if (idMatch) {
-          this.options.set("id", idMatch);
-        }
+        this.options.set("id", idMatch);
       }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
       // With no URL to go off of maybe it's a video ID?

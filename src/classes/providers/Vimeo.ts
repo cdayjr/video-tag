@@ -17,24 +17,22 @@ export default class Vimeo extends VideoProvider {
       if (match) {
         const [, idMatch] = match;
 
-        if (idMatch) {
-          this.options.set("id", idMatch);
+        this.options.set("id", idMatch);
 
-          if (link.hash) {
-            const params = (this
-              .constructor as typeof VideoProvider).mapFromString(
-              link.hash.substr(1)
-            );
-            if (params.get("t")) {
-              this.options.set(
-                "start",
-                String(
-                  (this.constructor as typeof VideoProvider).timeToSeconds(
-                    String(params.get("t"))
-                  )
+        if (link.hash) {
+          const params = (this
+            .constructor as typeof VideoProvider).mapFromString(
+            link.hash.substr(1)
+          );
+          if (params.get("t")) {
+            this.options.set(
+              "start",
+              String(
+                (this.constructor as typeof VideoProvider).timeToSeconds(
+                  String(params.get("t"))
                 )
-              );
-            }
+              )
+            );
           }
         }
       }

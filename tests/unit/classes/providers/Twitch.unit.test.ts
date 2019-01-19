@@ -111,6 +111,11 @@ const inputs: {
     options: twitchOptions
   },
   {
+    source: "http://twitch.tv/?video=v355193670",
+    expect: twitchExpect,
+    options: twitchOptions
+  },
+  {
     source: "https://www.twitch.tv/videos/355193670?t=02h16m51s",
     expect: twitchWithStartExpect,
     options: twitchOptionsWithStart
@@ -132,6 +137,11 @@ const inputs: {
   },
   {
     source: "https://www.twitch.tv/impactwrestling",
+    expect: twitchChannelExpect,
+    options: twitchOptionsWithChannel
+  },
+  {
+    source: "https://www.twitch.tv/?channel=impactwrestling",
     expect: twitchChannelExpect,
     options: twitchOptionsWithChannel
   },
@@ -166,6 +176,8 @@ inputs.forEach(input => {
 });
 
 const invalidInputs: string[] = [
+  "https://twitch.tv/",
+  "https://twitch.tv/?novideorchannel=true",
   "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
   "https://youtu.be/g4Hbz2jLxvQ",
   "https://vimeo.com/16679115#t=600s",

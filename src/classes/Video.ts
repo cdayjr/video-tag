@@ -69,10 +69,6 @@ export default class Video {
     source: string,
     providerString: string
   ): VideoProvider | undefined {
-    if (providerString === "Invalid") {
-      return undefined;
-    }
-
     // For browsers without `Array.find`
     let Provider;
     for (let i = 0; i < providers.length; ++i) {
