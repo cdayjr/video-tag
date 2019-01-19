@@ -152,18 +152,6 @@ inputs.forEach(input => {
     const youtube = new YouTube(input.source);
 
     expect(paramStringToObject(youtube.exportOptions())).toEqual(input.options);
-
-    const youtubeElement = youtube.getElement();
-
-    expect(youtubeElement).toBeInstanceOf(HTMLElement);
-
-    expect(youtubeElement.tagName).toBe("IFRAME");
-    expect(youtubeElement.getAttribute("allowfullscreen")).toBe("");
-    expect(youtubeElement.getAttribute("allow")).toBe(
-      "accelerometer; encrypted-media; gyroscope; picture-in-picture"
-    );
-
-    expect(youtubeElement.getAttribute("src")).toBe(input.expect);
   });
 });
 

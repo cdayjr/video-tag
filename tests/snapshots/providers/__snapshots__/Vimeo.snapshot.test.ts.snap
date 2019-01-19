@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creates Vimeo embed element 1`] = `
+<iframe
+  allowfullscreen=""
+  mozallowfullscreen=""
+  src="https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0#t=0h10m0s"
+  webkitallowfullscreen=""
+/>
+`;

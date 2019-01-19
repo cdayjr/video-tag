@@ -50,8 +50,7 @@ export default class Twitch extends VideoProvider {
       this.options.set("id", `v${source}`);
     } else if (source.match(/^v\d+$/)) {
       this.options.set("id", source);
-    } else {
-      // Just assume it's a channel?
+    } else if (source.match(/^\w+$/)) {
       this.options.set("channel", source);
     }
   }

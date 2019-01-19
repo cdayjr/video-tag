@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creates YouTube embed element 1`] = `
+<iframe
+  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen=""
+  src="https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10"
+/>
+`;

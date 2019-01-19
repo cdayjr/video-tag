@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creates video container that contains Invalid Video text 1`] = `
+<div
+  class="undefined"
+>
+  <p
+    class="undefined"
+  >
+    Invalid Video
+  </p>
+</div>
+`;

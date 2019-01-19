@@ -49,6 +49,7 @@
     "jest": "^23.6.0",
     "jest-css-modules-transform": "^2.1.1",
     "jest-environment-jsdom": "^23.4.0",
+    "jest-serializer-html": "^6.0.0",
     "node-sass": "^4.11.0",
     "parcel-bundler": "^1.11.0",
     "postcss": "^7.0.7",
@@ -91,7 +92,6 @@
   ],
   "jest": {
     "clearMocks": true,
-    "coverageDirectory": "coverage",
     "globals": {
       "ts-jest": {
         "tsConfig": "./tests/tsconfig.json"
@@ -101,6 +101,9 @@
       "ts",
       "tsx",
       "js"
+    ],
+    "snapshotSerializers": [
+      "jest-serializer-html"
     ],
     "testMatch": [
       "**/*.test.+(ts|tsx|js)"

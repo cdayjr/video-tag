@@ -168,7 +168,8 @@ inputs.forEach(input => {
 const invalidInputs: string[] = [
   "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
   "https://youtu.be/g4Hbz2jLxvQ",
-  "https://vimeo.com/16679115#t=600s"
+  "https://vimeo.com/16679115#t=600s",
+  ":%#$#$#$"
 ];
 
 invalidInputs.forEach(input => {
