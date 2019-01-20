@@ -9,7 +9,7 @@
     "clean": "rm -rf ./dist",
     "lint": "npm run stylelint && npm run ts-check && npm run eslint",
     "pre-commit": "npm run autofix && npm run lint && npm run build",
-    "prettier": "prettier --write \"./**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql}\"",
+    "prettier": "prettier --write \"./**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql,html}\"",
     "stylelint": "stylelint \"./{src,tests}/**/*.{c,sa,sc,le}ss\"",
     "stylelint-fix": "stylelint --fix \"./{src,tests}/**/*.{c,sa,sc,le}ss\"",
     "test": "jest",
@@ -30,10 +30,12 @@
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@microsoft/tsdoc": "^0.12.4",
     "@types/jest": "^23.3.12",
     "autoprefixer": "^9.4.3",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "cssnano": "^4.1.7",
     "eslint": "^5.12.0",
@@ -76,6 +78,11 @@
   },
   "homepage": "https://github.com/cdayjr/video-tag",
   "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime"
+      ]
+    ],
     "presets": [
       [
         "@babel/preset-env",
@@ -116,6 +123,6 @@
     }
   },
   "dependencies": {
-    "classes": "^0.3.0"
+    "@babel/runtime": "^7.2.0"
   }
 }
