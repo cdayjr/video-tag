@@ -13,6 +13,7 @@
     "stylelint": "stylelint \"./{src,tests}/**/*.{c,sa,sc,le}ss\"",
     "stylelint-fix": "stylelint --fix \"./{src,tests}/**/*.{c,sa,sc,le}ss\"",
     "test": "jest",
+    "test-coverage": "jest --coverage",
     "demo": "npm run clean && parcel test.html --target=browser",
     "eslint": "eslint \"./{src,tests}/**/*.ts\"",
     "eslint-fix": "eslint \"./{src,tests}/**/*.ts\" --fix",
@@ -92,6 +93,7 @@
   ],
   "jest": {
     "clearMocks": true,
+    "coverageDirectory": ".coverage",
     "globals": {
       "ts-jest": {
         "tsConfig": "./tests/tsconfig.json"

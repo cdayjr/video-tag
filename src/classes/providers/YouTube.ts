@@ -121,6 +121,8 @@ export default class YouTube extends VideoProvider {
     let sourceAddress = `https://www.youtube-nocookie.com/embed/${this.options.get(
       "id"
     )}`;
+    /* istanbul ignore else: Only difference in the end result is the `src`
+     * attribute, no need to do an additional screenshot. */
     if (this.options.get("start")) {
       sourceAddress += `?start=${this.options.get("start")}`;
     }

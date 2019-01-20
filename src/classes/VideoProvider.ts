@@ -95,6 +95,8 @@ export default abstract class VideoProvider {
   protected static timeToSeconds(time: string): number {
     const match = time.match(/(\d+h)?(\d+m)?(\d+s)?/);
 
+    // Match will never be null, but TypeScript doesn't know that so we
+    // disable the rule that causes problems here.
     // @ts-ignore 2488
     const [, hoursMatch, minutesMatch, secondsMatch] = match;
 

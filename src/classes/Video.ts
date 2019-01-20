@@ -115,6 +115,8 @@ export default class Video {
     const container: HTMLDivElement = document.createElement("div");
     container.classList.add(style.videoContainer);
 
+    /* istanbul ignore if: These are just the getElement() methods of
+     * provider classes, so we'll test them there instead. */
     if (this.provider instanceof VideoProvider) {
       const videoElement = this.provider.getElement();
       if (videoElement) {
