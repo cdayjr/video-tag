@@ -1,0 +1,47 @@
+/* stylelint-disable selector-pseudo-class-no-unknown */
+:global {
+  /* stylelint-enable selector-pseudo-class-no-unknown */
+  body {
+    margin: 1em auto;
+    padding: 0 1em;
+  }
+
+  .video-tag {
+    margin-top: 1em;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.navigation {
+  margin: 1em auto;
+}
+
+.navigation-list {
+  list-style: none;
+}
+
+.navigation-list-item {
+  display: inline-block;
+  margin-right: 1ch;
+  margin-top: 0.25em;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.navigation-button {
+  padding: 0.25em 1ch;
+}
+
+.code {
+  background-color: #ccc;
+  border: 1px dashed #000;
+  display: block;
+  margin: 1em;
+  padding: 1em;
+  width: 100%;
+}
