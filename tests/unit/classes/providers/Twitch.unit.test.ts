@@ -66,12 +66,18 @@ interface ChannelOptions {
   channel: string;
 }
 
+interface ClipOptions {
+  clip: string;
+}
+
 const twitchExpect =
   "https://player.twitch.tv/?autoplay=false&video=v355193670";
 const twitchWithStartExpect =
   "https://player.twitch.tv/?autoplay=false&video=v355193670&t=2h16m51s";
 const twitchChannelExpect =
   "https://player.twitch.tv/?autoplay=false&channel=impactwrestling";
+const twitchClipExpect =
+  "https://clips.twitch.tv/embed?clip=ViscousSpicyBeeCoolStoryBob";
 const twitchOptions: VODOptions = {
   id: "v355193670"
 };
@@ -85,10 +91,14 @@ const twitchOptionsWithChannel: ChannelOptions = {
   channel: "impactwrestling"
 };
 
+const twitchOptionsWithClip: ClipOptions = {
+  clip: "ViscousSpicyBeeCoolStoryBob"
+};
+
 const inputs: {
   source: string;
   expect: string;
-  options: VODOptions | ChannelOptions;
+  options: VODOptions | ChannelOptions | ClipOptions;
 }[] = [
   {
     source: twitchExpect,
@@ -154,6 +164,17 @@ const inputs: {
     source: twitchChannelExpect,
     expect: twitchChannelExpect,
     options: twitchOptionsWithChannel
+  },
+  {
+    source:
+      "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob",
+    expect: twitchClipExpect,
+    options: twitchOptionsWithClip
+  },
+  {
+    source: twitchClipExpect,
+    expect: twitchClipExpect,
+    options: twitchOptionsWithClip
   }
 ];
 

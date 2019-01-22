@@ -12,12 +12,14 @@ export default class Twitch extends VideoProvider {
       link.setAttribute("href", source.trim());
 
       const match = source.match(
-        /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(\d+))|embed\/)?(\w+)?/
+        /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(\d+))|embed\/?)?(?:(\w+)(?:\/clip\/(\w+))?)?/
       );
       if (match) {
-        const [, idMatch, channelMatch] = match;
+        const [, idMatch, channelMatch, clipMatch] = match;
 
-        if (channelMatch) {
+        if (clipMatch) {
+          this.options.set("clip", clipMatch);
+        } else if (channelMatch) {
           this.options.set("channel", channelMatch);
         } else if (idMatch) {
           // If video ID is gathered this way, we need to
@@ -27,11 +29,17 @@ export default class Twitch extends VideoProvider {
         if (link.search) {
           const params = (this
             .constructor as typeof VideoProvider).mapFromString(link.search);
-          if (!this.options.get("channel") && !this.options.get("id")) {
+          if (
+            !this.options.get("channel") &&
+            !this.options.get("id") &&
+            !this.options.get("clip")
+          ) {
             if (params.get("channel")) {
               this.options.set("channel", String(params.get("channel")));
             } else if (params.get("video")) {
               this.options.set("id", String(params.get("video")));
+            } else if (params.get("clip")) {
+              this.options.set("clip", String(params.get("clip")));
             }
           }
           if (params.get("t")) {
@@ -94,6 +102,11 @@ export default class Twitch extends VideoProvider {
           parseInt(String(this.options.get("start")), 10)
         )}`;
       }
+    } else if (this.options.get("clip")) {
+      // Clip embed
+      sourceAddress = `https://clips.twitch.tv/embed?clip=${this.options.get(
+        "clip"
+      )}`;
     } else {
       return null;
     }

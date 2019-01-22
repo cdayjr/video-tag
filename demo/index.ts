@@ -60,6 +60,11 @@ const demoTags: DemoTag[] = [
     title: "Twitch Channel ID",
     source: "impactwrestling",
     provider: "Twitch"
+  },
+  {
+    title: "Twitch Clip Link",
+    source:
+      "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob"
   }
 ];
 
