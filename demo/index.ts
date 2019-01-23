@@ -27,12 +27,21 @@ const demoTags: DemoTag[] = [
     provider: "YouTube"
   },
   {
+    title: "YouTube Playlist Link",
+    source:
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
+  },
+  {
     title: "Vimeo Video Link",
     source: "https://vimeo.com/16679115"
   },
   {
     title: "Vimeo Video Link with Timestamp",
     source: "https://vimeo.com/16679115#t=600s"
+  },
+  {
+    title: "Vimeo Album",
+    source: "https://vimeo.com/album/1719434"
   },
   {
     title: "Vimeo Video ID",
@@ -65,6 +74,10 @@ const demoTags: DemoTag[] = [
     title: "Twitch Clip Link",
     source:
       "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob"
+  },
+  {
+    title: "Twitch Collection Link",
+    source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ"
   }
 ];
 

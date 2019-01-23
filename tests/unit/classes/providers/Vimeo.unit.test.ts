@@ -62,10 +62,15 @@ interface Options {
   start?: string;
 }
 
+interface PlaylistOptions {
+  playlist: string;
+}
+
 const vimeoExpect =
   "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0";
 const vimeoWithStartExpect =
   "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0#t=0h10m0s";
+const vimeoPlaylistExpect = "https://vimeo.com/album/1719434/embed";
 const vimeoOptions: Options = {
   id: "16679115"
 };
@@ -75,55 +80,80 @@ const vimeoOptionsWithStart: Options = {
   start: "600"
 };
 
+const vimeoPlaylistOptions: PlaylistOptions = {
+  playlist: "1719434"
+};
+
 const inputs: {
   source: string;
   expect: string;
-  options: Options;
+  options: Options | PlaylistOptions;
 }[] = [
+  // video embed url
   {
     source: vimeoExpect,
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url
   {
     source: "https://vimeo.com/16679115",
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url with /video
   {
     source: "https://vimeo.com/video/16679115",
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url with http
   {
     source: "http://vimeo.com/16679115",
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url with www
   {
     source: "http://www.vimeo.com/16679115",
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url with useless param
   {
     source: "https://vimeo.com/16679115#nontimestampparam=true",
     expect: vimeoExpect,
     options: vimeoOptions
   },
+  // video url with timestamp
   {
     source: "https://vimeo.com/16679115#t=600s",
     expect: vimeoWithStartExpect,
     options: vimeoOptionsWithStart
   },
+  // video embed url with timestamp
   {
     source: vimeoWithStartExpect,
     expect: vimeoWithStartExpect,
     options: vimeoOptionsWithStart
   },
+  // video id
   {
     source: "16679115",
     expect: vimeoExpect,
     options: vimeoOptions
+  },
+  // album url
+  {
+    source: "https://vimeo.com/album/1719434",
+    expect: vimeoPlaylistExpect,
+    options: vimeoPlaylistOptions
+  },
+  // album embed url
+  {
+    source: vimeoPlaylistExpect,
+    expect: vimeoPlaylistExpect,
+    options: vimeoPlaylistOptions
   }
 ];
 

@@ -62,22 +62,30 @@ interface Options {
   start?: string;
 }
 
+interface PlaylistOptions {
+  playlist: string;
+}
+
 const youtubeExpect = "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ";
 const youtubeWithStartExpect =
   "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10";
+const youtubePlaylistExpect =
+  "https://www.youtube.com/embed/videoseries?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3";
 const youtubeOptions: Options = {
   id: "g4Hbz2jLxvQ"
 };
-
 const youtubeOptionsWithStart: Options = {
   id: "g4Hbz2jLxvQ",
   start: "10"
+};
+const youtubePlaylistOptions: PlaylistOptions = {
+  playlist: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
 };
 
 const inputs: {
   source: string;
   expect: string;
-  options: Options;
+  options: Options | PlaylistOptions;
 }[] = [
   // regular url
   {
@@ -174,6 +182,26 @@ const inputs: {
     source: "https://www.youtube.com/embed/g4Hbz2jLxvQ?t=0m10s",
     expect: youtubeExpect,
     options: youtubeOptions
+  },
+  // playlist url
+  {
+    source:
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
+    expect: youtubePlaylistExpect,
+    options: youtubePlaylistOptions
+  },
+  // platlist url with start video
+  {
+    source:
+      "https://www.youtube.com/watch?v=_gZndxEvFNk&list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
+    expect: youtubePlaylistExpect,
+    options: youtubePlaylistOptions
+  },
+  // embed playlist url
+  {
+    source: youtubePlaylistExpect,
+    expect: youtubePlaylistExpect,
+    options: youtubePlaylistOptions
   }
 ];
 
