@@ -12,12 +12,14 @@ export default class Twitch extends VideoProvider {
       link.setAttribute("href", source.trim());
 
       const match = source.match(
-        /https?:\/\/(?:.+\.)?twitch\.tv\/(?:(?:videos\/(\d+))|embed\/?)?(?:(\w+)(?:\/clip\/(\w+))?)?/
+        /https?:\/\/(?:.+\.)?twitch\.tv(?:\/(?:videos\/(\d+)|embed|collections\/(\w+)))?(?:\/(\w+)(?:\/clip\/(\w+))?)?/
       );
       if (match) {
-        const [, idMatch, channelMatch, clipMatch] = match;
+        const [, idMatch, collectionMatch, channelMatch, clipMatch] = match;
 
-        if (clipMatch) {
+        if (collectionMatch) {
+          this.options.set("collection", collectionMatch);
+        } else if (clipMatch) {
           this.options.set("clip", clipMatch);
         } else if (channelMatch) {
           this.options.set("channel", channelMatch);
@@ -32,9 +34,12 @@ export default class Twitch extends VideoProvider {
           if (
             !this.options.get("channel") &&
             !this.options.get("id") &&
-            !this.options.get("clip")
+            !this.options.get("clip") &&
+            !this.options.get("collection")
           ) {
-            if (params.get("channel")) {
+            if (params.get("collection")) {
+              this.options.set("collection", String(params.get("collection")));
+            } else if (params.get("channel")) {
               this.options.set("channel", String(params.get("channel")));
             } else if (params.get("video")) {
               this.options.set("id", String(params.get("video")));
@@ -42,7 +47,7 @@ export default class Twitch extends VideoProvider {
               this.options.set("clip", String(params.get("clip")));
             }
           }
-          if (params.get("t")) {
+          if (this.options.get("id") && params.get("t")) {
             this.options.set(
               "start",
               String(
@@ -86,7 +91,12 @@ export default class Twitch extends VideoProvider {
    */
   public getElement(): HTMLIFrameElement | null {
     let sourceAddress = "";
-    if (this.options.get("channel")) {
+    if (this.options.get("collection")) {
+      // collection embed
+      sourceAddress = `https://player.twitch.tv/?autoplay=false&collection=${this.options.get(
+        "collection"
+      )}`;
+    } else if (this.options.get("channel")) {
       // stream embed
       sourceAddress = `https://player.twitch.tv/?autoplay=false&channel=${this.options.get(
         "channel"

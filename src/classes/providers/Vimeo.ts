@@ -12,27 +12,31 @@ export default class Vimeo extends VideoProvider {
       link.setAttribute("href", source.trim());
 
       const match = source.match(
-        /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:video\/)?(\d+)\??(?:.*)?$/
+        /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:album\/(\d+)|(?:video\/)?(\d+))\??(?:.*)?$/
       );
       if (match) {
-        const [, idMatch] = match;
+        const [, albumMatch, idMatch] = match;
 
-        this.options.set("id", idMatch);
+        if (albumMatch) {
+          this.options.set("album", albumMatch);
+        } else {
+          this.options.set("id", idMatch);
 
-        if (link.hash) {
-          const params = (this
-            .constructor as typeof VideoProvider).mapFromString(
-            link.hash.substr(1)
-          );
-          if (params.get("t")) {
-            this.options.set(
-              "start",
-              String(
-                (this.constructor as typeof VideoProvider).timeToSeconds(
-                  String(params.get("t"))
-                )
-              )
+          if (link.hash) {
+            const params = (this
+              .constructor as typeof VideoProvider).mapFromString(
+              link.hash.substr(1)
             );
+            if (params.get("t")) {
+              this.options.set(
+                "start",
+                String(
+                  (this.constructor as typeof VideoProvider).timeToSeconds(
+                    String(params.get("t"))
+                  )
+                )
+              );
+            }
           }
         }
       }
@@ -65,7 +69,7 @@ export default class Vimeo extends VideoProvider {
    * Return the video element
    */
   public getElement(): HTMLIFrameElement | null {
-    if (!this.options.get("id")) {
+    if (!this.options.get("id") && !this.options.get("album")) {
       return null;
     }
 
@@ -74,11 +78,13 @@ export default class Vimeo extends VideoProvider {
     iframe.setAttribute("webkitallowfullscreen", "");
     iframe.setAttribute("mozallowfullscreen", "");
 
-    let sourceAddress = `https://player.vimeo.com/video/${this.options.get(
-      "id"
-    )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`;
+    let sourceAddress = this.options.get("id")
+      ? `https://player.vimeo.com/video/${this.options.get(
+          "id"
+        )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`
+      : `https://vimeo.com/album/${this.options.get("album")}/embed`;
 
-    if (this.options.get("start")) {
+    if (this.options.get("id") && this.options.get("start")) {
       sourceAddress += `#t=${(this
         .constructor as typeof VideoProvider).secondsToTime(
         parseInt(String(this.options.get("start")), 10)

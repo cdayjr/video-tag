@@ -62,15 +62,15 @@ interface Options {
   start?: string;
 }
 
-interface PlaylistOptions {
-  playlist: string;
+interface AlbumOptions {
+  album: string;
 }
 
 const vimeoExpect =
   "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0";
 const vimeoWithStartExpect =
   "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0#t=0h10m0s";
-const vimeoPlaylistExpect = "https://vimeo.com/album/1719434/embed";
+const vimeoAlbumExpect = "https://vimeo.com/album/1719434/embed";
 const vimeoOptions: Options = {
   id: "16679115"
 };
@@ -80,14 +80,14 @@ const vimeoOptionsWithStart: Options = {
   start: "600"
 };
 
-const vimeoPlaylistOptions: PlaylistOptions = {
-  playlist: "1719434"
+const vimeoAlbumOptions: AlbumOptions = {
+  album: "1719434"
 };
 
 const inputs: {
   source: string;
   expect: string;
-  options: Options | PlaylistOptions;
+  options: Options | AlbumOptions;
 }[] = [
   // video embed url
   {
@@ -146,14 +146,14 @@ const inputs: {
   // album url
   {
     source: "https://vimeo.com/album/1719434",
-    expect: vimeoPlaylistExpect,
-    options: vimeoPlaylistOptions
+    expect: vimeoAlbumExpect,
+    options: vimeoAlbumOptions
   },
   // album embed url
   {
-    source: vimeoPlaylistExpect,
-    expect: vimeoPlaylistExpect,
-    options: vimeoPlaylistOptions
+    source: vimeoAlbumExpect,
+    expect: vimeoAlbumExpect,
+    options: vimeoAlbumOptions
   }
 ];
 
@@ -163,14 +163,7 @@ inputs.forEach(input => {
 
     expect(paramStringToObject(vimeo.exportOptions())).toEqual(input.options);
 
-    const vimeoElement = vimeo.getElement();
-
-    expect(vimeoElement).toBeInstanceOf(HTMLElement);
-
-    expect(vimeoElement.tagName).toBe("IFRAME");
-    expect(vimeoElement.getAttribute("allowfullscreen")).toBe("");
-    expect(vimeoElement.getAttribute("webkitallowfullscreen")).toBe("");
-    expect(vimeoElement.getAttribute("mozallowfullscreen")).toBe("");
+    const vimeoElement = vimeo.getElement() as HTMLElement;
 
     expect(vimeoElement.getAttribute("src")).toBe(input.expect);
   });

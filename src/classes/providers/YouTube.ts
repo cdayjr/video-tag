@@ -23,16 +23,22 @@ export default class YouTube extends VideoProvider {
       if (match) {
         const [, idMatch] = match;
 
-        this.options.set("id", idMatch);
-
         const params = (this.constructor as typeof VideoProvider).mapFromString(
           link.search
         );
 
-        if (params.get("start")) {
-          const timeCount = parseInt(String(params.get("start")), 10);
-          if (timeCount > 0) {
-            this.options.set("start", String(timeCount));
+        if (idMatch === "videoseries") {
+          if (params.get("list")) {
+            this.options.set("playlist", String(params.get("list")));
+          }
+        } else {
+          this.options.set("id", idMatch);
+
+          if (params.get("start")) {
+            const timeCount = parseInt(String(params.get("start")), 10);
+            if (timeCount > 0) {
+              this.options.set("start", String(timeCount));
+            }
           }
         }
 
@@ -81,6 +87,19 @@ export default class YouTube extends VideoProvider {
 
         this.options.set("id", idMatch);
       }
+
+      // Playlist URL
+      const match4 = source.match(
+        /https?:\/\/(?:.+\.)?youtube\.com\/playlist\?/
+      );
+      if (match4) {
+        const params = (this.constructor as typeof VideoProvider).mapFromString(
+          link.search
+        );
+        if (params.get("list")) {
+          this.options.set("playlist", String(params.get("list")));
+        }
+      }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
       // With no URL to go off of maybe it's a video ID?
       // https://stackoverflow.com/a/4084332
@@ -114,16 +133,21 @@ export default class YouTube extends VideoProvider {
    * Return the video element
    */
   public getElement(): HTMLIFrameElement | null {
-    if (!this.options.get("id")) {
+    if (!this.options.get("id") && !this.options.get("playlist")) {
       return null;
     }
 
-    let sourceAddress = `https://www.youtube-nocookie.com/embed/${this.options.get(
-      "id"
-    )}`;
+    /* istanbul ignore next: Only difference in the end result is the `src`
+     * attribute, no need to do an additional screenshot. */
+    let sourceAddress = this.options.get("id")
+      ? `https://www.youtube-nocookie.com/embed/${this.options.get("id")}`
+      : `https://www.youtube-nocookie.com/embed/videoseries?list=${this.options.get(
+          "playlist"
+        )}`;
+
     /* istanbul ignore else: Only difference in the end result is the `src`
      * attribute, no need to do an additional screenshot. */
-    if (this.options.get("start")) {
+    if (this.options.get("id") && this.options.get("start")) {
       sourceAddress += `?start=${this.options.get("start")}`;
     }
 

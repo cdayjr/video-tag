@@ -70,7 +70,7 @@ const youtubeExpect = "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ";
 const youtubeWithStartExpect =
   "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10";
 const youtubePlaylistExpect =
-  "https://www.youtube.com/embed/videoseries?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3";
+  "https://www.youtube-nocookie.com/embed/videoseries?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3";
 const youtubeOptions: Options = {
   id: "g4Hbz2jLxvQ"
 };
@@ -135,6 +135,13 @@ const inputs: {
     expect: youtubeExpect,
     options: youtubeOptions
   },
+  // platlist url with start video (will embed video as there's no way to do both!)
+  {
+    source:
+      "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
+    expect: youtubeExpect,
+    options: youtubeOptions
+  },
   // with timestamp
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
@@ -190,13 +197,6 @@ const inputs: {
     expect: youtubePlaylistExpect,
     options: youtubePlaylistOptions
   },
-  // platlist url with start video
-  {
-    source:
-      "https://www.youtube.com/watch?v=_gZndxEvFNk&list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
-    expect: youtubePlaylistExpect,
-    options: youtubePlaylistOptions
-  },
   // embed playlist url
   {
     source: youtubePlaylistExpect,
@@ -210,6 +210,10 @@ inputs.forEach(input => {
     const youtube = new YouTube(input.source);
 
     expect(paramStringToObject(youtube.exportOptions())).toEqual(input.options);
+
+    const youtubeElement = youtube.getElement() as HTMLElement;
+
+    expect(youtubeElement.getAttribute("src")).toBe(input.expect);
   });
 });
 
@@ -219,10 +223,14 @@ const invalidInputs: string[] = [
   "A+C=E#G%I^K",
   "https://www.youtube.com/watch?z=g4Hbz2jLxvQ",
   "https://www.youtube.com/embeg/g4Hbz2jLxvQ?t=0m10s",
+  "https://www.youtube.com/embed/videoseries",
+  "https://www.youtube.com/playlist?nolist=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
   "https://youtu.be/",
   "https://vimeo.com/16679115#t=600s",
   "https://www.twitch.tv/videos/355193670?t=02h16m51s",
-  "https://www.twitch.tv/impactwrestling"
+  "https://www.twitch.tv/impactwrestling",
+  // just a playlist in params is invalid
+  "https://www.youtube.com/watch?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
 ];
 
 invalidInputs.forEach(input => {

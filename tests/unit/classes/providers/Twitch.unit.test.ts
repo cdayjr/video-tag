@@ -70,8 +70,8 @@ interface ClipOptions {
   clip: string;
 }
 
-interface PlaylistOptions {
-  playlist: string;
+interface CollectionOptions {
+  collection: string;
 }
 
 const twitchExpect =
@@ -82,7 +82,7 @@ const twitchChannelExpect =
   "https://player.twitch.tv/?autoplay=false&channel=impactwrestling";
 const twitchClipExpect =
   "https://clips.twitch.tv/embed?clip=ViscousSpicyBeeCoolStoryBob";
-const twitchPlaylistExpect =
+const twitchCollectionExpect =
   "https://player.twitch.tv/?autoplay=false&collection=BXjdJSCmeRVEpQ";
 const twitchOptions: VODOptions = {
   id: "v355193670"
@@ -101,14 +101,14 @@ const twitchOptionsWithClip: ClipOptions = {
   clip: "ViscousSpicyBeeCoolStoryBob"
 };
 
-const twitchPlaylistOptions: PlaylistOptions = {
-  playlist: "BXjdJSCmeRVEpQ"
+const twitchCollectionOptions: CollectionOptions = {
+  collection: "BXjdJSCmeRVEpQ"
 };
 
 const inputs: {
   source: string;
   expect: string;
-  options: VODOptions | ChannelOptions | ClipOptions | PlaylistOptions;
+  options: VODOptions | ChannelOptions | ClipOptions | CollectionOptions;
 }[] = [
   // vod embed url
   {
@@ -204,14 +204,14 @@ const inputs: {
   // collection url
   {
     source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ",
-    expect: twitchPlaylistExpect,
-    options: twitchPlaylistOptions
+    expect: twitchCollectionExpect,
+    options: twitchCollectionOptions
   },
   // collection embed url
   {
-    source: twitchPlaylistExpect,
-    expect: twitchPlaylistExpect,
-    options: twitchPlaylistOptions
+    source: twitchCollectionExpect,
+    expect: twitchCollectionExpect,
+    options: twitchCollectionOptions
   }
 ];
 
@@ -221,13 +221,7 @@ inputs.forEach(input => {
 
     expect(paramStringToObject(twitch.exportOptions())).toEqual(input.options);
 
-    const twitchElement = twitch.getElement();
-
-    expect(twitchElement).toBeInstanceOf(HTMLElement);
-
-    expect(twitchElement.tagName).toBe("IFRAME");
-    expect(twitchElement.getAttribute("allowfullscreen")).toBe("");
-    expect(twitchElement.getAttribute("scrolling")).toBe("no");
+    const twitchElement = twitch.getElement() as HTMLElement;
 
     expect(twitchElement.getAttribute("src")).toBe(input.expect);
   });
