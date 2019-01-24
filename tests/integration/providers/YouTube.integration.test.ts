@@ -1,3 +1,12 @@
+/**
+ * @file YouTube integration tests
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
+
 import Video from "../../../src/classes/Video";
 
 import YouTube from "../../../src/classes/providers/YouTube";
@@ -47,4 +56,15 @@ test("importOptions and exportOptions work as intended", () => {
 
   expect(video.getProvider()).toBe(YouTube.getProviderString());
   expect(video.exportOptions()).toBe(youtube.exportOptions());
+
+  // Compare elements
+  const videoElement = video.getElement();
+  const youtubeElement = youtube.getElement();
+
+  // remove classes
+  videoElement.querySelector("iframe").removeAttribute("class");
+
+  expect(videoElement.querySelector("iframe").outerHTML).toBe(
+    youtubeElement.outerHTML
+  );
 });

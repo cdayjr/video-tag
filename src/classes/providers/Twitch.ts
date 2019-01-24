@@ -1,8 +1,21 @@
+/**
+ * @file Twitch provider class
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ * @link https://dev.twitch.tv/docs/embed/video-and-clips/ Documentation for
+ *  Twitch iframe embeds
+ */
+
 import VideoProvider from "../VideoProvider";
 
 export default class Twitch extends VideoProvider {
   /**
    * Build an object from the source URL
+   *
+   * @param A source string, usually an URL.
    */
   public constructor(source: string) {
     super(source);
@@ -71,6 +84,10 @@ export default class Twitch extends VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
+   *
+   * @param A source string, usually an URL.
+   *
+   * @return True if the source is valid for the provider, false otherwise.
    */
   public static isProvider(source: string): boolean {
     // First test if it's an URL
@@ -81,6 +98,8 @@ export default class Twitch extends VideoProvider {
 
   /**
    * Get the provider string.
+   *
+   * @return "Twitch"
    */
   public static getProviderString(): string {
     return "Twitch";
@@ -88,6 +107,9 @@ export default class Twitch extends VideoProvider {
 
   /**
    * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
     let sourceAddress = "";

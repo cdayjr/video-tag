@@ -1,3 +1,14 @@
+/**
+ * @file YouTube provider class
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ * @link https://developers.google.com/youtube/player_parameters Documentation
+ *  for YouTube iframe embeds
+ */
+
 import VideoProvider from "../VideoProvider";
 
 /**
@@ -124,6 +135,8 @@ export default class YouTube extends VideoProvider {
 
   /**
    * Get the provider string.
+   *
+   * @return "YouTube"
    */
   public static getProviderString(): string {
     return "YouTube";
@@ -131,22 +144,21 @@ export default class YouTube extends VideoProvider {
 
   /**
    * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
     if (!this.options.get("id") && !this.options.get("playlist")) {
       return null;
     }
 
-    /* istanbul ignore next: Only difference in the end result is the `src`
-     * attribute, no need to do an additional screenshot. */
     let sourceAddress = this.options.get("id")
       ? `https://www.youtube-nocookie.com/embed/${this.options.get("id")}`
       : `https://www.youtube-nocookie.com/embed/videoseries?list=${this.options.get(
           "playlist"
         )}`;
 
-    /* istanbul ignore else: Only difference in the end result is the `src`
-     * attribute, no need to do an additional screenshot. */
     if (this.options.get("id") && this.options.get("start")) {
       sourceAddress += `?start=${this.options.get("start")}`;
     }

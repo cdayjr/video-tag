@@ -1,3 +1,12 @@
+/**
+ * @file Twitch integration tests
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
+
 import Video from "../../../src/classes/Video";
 
 import Twitch from "../../../src/classes/providers/Twitch";
@@ -43,4 +52,15 @@ test("importOptions and exportOptions work as intended", () => {
 
   expect(video.getProvider()).toBe(Twitch.getProviderString());
   expect(video.exportOptions()).toBe(twitch.exportOptions());
+
+  // Compare elements
+  const videoElement = video.getElement();
+  const twitchElement = twitch.getElement();
+
+  // remove classes
+  videoElement.querySelector("iframe").removeAttribute("class");
+
+  expect(videoElement.querySelector("iframe").outerHTML).toBe(
+    twitchElement.outerHTML
+  );
 });

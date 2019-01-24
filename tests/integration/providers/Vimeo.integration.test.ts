@@ -1,3 +1,12 @@
+/**
+ * @file Vimeo integration tests
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
+
 import Video from "../../../src/classes/Video";
 
 import Vimeo from "../../../src/classes/providers/Vimeo";
@@ -41,4 +50,15 @@ test("importOptions and exportOptions work as intended", () => {
 
   expect(video.getProvider()).toBe(Vimeo.getProviderString());
   expect(video.exportOptions()).toBe(vimeo.exportOptions());
+
+  // Compare elements
+  const videoElement = video.getElement();
+  const vimeoElement = vimeo.getElement();
+
+  // remove classes
+  videoElement.querySelector("iframe").removeAttribute("class");
+
+  expect(videoElement.querySelector("iframe").outerHTML).toBe(
+    vimeoElement.outerHTML
+  );
 });

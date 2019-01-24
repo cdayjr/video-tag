@@ -1,13 +1,26 @@
+/**
+ * @file Demo code- stores and generates the video tag examples
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
 import { parseVideoTag } from "../src/video-tag";
 import * as style from "./index.scss";
 
+/**
+ * Define how we want our demo tags to be structured
+ */
 interface DemoTag {
   title: string;
   source: string;
   provider?: string;
 }
 
-// Every tag to demonstrate
+/**
+ * An array of every tag we want to demonstrate
+ */
 const demoTags: DemoTag[] = [
   {
     title: "YouTube Video Link",
@@ -81,14 +94,18 @@ const demoTags: DemoTag[] = [
   }
 ];
 
+// Create the element to store the buttons for users to select which tag
+// to display
 const navElement: HTMLElement = document.createElement("nav");
 navElement.classList.add(style.navigation);
 const navElementList: HTMLElement = document.createElement("ul");
 navElementList.classList.add(style.navigationList);
 navElement.appendChild(navElementList);
 
+// Create the area where the videos themselves will be shown
 const showcase: HTMLElement = document.createElement("section");
 
+// Iterate through each demotag and create the buttons for them
 demoTags.forEach(demoTag => {
   const bbcode =
     undefined === demoTag.provider
@@ -148,6 +165,8 @@ demoTags.forEach(demoTag => {
   navElementList.appendChild(navElementItem);
 });
 
+// When the page is loaded replace all content in the body tag with our
+// navigation and showcase
 document.addEventListener("DOMContentLoaded", () => {
   while (document.body.lastChild) {
     document.body.removeChild(document.body.lastChild);

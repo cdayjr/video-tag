@@ -1,8 +1,21 @@
+/**
+ * @file Vimeo provider class
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ * @link https://vimeo.zendesk.com/hc/en-us/sections/203874347-Embedding-Videos
+ *  Documentation for Vimeo iframe embeds
+ */
+
 import VideoProvider from "../VideoProvider";
 
 export default class Vimeo extends VideoProvider {
   /**
    * Build an object from the source URL
+   *
+   * @param A source string, usually an URL.
    */
   public constructor(source: string) {
     super(source);
@@ -50,6 +63,10 @@ export default class Vimeo extends VideoProvider {
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
+   *
+   * @param A source string, usually an URL.
+   *
+   * @return True if the source is valid for the provider, false otherwise.
    */
   public static isProvider(source: string): boolean {
     // First test if it's an URL
@@ -60,6 +77,8 @@ export default class Vimeo extends VideoProvider {
 
   /**
    * Get the provider string.
+   *
+   * @return "Vimeo"
    */
   public static getProviderString(): string {
     return "Vimeo";
@@ -67,6 +86,9 @@ export default class Vimeo extends VideoProvider {
 
   /**
    * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
     if (!this.options.get("id") && !this.options.get("album")) {

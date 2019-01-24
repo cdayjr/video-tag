@@ -1,3 +1,12 @@
+/**
+ * @file Vimeo unit tests
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
+
 import Vimeo from "../../../../src/classes/providers/Vimeo";
 
 const paramStringToObject = (input: string): { [key: string]: string } => {

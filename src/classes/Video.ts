@@ -1,3 +1,14 @@
+/**
+ * @file Video class- all HTML video tags get plugged into this
+ *  and here is where we start figuring out what provider it belongs
+ *  to and what to do with it.
+ *
+ * @author Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ *
+ * @link https://github.com/cdayjr/video-tag Github repo
+ */
+
 import providers from "../providers";
 import style from "./Video.style.scss";
 import VideoProvider from "./VideoProvider";
@@ -38,9 +49,10 @@ export default class Video {
    * Make an educated guess for what a provider should be from a provided URL-
    * useful when provider isn't manually provided.
    *
-   * @param source - A string, usually a URL, to figure out the provider from.
+   * @param A string, usually a URL, to figure out the provider from.
    *
-   * @return Provider - A Provider enum value.
+   * @return A VideoProvider object if the provider is found, otherwise
+   *  undefined.
    */
   private static guessProvider(source: string): VideoProvider | undefined {
     let Provider;
@@ -61,9 +73,10 @@ export default class Video {
   /**
    * Parse a provider string such as "YouTube" into a Provider enum value.
    *
-   * @param providerString - A string such as "YouTube" or "Vimeo".
+   * @param A string such as "YouTube" or "Vimeo".
    *
-   * @return - A Provider enum value.
+   * @return A VideoProvider object if the provider is found, otherwise
+   *  undefined.
    */
   private static getProviderFromString(
     source: string,
@@ -92,8 +105,8 @@ export default class Video {
    * If you already have parsed out options, you can call this to
    * rebuild the object based on those parameters.
    *
-   * @param providerString - A string representing the provider, ex. "YouTube" or "Vimeo".
-   * @param optionsString - A string representing the options, ex. "id=666&start=15".
+   * @param A string representing the provider, ex. "YouTube" or "Vimeo".
+   * @param A string representing the options, ex. "id=777&start=15".
    */
   public importOptions(providerString: string, optionsString: string) {
     this.provider = (this.constructor as typeof Video).getProviderFromString(
@@ -109,21 +122,18 @@ export default class Video {
    * Get the HTML element that embeds the video from its provider.
    *
    * @return An HTMLDivElement containing the iframe or other embed code
-   *  for the video.
+   *  for the video. If there's no provider an error message will be
+   *  displayed instead.
    */
   public getElement(): HTMLDivElement {
     const container: HTMLDivElement = document.createElement("div");
     container.classList.add(style.videoContainer);
 
-    /* istanbul ignore if: These are just the getElement() methods of
-     * provider classes, so we'll test them there instead. */
     if (this.provider instanceof VideoProvider) {
-      const videoElement = this.provider.getElement();
-      if (videoElement) {
-        videoElement.classList.add(style.videoEmbed);
-        container.appendChild(videoElement);
-        return container;
-      }
+      const videoElement = this.provider.getElement() as HTMLElement;
+      videoElement.classList.add(style.videoEmbed);
+      container.appendChild(videoElement);
+      return container;
     }
 
     const message = document.createElement("p");

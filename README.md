@@ -1,7 +1,20 @@
 # Video Tag
 
 JavaScript for making video bbcodes and similar things as simple as they can get.
-Currently supports Twitch, Vimeo, and YouTube videos.
+
+## Supports
+
+- YouTube videos
+- YouTube videos with timestamps
+- YouTube playlists
+- Vimeo videos
+- Vimeo videos with timestamps
+- Vimeo albums
+- Twitch videos (VODs)
+- Twitch videos (VODs) with timestamps
+- Twitch channels
+- Twitch collections
+- Twitch clips
 
 ## Usage
 
@@ -63,23 +76,30 @@ to how you'd like, a sample is:
 
 ## Notes
 
+- YouTube links that include both a playlist and video ID will embed the video
+  and not the playlist. YouTube playlist embedding does not support
+  starting from a specific video and it's probably more likely a user wants to
+  embed the video they have a link to and not the playlist it belongs to.
 - Twitch embeds don't work on Internet Explorer 11. This seems to be an issue
   on their end, let them know since they appareltny say they should support
   Internet Explorer 11.
+- ID-only sources only work for video IDs and Twitch channels- everything else
+  will require a full URL as the source parameter even with the provider param
+  set.
 
 ## Built With
 
 - [Babel](https://babeljs.io/)
-- [Bootstrap](https://getbootstrap.com/) - Bootstrap responsive 16:9 embed CSS
-  used
+- [Bootstrap](https://getbootstrap.com/) responsive 16:9 embed CSS
 - [PostCSS](https://postcss.org/)
 - [SCSS](https://sass-lang.com/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [eslint](https://eslint.org/)
+- [jest](https://jestjs.io/) - Tests
 - [parcel](https://parceljs.org/) - The bundler that brings it all together
 - [pnpm](https://pnpm.js.org/) - JavaScript package management
 - [prettier](https://prettier.io/)
 - [stylelint](https://stylelint.io/)
-- [tslint](https://palantir.github.io/tslint/)
 
 ## Contributing
 
