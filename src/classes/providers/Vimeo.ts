@@ -43,11 +43,9 @@ export default class Vimeo extends VideoProvider {
             if (params.get("t")) {
               this.options.set(
                 "start",
-                String(
-                  (this.constructor as typeof VideoProvider).timeToSeconds(
-                    String(params.get("t"))
-                  )
-                )
+                `${(this.constructor as typeof VideoProvider).timeToSeconds(
+                  params.get("t") as string
+                )}`
               );
             }
           }
@@ -109,7 +107,7 @@ export default class Vimeo extends VideoProvider {
     if (this.options.get("id") && this.options.get("start")) {
       sourceAddress += `#t=${(this
         .constructor as typeof VideoProvider).secondsToTime(
-        parseInt(String(this.options.get("start")), 10)
+        parseInt(this.options.get("start") as string, 10)
       )}`;
     }
 

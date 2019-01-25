@@ -51,23 +51,23 @@ export default class Twitch extends VideoProvider {
             !this.options.get("collection")
           ) {
             if (params.get("collection")) {
-              this.options.set("collection", String(params.get("collection")));
+              this.options.set("collection", params.get(
+                "collection"
+              ) as string);
             } else if (params.get("channel")) {
-              this.options.set("channel", String(params.get("channel")));
+              this.options.set("channel", params.get("channel") as string);
             } else if (params.get("video")) {
-              this.options.set("id", String(params.get("video")));
+              this.options.set("id", params.get("video") as string);
             } else if (params.get("clip")) {
-              this.options.set("clip", String(params.get("clip")));
+              this.options.set("clip", params.get("clip") as string);
             }
           }
           if (this.options.get("id") && params.get("t")) {
             this.options.set(
               "start",
-              String(
-                (this.constructor as typeof VideoProvider).timeToSeconds(
-                  String(params.get("t"))
-                )
-              )
+              `${(this.constructor as typeof VideoProvider).timeToSeconds(
+                params.get("t") as string
+              )}`
             );
           }
         }
@@ -131,7 +131,7 @@ export default class Twitch extends VideoProvider {
       if (this.options.get("start")) {
         sourceAddress += `&t=${(this
           .constructor as typeof VideoProvider).secondsToTime(
-          parseInt(String(this.options.get("start")), 10)
+          parseInt(this.options.get("start") as string, 10)
         )}`;
       }
     } else if (this.options.get("clip")) {

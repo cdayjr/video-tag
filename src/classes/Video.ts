@@ -108,7 +108,7 @@ export default class Video {
    * @param A string representing the provider, ex. "YouTube" or "Vimeo".
    * @param A string representing the options, ex. "id=777&start=15".
    */
-  public importOptions(providerString: string, optionsString: string) {
+  public importOptions(providerString: string, optionsString: string): void {
     this.provider = (this.constructor as typeof Video).getProviderFromString(
       "",
       providerString.trim()

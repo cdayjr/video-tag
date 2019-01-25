@@ -21,7 +21,7 @@ export default abstract class VideoProvider {
    *
    * @return A boolean if the provider matches or not.
    */
-  /* eslint-disable-next-line no-unused-vars */
+  /* eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars */
   public static isProvider(source: string): boolean {
     return false;
   }
@@ -121,9 +121,7 @@ export default abstract class VideoProvider {
    * @return The number of seconds in the time string, such as "65".
    */
   protected static timeToSeconds(time: string): number {
-    const match = time.match(/(\d+h)?(\d+m)?(\d+s)?/) as Array<
-      string | undefined
-    >;
+    const match = time.match(/(\d+h)?(\d+m)?(\d+s)?/) as (string | undefined)[];
 
     const [, hoursMatch, minutesMatch, secondsMatch] = match;
 
@@ -175,9 +173,10 @@ export default abstract class VideoProvider {
    *
    * @param A source string, usually an URL.
    */
-  /* eslint-disable-next-line no-useless-constructor, no-empty-function, no-unused-vars */
+  /* eslint-disable-next-line no-useless-constructor, no-empty-function, no-unused-vars, @typescript-eslint/no-unused-vars */
   public constructor(source: string) {
-    return; // eslint-disable-line no-useless-return
+    /* eslint-disable-next-line no-useless-return */
+    return;
   }
 
   /**
@@ -193,7 +192,7 @@ export default abstract class VideoProvider {
    *
    * @param An options string such as "id=7&start=15"
    */
-  public importOptions(options: string) {
+  public importOptions(options: string): void {
     this.options = (this.constructor as typeof VideoProvider).mapFromString(
       options
     );

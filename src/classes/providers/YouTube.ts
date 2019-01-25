@@ -40,15 +40,15 @@ export default class YouTube extends VideoProvider {
 
         if (idMatch === "videoseries") {
           if (params.get("list")) {
-            this.options.set("playlist", String(params.get("list")));
+            this.options.set("playlist", params.get("list") as string);
           }
         } else {
           this.options.set("id", idMatch);
 
           if (params.get("start")) {
-            const timeCount = parseInt(String(params.get("start")), 10);
+            const timeCount = parseInt(params.get("start") as string, 10);
             if (timeCount > 0) {
-              this.options.set("start", String(timeCount));
+              this.options.set("start", `${timeCount}`);
             }
           }
         }
@@ -63,28 +63,28 @@ export default class YouTube extends VideoProvider {
           link.search
         );
         if (params.get("v")) {
-          this.options.set("id", String(params.get("v")));
+          this.options.set("id", params.get("v") as string);
         }
         if (params.get("start")) {
           // start parameter overrides t and is always pure seconds.
-          const timeCount = parseInt(String(params.get("start")), 10);
+          const timeCount = parseInt(params.get("start") as string, 10);
           if (timeCount > 0) {
-            this.options.set("start", String(timeCount));
+            this.options.set("start", `${timeCount}`);
           }
         } else if (params.get("t")) {
           // parse time...
           const timeCount = (this
-            .constructor as typeof VideoProvider).timeToSeconds(
-            String(params.get("t"))
-          );
+            .constructor as typeof VideoProvider).timeToSeconds(params.get(
+            "t"
+          ) as string);
           if (timeCount === 0) {
             // Sometimes it could just be a string of raw seconds.
-            const seconds = parseInt(String(params.get("t")), 10);
+            const seconds = parseInt(params.get("t") as string, 10);
             if (seconds > 0) {
-              this.options.set("start", String(seconds));
+              this.options.set("start", `${seconds}`);
             }
           } else {
-            this.options.set("start", String(timeCount));
+            this.options.set("start", `${timeCount}`);
           }
         }
 
@@ -108,7 +108,7 @@ export default class YouTube extends VideoProvider {
           link.search
         );
         if (params.get("list")) {
-          this.options.set("playlist", String(params.get("list")));
+          this.options.set("playlist", params.get("list") as string);
         }
       }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
