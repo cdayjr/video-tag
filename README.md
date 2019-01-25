@@ -74,6 +74,19 @@ to how you'd like, a sample is:
 }
 ```
 
+### Available functions
+
+You can also call bits of the JavaScript from a third party script. We export
+the following functions:
+
+- `getVideoTags` - Returns a `HTMLDivElement` `NodeList` containing all HTML
+  tags that match the format that haven't been parsed.
+- `parseVideoTag` - Takes an `HTMLDivElement` that matches the format and parses
+  it through our code, removing the contents and placing an iframe or error
+  message in there.
+- `parseVideoTags` - Gets all the tags via `getVideoTags` and parses each of
+  them with `parseVideoTag`.
+
 ## Notes
 
 - YouTube links that include both a playlist and video ID will embed the video
