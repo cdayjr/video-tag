@@ -9,7 +9,9 @@
  *  Twitch iframe embeds
  */
 
+import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
+import VideoTimestamp from "../VideoTimestamp";
 
 export default class Twitch extends VideoProvider {
   /**
@@ -42,8 +44,8 @@ export default class Twitch extends VideoProvider {
           this.options.set("id", `v${idMatch}`);
         }
         if (link.search) {
-          const params = (this
-            .constructor as typeof VideoProvider).mapFromString(link.search);
+          const params = new ParameterMap(link.search);
+
           if (
             !this.options.get("channel") &&
             !this.options.get("id") &&
@@ -63,12 +65,8 @@ export default class Twitch extends VideoProvider {
             }
           }
           if (this.options.get("id") && params.get("t")) {
-            this.options.set(
-              "start",
-              `${(this.constructor as typeof VideoProvider).timeToSeconds(
-                params.get("t") as string
-              )}`
-            );
+            const timestamp = new VideoTimestamp(params.get("t"));
+            this.options.set("start", `${timestamp.getSeconds()}`);
           }
         }
       }
@@ -129,14 +127,12 @@ export default class Twitch extends VideoProvider {
         "id"
       )}`;
       if (this.options.get("start")) {
-        sourceAddress += `&t=${(this
-          .constructor as typeof VideoProvider).secondsToTime(
-          parseInt(this.options.get("start") as string, 10)
-        )}`;
+        const timestamp = new VideoTimestamp(`${this.options.get("start")}s`);
+        sourceAddress += `&t=${timestamp.toString()}`;
       }
     } else if (this.options.get("clip")) {
       // Clip embed
-      sourceAddress = `https://clips.twitch.tv/embed?clip=${this.options.get(
+      sourceAddress = `https://clips.twitch.tv/embed?autoplay=false&clip=${this.options.get(
         "clip"
       )}`;
     } else {

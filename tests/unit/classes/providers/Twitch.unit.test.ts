@@ -90,7 +90,7 @@ const twitchWithStartExpect =
 const twitchChannelExpect =
   "https://player.twitch.tv/?autoplay=false&channel=impactwrestling";
 const twitchClipExpect =
-  "https://clips.twitch.tv/embed?clip=ViscousSpicyBeeCoolStoryBob";
+  "https://clips.twitch.tv/embed?autoplay=false&clip=ViscousSpicyBeeCoolStoryBob";
 const twitchCollectionExpect =
   "https://player.twitch.tv/?autoplay=false&collection=BXjdJSCmeRVEpQ";
 const twitchOptions: VODOptions = {

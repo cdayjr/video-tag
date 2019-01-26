@@ -14,3 +14,6 @@ var
 
 # Coverage
 .coverage
+
+# Build files
+dist

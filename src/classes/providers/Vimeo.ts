@@ -9,7 +9,9 @@
  *  Documentation for Vimeo iframe embeds
  */
 
+import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
+import VideoTimestamp from "../VideoTimestamp";
 
 export default class Vimeo extends VideoProvider {
   /**
@@ -36,17 +38,10 @@ export default class Vimeo extends VideoProvider {
           this.options.set("id", idMatch);
 
           if (link.hash) {
-            const params = (this
-              .constructor as typeof VideoProvider).mapFromString(
-              link.hash.substr(1)
-            );
+            const params = new ParameterMap(link.hash.substr(1));
             if (params.get("t")) {
-              this.options.set(
-                "start",
-                `${(this.constructor as typeof VideoProvider).timeToSeconds(
-                  params.get("t") as string
-                )}`
-              );
+              const timestamp = new VideoTimestamp(params.get("t"));
+              this.options.set("start", `${timestamp.getSeconds()}`);
             }
           }
         }
@@ -105,10 +100,8 @@ export default class Vimeo extends VideoProvider {
       : `https://vimeo.com/album/${this.options.get("album")}/embed`;
 
     if (this.options.get("id") && this.options.get("start")) {
-      sourceAddress += `#t=${(this
-        .constructor as typeof VideoProvider).secondsToTime(
-        parseInt(this.options.get("start") as string, 10)
-      )}`;
+      const timestamp = new VideoTimestamp(`${this.options.get("start")}s`);
+      sourceAddress += `#t=${timestamp.toString()}`;
     }
 
     iframe.src = sourceAddress;

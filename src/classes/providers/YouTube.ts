@@ -9,7 +9,9 @@
  *  for YouTube iframe embeds
  */
 
+import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
+import VideoTimestamp from "../VideoTimestamp";
 
 /**
  * YouTube video provider
@@ -34,9 +36,7 @@ export default class YouTube extends VideoProvider {
       if (match) {
         const [, idMatch] = match;
 
-        const params = (this.constructor as typeof VideoProvider).mapFromString(
-          link.search
-        );
+        const params = new ParameterMap(link.search);
 
         if (idMatch === "videoseries") {
           if (params.get("list")) {
@@ -59,32 +59,27 @@ export default class YouTube extends VideoProvider {
       // Regular URL, what most people will have.
       const match2 = source.match(/https?:\/\/(?:.+\.)?youtube\.com\/watch\?/);
       if (match2) {
-        const params = (this.constructor as typeof VideoProvider).mapFromString(
-          link.search
-        );
+        const params = new ParameterMap(link.search);
         if (params.get("v")) {
           this.options.set("id", params.get("v") as string);
         }
         if (params.get("start")) {
           // start parameter overrides t and is always pure seconds.
-          const timeCount = parseInt(params.get("start") as string, 10);
-          if (timeCount > 0) {
-            this.options.set("start", `${timeCount}`);
+          const timestamp = new VideoTimestamp(`${params.get("start")}s`);
+          if (timestamp.getSeconds() > 0) {
+            this.options.set("start", `${timestamp.getSeconds()}`);
           }
         } else if (params.get("t")) {
           // parse time...
-          const timeCount = (this
-            .constructor as typeof VideoProvider).timeToSeconds(params.get(
-            "t"
-          ) as string);
-          if (timeCount === 0) {
+          const timestamp = new VideoTimestamp(params.get("t"));
+          if (timestamp.getSeconds() === 0) {
             // Sometimes it could just be a string of raw seconds.
-            const seconds = parseInt(params.get("t") as string, 10);
-            if (seconds > 0) {
-              this.options.set("start", `${seconds}`);
+            const timestamp2 = new VideoTimestamp(`${params.get("t")}s`);
+            if (timestamp2.getSeconds() > 0) {
+              this.options.set("start", `${timestamp2.getSeconds()}`);
             }
           } else {
-            this.options.set("start", `${timeCount}`);
+            this.options.set("start", `${timestamp.getSeconds()}`);
           }
         }
 
@@ -104,9 +99,7 @@ export default class YouTube extends VideoProvider {
         /https?:\/\/(?:.+\.)?youtube\.com\/playlist\?/
       );
       if (match4) {
-        const params = (this.constructor as typeof VideoProvider).mapFromString(
-          link.search
-        );
+        const params = new ParameterMap(link.search);
         if (params.get("list")) {
           this.options.set("playlist", params.get("list") as string);
         }
