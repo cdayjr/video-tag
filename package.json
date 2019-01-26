@@ -24,7 +24,7 @@
     "eslint-fix": "eslint \"./{src,demo,tests}/**/*.ts\" --fix",
     "typed-css-modules": "tcm -c -p \"./{src,demo,tests}/**/*.scss\"",
     "ts-check": "tsc --noEmit --project tsconfig.json",
-    "prepublish": "npm run pre-commit && npm test && npm run build"
+    "prepare": "npm run pre-commit && npm test && npm run build"
   },
   "husky": {
     "hooks": {
