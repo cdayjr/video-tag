@@ -11,7 +11,6 @@
 
 import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
-import VideoTimestamp from "../VideoTimestamp";
 
 export default class Vimeo extends VideoProvider {
   /**
@@ -40,8 +39,7 @@ export default class Vimeo extends VideoProvider {
           if (link.hash) {
             const params = new ParameterMap(link.hash.substr(1));
             if (params.get("t")) {
-              const timestamp = new VideoTimestamp(params.get("t"));
-              this.options.set("start", `${timestamp.getSeconds()}`);
+              this.options.set("timestamp", params.get("t") as string);
             }
           }
         }
@@ -99,9 +97,8 @@ export default class Vimeo extends VideoProvider {
         )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`
       : `https://vimeo.com/album/${this.options.get("album")}/embed`;
 
-    if (this.options.get("id") && this.options.get("start")) {
-      const timestamp = new VideoTimestamp(`${this.options.get("start")}s`);
-      sourceAddress += `#t=${timestamp.toString()}`;
+    if (this.options.get("id") && this.options.get("timestamp")) {
+      sourceAddress += `#t=${this.options.get("timestamp")}`;
     }
 
     iframe.src = sourceAddress;

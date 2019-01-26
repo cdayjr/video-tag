@@ -4,6 +4,6 @@ exports[`Creates Twitch embed element 1`] = `
 <iframe
   allowfullscreen=""
   scrolling="no"
-  src="https://player.twitch.tv/?autoplay=false&video=v355193670&t=2h16m51s"
+  src="https://player.twitch.tv/?autoplay=false&video=v355193670&t=02h16m51s"
 />
 `;

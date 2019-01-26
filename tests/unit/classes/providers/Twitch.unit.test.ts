@@ -68,7 +68,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
 
 interface VODOptions {
   id: string;
-  start?: string;
+  timestamp?: string;
 }
 
 interface ChannelOptions {
@@ -83,9 +83,9 @@ interface CollectionOptions {
   collection: string;
 }
 
-const twitchExpect =
+const twitchVODExpect =
   "https://player.twitch.tv/?autoplay=false&video=v355193670";
-const twitchWithStartExpect =
+const twitchVODWithTimestampExpect =
   "https://player.twitch.tv/?autoplay=false&video=v355193670&t=2h16m51s";
 const twitchChannelExpect =
   "https://player.twitch.tv/?autoplay=false&channel=impactwrestling";
@@ -93,19 +93,17 @@ const twitchClipExpect =
   "https://clips.twitch.tv/embed?autoplay=false&clip=ViscousSpicyBeeCoolStoryBob";
 const twitchCollectionExpect =
   "https://player.twitch.tv/?autoplay=false&collection=BXjdJSCmeRVEpQ";
-const twitchOptions: VODOptions = {
+
+const twitchVODOptions: VODOptions = {
   id: "v355193670"
 };
-
-const twitchOptionsWithStart: VODOptions = {
+const twitchVODOptionsWithTimestamp: VODOptions = {
   id: "v355193670",
-  start: "8211"
+  timestamp: "2h16m51s"
 };
-
 const twitchOptionsWithChannel: ChannelOptions = {
   channel: "impactwrestling"
 };
-
 const twitchOptionsWithClip: ClipOptions = {
   clip: "ViscousSpicyBeeCoolStoryBob"
 };
@@ -121,57 +119,57 @@ const inputs: {
 }[] = [
   // vod embed url
   {
-    source: twitchExpect,
-    expect: twitchExpect,
-    options: twitchOptions
+    source: twitchVODExpect,
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod url
   {
     source: "https://www.twitch.tv/videos/355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod url http
   {
     source: "http://www.twitch.tv/videos/355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod url no www
   {
     source: "http://twitch.tv/videos/355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod url param
   {
     source: "http://twitch.tv/?video=v355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod url with timestamp
   {
-    source: "https://www.twitch.tv/videos/355193670?t=02h16m51s",
-    expect: twitchWithStartExpect,
-    options: twitchOptionsWithStart
+    source: "https://www.twitch.tv/videos/355193670?t=2h16m51s",
+    expect: twitchVODWithTimestampExpect,
+    options: twitchVODOptionsWithTimestamp
   },
   // vod embed url with timestamp
   {
-    source: twitchWithStartExpect,
-    expect: twitchWithStartExpect,
-    options: twitchOptionsWithStart
+    source: twitchVODWithTimestampExpect,
+    expect: twitchVODWithTimestampExpect,
+    options: twitchVODOptionsWithTimestamp
   },
   // vod id
   {
     source: "355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // vod id with starting v
   {
     source: "v355193670",
-    expect: twitchExpect,
-    options: twitchOptions
+    expect: twitchVODExpect,
+    options: twitchVODOptions
   },
   // channel url
   {

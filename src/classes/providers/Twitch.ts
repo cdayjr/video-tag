@@ -11,7 +11,6 @@
 
 import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
-import VideoTimestamp from "../VideoTimestamp";
 
 export default class Twitch extends VideoProvider {
   /**
@@ -65,8 +64,7 @@ export default class Twitch extends VideoProvider {
             }
           }
           if (this.options.get("id") && params.get("t")) {
-            const timestamp = new VideoTimestamp(params.get("t"));
-            this.options.set("start", `${timestamp.getSeconds()}`);
+            this.options.set("timestamp", params.get("t") as string);
           }
         }
       }
@@ -126,9 +124,8 @@ export default class Twitch extends VideoProvider {
       sourceAddress = `https://player.twitch.tv/?autoplay=false&video=${this.options.get(
         "id"
       )}`;
-      if (this.options.get("start")) {
-        const timestamp = new VideoTimestamp(`${this.options.get("start")}s`);
-        sourceAddress += `&t=${timestamp.toString()}`;
+      if (this.options.get("timestamp")) {
+        sourceAddress += `&t=${this.options.get("timestamp")}`;
       }
     } else if (this.options.get("clip")) {
       // Clip embed

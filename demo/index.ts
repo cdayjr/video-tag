@@ -50,7 +50,7 @@ const demoTags: DemoTag[] = [
   },
   {
     title: "Vimeo Video Link with Timestamp",
-    source: "https://vimeo.com/16679115#t=600s"
+    source: "https://vimeo.com/16679115#t=0h10m0s"
   },
   {
     title: "Vimeo Album",

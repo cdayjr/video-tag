@@ -68,7 +68,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
 
 interface Options {
   id: string;
-  start?: string;
+  timestamp?: string;
 }
 
 interface AlbumOptions {
@@ -86,7 +86,7 @@ const vimeoOptions: Options = {
 
 const vimeoOptionsWithStart: Options = {
   id: "16679115",
-  start: "600"
+  timestamp: "0h10m0s"
 };
 
 const vimeoAlbumOptions: AlbumOptions = {
@@ -136,7 +136,7 @@ const inputs: {
   },
   // video url with timestamp
   {
-    source: "https://vimeo.com/16679115#t=600s",
+    source: "https://vimeo.com/16679115#t=0h10m0s",
     expect: vimeoWithStartExpect,
     options: vimeoOptionsWithStart
   },

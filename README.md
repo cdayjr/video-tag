@@ -23,9 +23,9 @@ platform-specific installation instructions.
 
 Here's a simple installation guide:
 
-Uploda the files from the `dist` folder or the contents of a release zip file
-and include `video-tag.js` and `video-tag.css` with a `<script>` and `<link>`
-tag, respectively.
+Run the build script (`pnpm run build`) and upload the files from the `dist`
+folder or the contents of a release zip file and include `video-tag.js` and
+`video-tag.css` with a `<script>` and `<link>` tag, respectively.
 
 Once the code has been deployed to your site, it'll look for `div` tags with
 the `video-tag` class. If the tag has a `data-source` attribute with a URL in

@@ -23,6 +23,32 @@ test("Create VideoTimestamp with incorrect arguments", () => {
   expect(timestamp.toString()).toBe("0h0m0s");
 });
 
+test("Create VideoTimestamp with integer argument", () => {
+  const timestamp = new VideoTimestamp(15);
+
+  expect(timestamp.getSeconds()).toBe(15);
+  expect(timestamp.toString()).toBe("0h0m15s");
+});
+
+test("Create VideoTimestamp with decimal argument", () => {
+  const timestamp = new VideoTimestamp(15.5);
+
+  expect(timestamp.getSeconds()).toBe(15);
+  expect(timestamp.toString()).toBe("0h0m15s");
+
+  const timestamp2 = new VideoTimestamp(15.4);
+
+  expect(timestamp2.getSeconds()).toBe(15);
+  expect(timestamp2.toString()).toBe("0h0m15s");
+});
+
+test("Create VideoTimestamp with integer string argument", () => {
+  const timestamp = new VideoTimestamp("15");
+
+  expect(timestamp.getSeconds()).toBe(15);
+  expect(timestamp.toString()).toBe("0h0m15s");
+});
+
 test("Create VideoTimestamp with only seconds", () => {
   const timestamp = new VideoTimestamp("15s");
 
@@ -49,4 +75,11 @@ test("Create VideoTimestamp with hours, minutes and seconds", () => {
 
   expect(timestamp.getSeconds()).toBe(54915);
   expect(timestamp.toString()).toBe("15h15m15s");
+});
+
+test("Create VideoTimestamp with 0 hours, 0 minutes and 0 seconds", () => {
+  const timestamp = new VideoTimestamp("0h0m0s");
+
+  expect(timestamp.getSeconds()).toBe(0);
+  expect(timestamp.toString()).toBe("0h0m0s");
 });

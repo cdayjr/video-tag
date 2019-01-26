@@ -63,22 +63,15 @@ export default class YouTube extends VideoProvider {
         if (params.get("v")) {
           this.options.set("id", params.get("v") as string);
         }
-        if (params.get("start")) {
-          // start parameter overrides t and is always pure seconds.
-          const timestamp = new VideoTimestamp(`${params.get("start")}s`);
-          if (timestamp.getSeconds() > 0) {
-            this.options.set("start", `${timestamp.getSeconds()}`);
-          }
+        if (
+          params.get("start") &&
+          parseInt(params.get("start") as string, 10) > 0
+        ) {
+          this.options.set("start", params.get("start") as string);
         } else if (params.get("t")) {
           // parse time...
           const timestamp = new VideoTimestamp(params.get("t"));
-          if (timestamp.getSeconds() === 0) {
-            // Sometimes it could just be a string of raw seconds.
-            const timestamp2 = new VideoTimestamp(`${params.get("t")}s`);
-            if (timestamp2.getSeconds() > 0) {
-              this.options.set("start", `${timestamp2.getSeconds()}`);
-            }
-          } else {
+          if (timestamp.getSeconds() > 0) {
             this.options.set("start", `${timestamp.getSeconds()}`);
           }
         }

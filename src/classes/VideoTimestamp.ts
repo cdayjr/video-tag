@@ -16,10 +16,19 @@ export default class VideoTimestamp {
   /**
    * Create a VideoTimestamp object
    *
-   * @param The time string, such as "0h1m25s"
+   * @param The time string, such as "0h1m25s" or just seconds
    */
-  public constructor(time?: string) {
+  public constructor(time?: string | number) {
     if (!time) {
+      return;
+    }
+
+    if (typeof time === "number") {
+      this.totalSeconds = Math.floor(time);
+      return;
+    }
+    if (time.match(/^\d+$/)) {
+      this.totalSeconds = parseInt(time, 10);
       return;
     }
 
@@ -33,23 +42,17 @@ export default class VideoTimestamp {
 
     let count = 0;
 
-    if (hoursMatch) {
-      const hours = parseInt(hoursMatch, 10);
-      if (hours > 0) {
-        count += hours * 60 * 60;
-      }
+    const hours = parseInt(hoursMatch, 10);
+    if (hours > 0) {
+      count += hours * 60 * 60;
     }
-    if (minutesMatch) {
-      const minutes = parseInt(minutesMatch, 10);
-      if (minutes > 0) {
-        count += minutes * 60;
-      }
+    const minutes = parseInt(minutesMatch, 10);
+    if (minutes > 0) {
+      count += minutes * 60;
     }
-    if (secondsMatch) {
-      const seconds = parseInt(secondsMatch, 10);
-      if (seconds > 0) {
-        count += seconds;
-      }
+    const seconds = parseInt(secondsMatch, 10);
+    if (seconds > 0) {
+      count += seconds;
     }
 
     this.totalSeconds = count;
@@ -68,9 +71,16 @@ export default class VideoTimestamp {
    * @return The time string, such as "0h1m5s".
    */
   public toString(): string {
-    const hours = Math.floor(this.totalSeconds / (60 * 60));
-    const minutes = Math.floor((this.totalSeconds - hours * 60 * 60) / 60);
-    const seconds = this.totalSeconds - (hours * 60 * 60 + minutes * 60);
+    let remainingSeconds = this.totalSeconds;
+
+    const hours = Math.floor(remainingSeconds / (60 * 60));
+    remainingSeconds -= hours * 60 * 60;
+
+    const minutes = Math.floor(remainingSeconds / 60);
+    remainingSeconds -= minutes * 60;
+
+    const seconds = remainingSeconds;
+
     return `${hours}h${minutes}m${seconds}s`;
   }
 }
