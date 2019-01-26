@@ -1,12 +1,16 @@
 {
   "name": "video-tag",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "dist/video-tag.js",
+  "unpkg": "dist/video-tag.js",
   "browser": "dist/video-tag.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "autofix": "npm run typed-css-modules && npm run prettier && npm run stylelint-fix && npm run eslint-fix",
-    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps",
+    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag",
     "clean": "rm -rf ./dist",
     "lint": "npm run stylelint && npm run ts-check && npm run eslint",
     "pre-commit": "npm run autofix && npm run lint",
@@ -19,7 +23,8 @@
     "eslint": "eslint \"./{src,demo,tests}/**/*.ts\"",
     "eslint-fix": "eslint \"./{src,demo,tests}/**/*.ts\" --fix",
     "typed-css-modules": "tcm -c -p \"./{src,demo,tests}/**/*.scss\"",
-    "ts-check": "tsc --noEmit --project tsconfig.json"
+    "ts-check": "tsc --noEmit --project tsconfig.json",
+    "prepublish": "npm run pre-commit && npm test && npm run build"
   },
   "husky": {
     "hooks": {

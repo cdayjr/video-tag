@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Temp files
+var
+.cache
+
+# Coverage
+.coverage
+
+# Configuration
+.eslintrc.js
+.gitignore
+.postcssrc
+.prettierignore
+.sassrc.js
+.stylelintignore
+.stylelintrc.yaml
+shrinkwrap.yaml
+tconfig.json
+
+# Source Files
+src
+demo
+tests
+
+# README extensions
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
