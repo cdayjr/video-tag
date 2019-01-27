@@ -16,6 +16,7 @@ var
 .coverage
 
 # Configuration
+.travis.yml
 .eslintrc.js
 .gitignore
 .postcssrc
