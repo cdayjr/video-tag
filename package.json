@@ -3,6 +3,7 @@
   "version": "0.6.1",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "lib/video-tag.js",
+  "module": "lib/video-tag.js",
   "unpkg": "dist/video-tag.js",
   "browser": "dist/video-tag.js",
   "files": [
@@ -26,7 +27,7 @@
     "eslint-fix": "eslint \"./{src,demo,tests}/**/*.ts\" --fix",
     "typed-css-modules": "tcm -c -p \"./{src,demo,tests}/**/*.scss\"",
     "ts-check": "tsc --noEmit --project tsconfig.json",
-    "prepare": "npm run pre-commit && npm test && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "husky": {
     "hooks": {

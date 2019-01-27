@@ -1,5 +1,7 @@
 # Video Tag
 
+[![Build Status](https://travis-ci.org/cdayjr/video-tag.svg?branch=master)](https://travis-ci.org/cdayjr/video-tag)
+
 JavaScript for making video bbcodes and similar things as simple as they can get.
 
 ## Supports
