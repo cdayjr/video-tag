@@ -29,76 +29,50 @@ export default class YouTube extends VideoProvider {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      // embed URLs- typically people won't have these but good to check.
-      const match = source.match(
-        /https?:\/\/(?:.+\.)?youtube(?:-nocookie)?\.com\/embed\/(.+?)(?:\?|$)/
+      const match = source.trim().match(
+        /* eslint-disable-next-line no-useless-escape */
+        /^https?:\/\/(?:.+.)?youtu(?:be(?:-nocookie)?.com|.be)\/(?:(?:embed(?:\/videoseries)?|watch|playlist)\/?)?([^?#\n\/]+)?/
       );
+
       if (match) {
         const [, idMatch] = match;
 
         const params = new ParameterMap(link.search);
 
-        if (idMatch === "videoseries") {
-          if (params.get("list")) {
-            this.options.set("playlist", params.get("list") as string);
-          }
-        } else {
+        // Video ID
+        if (idMatch) {
           this.options.set("id", idMatch);
-
-          if (params.get("start")) {
-            const timeCount = parseInt(params.get("start") as string, 10);
-            if (timeCount > 0) {
-              this.options.set("start", `${timeCount}`);
-            }
-          }
-        }
-
-        return;
-      }
-
-      // Regular URL, what most people will have.
-      const match2 = source.match(/https?:\/\/(?:.+\.)?youtube\.com\/watch\?/);
-      if (match2) {
-        const params = new ParameterMap(link.search);
-        if (params.get("v")) {
+        } else if (params.get("v")) {
           this.options.set("id", params.get("v") as string);
         }
+
+        // Playlists
+        if (params.get("listType") && params.get("list")) {
+          this.options.set("listType", params.get("listType") as string);
+          this.options.set("list", params.get("list") as string);
+        } else if (params.get("list")) {
+          this.options.set("listType", "playlist");
+          this.options.set("list", params.get("list") as string);
+        } else if (params.get("playlist")) {
+          this.options.set("playlist", params.get("playlist") as string);
+        }
+
+        // Timestamp
         if (
           params.get("start") &&
           parseInt(params.get("start") as string, 10) > 0
         ) {
           this.options.set("start", params.get("start") as string);
         } else if (params.get("t")) {
-          // parse time...
           const timestamp = new VideoTimestamp(params.get("t"));
           if (timestamp.getSeconds() > 0) {
             this.options.set("start", `${timestamp.getSeconds()}`);
           }
         }
-
-        return;
-      }
-
-      // youtu.be short URLs.
-      const match3 = source.match(/https?:\/\/youtu\.be\/(.+$)/);
-      if (match3) {
-        const [, idMatch] = match3;
-
-        this.options.set("id", idMatch);
-      }
-
-      // Playlist URL
-      const match4 = source.match(
-        /https?:\/\/(?:.+\.)?youtube\.com\/playlist\?/
-      );
-      if (match4) {
-        const params = new ParameterMap(link.search);
-        if (params.get("list")) {
-          this.options.set("playlist", params.get("list") as string);
-        }
       }
     } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
       // With no URL to go off of maybe it's a video ID?
+      // YouTube video IDs may change but this matches the current format
       // https://stackoverflow.com/a/4084332
 
       this.options.set("id", source);
@@ -135,19 +109,24 @@ export default class YouTube extends VideoProvider {
    *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
-    if (!this.options.get("id") && !this.options.get("playlist")) {
+    if (
+      !this.options.get("id") &&
+      !this.options.get("listType") &&
+      !this.options.get("playlist")
+    ) {
       return null;
     }
 
-    let sourceAddress = this.options.get("id")
-      ? `https://www.youtube-nocookie.com/embed/${this.options.get("id")}`
-      : `https://www.youtube-nocookie.com/embed/videoseries?list=${this.options.get(
-          "playlist"
-        )}`;
+    let sourceAddress = "https://www.youtube-nocookie.com/embed";
 
-    if (this.options.get("id") && this.options.get("start")) {
-      sourceAddress += `?start=${this.options.get("start")}`;
+    const options = new ParameterMap(this.options.toString());
+
+    if (options.get("id")) {
+      sourceAddress += `/${options.get("id")}`;
+      options.delete("id");
     }
+
+    sourceAddress += `?${options.toString()}`;
 
     const iframe = document.createElement("iframe");
     iframe.setAttribute("allowfullscreen", "");

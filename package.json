@@ -1,6 +1,6 @@
 {
   "name": "video-tag",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "dist/video-tag.js",
   "unpkg": "dist/video-tag.js",

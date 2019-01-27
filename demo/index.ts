@@ -45,6 +45,25 @@ const demoTags: DemoTag[] = [
       "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
   },
   {
+    title: "YouTube Playlist Link with start video",
+    source:
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q"
+  },
+  {
+    title: "YouTube Playlist Link with start video with timestamp",
+    source:
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q&t=5m"
+  },
+  {
+    title: "YouTube User Uploads Link",
+    source: "https://www.youtube.com/embed?listType=user_uploads&list=jonbois"
+  },
+  {
+    title: "YouTube Playlist Video ID list",
+    source:
+      "https://www.youtube.com/embed?playlist=1BZs005Hbgs,JZmQmJl6ek4,doZzrsDJo-4"
+  },
+  {
     title: "Vimeo Video Link",
     source: "https://vimeo.com/16679115"
   },
