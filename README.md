@@ -1,5 +1,6 @@
 # Video Tag
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/cdayjr/video-tag.svg?branch=master)](https://travis-ci.org/cdayjr/video-tag)
 
 JavaScript for making video bbcodes and similar things as simple as they can get.

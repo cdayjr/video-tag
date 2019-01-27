@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - stable
 before_install:
-  - npm install -g pnpm
+  - npm install -g pnpm coveralls
 install:
   - pnpm install
 script:
-  - pnpm test
+  - pnpx jest --coverage --coverageReporters=text-lcov | coveralls
