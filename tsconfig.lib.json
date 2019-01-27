@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "lib": ["ES2018", "DOM", "ScriptHost"],
+    "strict": true,
+    "jsx": "react",
+    "module": "esnext",
+    "noImplicitAny": true,
+    "target": "es2015",
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "customMatcher": "\\.style\\.scss$",
+          "camelCase": "dashes"
+        }
+      }
+    ]
+  },
+  "include": ["src/**/*"]
+}

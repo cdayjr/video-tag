@@ -31,7 +31,7 @@ export default class YouTube extends VideoProvider {
 
       const match = source.trim().match(
         /* eslint-disable-next-line no-useless-escape */
-        /^https?:\/\/(?:.+.)?youtu(?:be(?:-nocookie)?.com|.be)\/(?:(?:embed(?:\/videoseries)?|watch|playlist)\/?)?([^?#\n\/]+)?/
+        /^https?:\/\/(?:.+.)?youtu(?:be(?:-nocookie)?.com|\.be)\/(?:(?:embed(?:\/videoseries)?|watch|playlist)\/?)?([^?#\n\/]+)?/
       );
 
       if (match) {

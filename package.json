@@ -1,16 +1,18 @@
 {
   "name": "video-tag",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "JavaScript to load third-party embed scripts for various video services.",
-  "main": "dist/video-tag.js",
+  "main": "lib/video-tag.js",
   "unpkg": "dist/video-tag.js",
   "browser": "dist/video-tag.js",
   "files": [
-    "dist"
+    "dist",
+    "lib"
   ],
   "scripts": {
     "autofix": "npm run typed-css-modules && npm run prettier && npm run stylelint-fix && npm run eslint-fix",
-    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag",
+    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && npm run build-lib",
+    "build-lib": "rm -rf ./lib && tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
     "clean": "rm -rf ./dist",
     "lint": "npm run stylelint && npm run ts-check && npm run eslint",
     "pre-commit": "npm run autofix && npm run lint",
@@ -38,6 +40,7 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
+    "@babel/runtime": "^7.2.0",
     "@microsoft/tsdoc": "^0.12.4",
     "@types/jest": "^23.3.12",
     "@typescript-eslint/eslint-plugin": "^1.1.0",
@@ -45,6 +48,7 @@
     "autoprefixer": "^9.4.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "copyfiles": "^2.1.0",
     "cssnano": "^4.1.7",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -128,8 +132,5 @@
       "^.+\\.(ts|tsx)$": "ts-jest",
       "\\.(css|scss|less|styl)$": "jest-css-modules-transform"
     }
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.2.0"
   }
 }

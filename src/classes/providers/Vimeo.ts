@@ -36,11 +36,9 @@ export default class Vimeo extends VideoProvider {
         } else {
           this.options.set("id", idMatch);
 
-          if (link.hash) {
-            const params = new ParameterMap(link.hash.substr(1));
-            if (params.get("t")) {
-              this.options.set("timestamp", params.get("t") as string);
-            }
+          const params = new ParameterMap(link.hash.substr(1));
+          if (params.get("t")) {
+            this.options.set("timestamp", params.get("t") as string);
           }
         }
       }

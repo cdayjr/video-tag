@@ -31,26 +31,28 @@ export default class Twitch extends VideoProvider {
       if (match) {
         const [, idMatch, collectionMatch, channelMatch, clipMatch] = match;
 
+        let foundType = false;
+
         if (collectionMatch) {
           this.options.set("collection", collectionMatch);
+          foundType = true;
         } else if (clipMatch) {
           this.options.set("clip", clipMatch);
+          foundType = true;
         } else if (channelMatch) {
           this.options.set("channel", channelMatch);
+          foundType = true;
         } else if (idMatch) {
           // If video ID is gathered this way, we need to
           // manually add a `v` in front.
           this.options.set("id", `v${idMatch}`);
+          foundType = true;
         }
+
         if (link.search) {
           const params = new ParameterMap(link.search);
 
-          if (
-            !this.options.get("channel") &&
-            !this.options.get("id") &&
-            !this.options.get("clip") &&
-            !this.options.get("collection")
-          ) {
+          if (!foundType) {
             if (params.get("collection")) {
               this.options.set("collection", params.get(
                 "collection"
