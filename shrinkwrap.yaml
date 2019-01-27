@@ -42,6 +42,7 @@ devDependencies:
   typescript: 3.2.4
   typescript-eslint-parser: 21.0.2
   typescript-plugin-css-modules: 1.0.5
+  uglify-es: 3.3.9
 packages:
   /@babel/cli/7.2.3:
     dependencies:
@@ -2482,6 +2483,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-PM54PkseWbiiD/mMsbvW351/u+dafwTJ0ye2qB60G1aGQP9j3xK2gmMDc+R34L3nDtx4qMCitXT75mkbkGJDLw==
+  /commander/2.13.0:
+    dev: true
+    resolution:
+      integrity: sha512-MVuS359B+YzaWqjCL/c+22gfryv+mCBPHAv3zyVI2GN8EY6IRP8VwtasXn8jyyhvvq84R4ImN1OKRtcbIasjYA==
   /commander/2.17.1:
     dev: true
     resolution:
@@ -9666,6 +9671,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
+  /uglify-es/3.3.9:
+    dependencies:
+      commander: 2.13.0
+      source-map: 0.6.1
+    dev: true
+    engines:
+      node: '>=0.8.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-r+MU0rfv4L/0eeW3xZrd16t4NZfK8Ld4SWVglYBb7ez5uXFWHuVRs6xCTrf1yirs9a4j4Y27nn7SRfO6v67XsQ==
   /uglify-js/3.4.9:
     dependencies:
       commander: 2.17.1
@@ -10213,3 +10228,4 @@ specifiers:
   typescript: ^3.2.2
   typescript-eslint-parser: ^21.0.2
   typescript-plugin-css-modules: ^1.0.5
+  uglify-es: ^3.3.9

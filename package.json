@@ -2,8 +2,8 @@
   "name": "video-tag",
   "version": "0.6.1",
   "description": "JavaScript to load third-party embed scripts for various video services.",
-  "main": "lib/video-tag.js",
-  "module": "lib/video-tag.js",
+  "main": "lib/module.js",
+  "module": "lib/module.js",
   "unpkg": "dist/video-tag.js",
   "browser": "dist/video-tag.js",
   "files": [
@@ -79,7 +79,8 @@
     "typed-css-modules": "^0.3.7",
     "typescript": "^3.2.2",
     "typescript-eslint-parser": "^21.0.2",
-    "typescript-plugin-css-modules": "^1.0.5"
+    "typescript-plugin-css-modules": "^1.0.5",
+    "uglify-es": "^3.3.9"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,33 @@
+{
+  "mangle": true,
+  "compress": {
+    "arrows": true,
+    "booleans": true,
+    "collapse_vars": true,
+    "comparisons": true,
+    "computed_props": true,
+    "conditionals": true,
+    "dead_code": true,
+    "drop_console": true,
+    "drop_debugger": true,
+    "evaluate": true,
+    "hoist_funs": true,
+    "hoist_props": true,
+    "if_return": true,
+    "inline": true,
+    "join_vars": true,
+    "loops": true,
+    "negate_iife": true,
+    "properties": true,
+    "pure_getters": true,
+    "reduce_funcs": true,
+    "reduce_vars": true,
+    "sequences": true,
+    "switches": true,
+    "typeofs": true,
+    "unused": true
+  },
+  "output": {
+    "comments": "some"
+  }
+}

@@ -6,7 +6,8 @@
  *
  * @link https://github.com/cdayjr/video-tag Github repo
  */
-import { parseVideoTag } from "../src/video-tag";
+
+import { parseVideoTag } from "../src/module";
 import * as style from "./index.scss";
 
 /**

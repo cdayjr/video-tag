@@ -11,6 +11,9 @@ JavaScript for making video bbcodes and similar things as simple as they can get
 - YouTube videos
 - YouTube videos with timestamps
 - YouTube playlists
+  - YouTube playlists that start from a specific video with timestamps
+  - YouTube user uploads list
+  - YouTube playlists that are just comma separated video IDs
 - Vimeo videos
 - Vimeo videos with timestamps
 - Vimeo albums
@@ -90,6 +93,7 @@ the following functions:
   message in there.
 - `parseVideoTags` - Gets all the tags via `getVideoTags` and parses each of
   them with `parseVideoTag`.
+- `urlToEmbedUrl` - Take a video URL and get just the embed URL for it.
 
 ## Notes
 
