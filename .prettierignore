@@ -1,6 +1,6 @@
 .cache
-.coverage
 .git
+coverage
 dist
 node_modules
 shrinkwrap.yaml
