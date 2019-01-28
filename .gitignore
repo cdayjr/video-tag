@@ -13,7 +13,7 @@ var
 .cache
 
 # Coverage
-.coverage
+coverage
 
 # Build files
 dist
