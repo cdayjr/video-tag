@@ -7,8 +7,8 @@
  * @link https://github.com/cdayjr/video-tag Github repo
  */
 
-import providers from "./providers";
 import Video from "./classes/Video";
+import VideoProviderFactory from "./classes/VideoProviderFactory";
 
 /**
  * Video tags are `div` elements (`HTMLDivElement`) with the `video-tag` class,
@@ -68,18 +68,12 @@ export const parseVideoTags = (): void => {
  *
  * @return The embed URL
  */
-export const urlToEmbedUrl = (url: string): string | null => {
-  for (let i = 0; i < providers.length; ++i) {
-    const Provider = providers[i];
-    if (Provider.isProvider(url)) {
-      const video = new Provider(url);
-      const videoElement = video.getElement();
-      if (videoElement) {
-        return videoElement.getAttribute("src");
-      }
-      return null;
-    }
+export const urlToEmbedUrl = (url: string): string => {
+  const video = VideoProviderFactory.createProvider(url);
+
+  if (video) {
+    return video.getEmbedUrl();
   }
 
-  return null;
+  return "";
 };

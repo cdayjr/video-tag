@@ -74,20 +74,14 @@ export default class Vimeo extends VideoProvider {
   }
 
   /**
-   * Return the video element
+   * Get the video embed URL
    *
-   * @return An Iframe element if one can be created from the source,
-   *  null otherwise.
+   * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getElement(): HTMLIFrameElement | null {
+  public getEmbedUrl(): string {
     if (!this.options.get("id") && !this.options.get("album")) {
-      return null;
+      return "";
     }
-
-    const iframe = document.createElement("iframe");
-    iframe.setAttribute("allowfullscreen", "");
-    iframe.setAttribute("webkitallowfullscreen", "");
-    iframe.setAttribute("mozallowfullscreen", "");
 
     let sourceAddress = this.options.get("id")
       ? `https://player.vimeo.com/video/${this.options.get(
@@ -98,6 +92,27 @@ export default class Vimeo extends VideoProvider {
     if (this.options.get("id") && this.options.get("timestamp")) {
       sourceAddress += `#t=${this.options.get("timestamp")}`;
     }
+
+    return sourceAddress;
+  }
+
+  /**
+   * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
+   */
+  public getElement(): HTMLIFrameElement | null {
+    const sourceAddress = this.getEmbedUrl();
+
+    if (!sourceAddress) {
+      return null;
+    }
+
+    const iframe = document.createElement("iframe");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("webkitallowfullscreen", "");
+    iframe.setAttribute("mozallowfullscreen", "");
 
     iframe.src = sourceAddress;
 

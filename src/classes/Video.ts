@@ -9,9 +9,9 @@
  * @link https://github.com/cdayjr/video-tag Github repo
  */
 
-import providers from "../providers";
 import style from "./Video.style.scss";
 import VideoProvider from "./VideoProvider";
+import VideoProviderFactory from "./VideoProviderFactory";
 
 /**
  * Class for handling all functions related towards parsing Video URLs
@@ -32,73 +32,10 @@ export default class Video {
    *  provided, you'll want to share this. A string like "YouTube" or "Vimeo".
    *
    */
-  public constructor(source?: string, providerString?: string) {
-    if (source && providerString) {
-      this.provider = (this.constructor as typeof Video).getProviderFromString(
-        source.trim(),
-        providerString.trim()
-      );
-    } else if (source) {
-      this.provider = (this.constructor as typeof Video).guessProvider(
-        source.trim()
-      );
+  public constructor(source?: string, providerName?: string) {
+    if (source) {
+      this.provider = VideoProviderFactory.createProvider(source, providerName);
     }
-  }
-
-  /**
-   * Make an educated guess for what a provider should be from a provided URL-
-   * useful when provider isn't manually provided.
-   *
-   * @param A string, usually a URL, to figure out the provider from.
-   *
-   * @return A VideoProvider object if the provider is found, otherwise
-   *  undefined.
-   */
-  private static guessProvider(source: string): VideoProvider | undefined {
-    let Provider;
-    for (let i = 0; i < providers.length; ++i) {
-      const currentProvider = providers[i];
-      if (currentProvider.isProvider(source)) {
-        Provider = currentProvider;
-        break;
-      }
-    }
-    if (Provider) {
-      return new Provider(source);
-    }
-
-    return undefined;
-  }
-
-  /**
-   * Parse a provider string such as "YouTube" into a Provider enum value.
-   *
-   * @param A string such as "YouTube" or "Vimeo".
-   *
-   * @return A VideoProvider object if the provider is found, otherwise
-   *  undefined.
-   */
-  private static getProviderFromString(
-    source: string,
-    providerString: string
-  ): VideoProvider | undefined {
-    // For browsers without `Array.find`
-    let Provider;
-    for (let i = 0; i < providers.length; ++i) {
-      const currentProvider = providers[i];
-      if (
-        providerString.toLowerCase() ===
-        currentProvider.getProviderString().toLowerCase()
-      ) {
-        Provider = currentProvider;
-        break;
-      }
-    }
-    if (Provider) {
-      return new Provider(source);
-    }
-
-    return undefined;
   }
 
   /**
@@ -108,13 +45,11 @@ export default class Video {
    * @param A string representing the provider, ex. "YouTube" or "Vimeo".
    * @param A string representing the options, ex. "id=777&start=15".
    */
-  public importOptions(providerString: string, optionsString: string): void {
-    this.provider = (this.constructor as typeof Video).getProviderFromString(
-      "",
-      providerString.trim()
-    );
+  public importOptions(providerName: string, options: string): void {
+    this.provider = VideoProviderFactory.createProvider("", providerName);
+
     if (this.provider) {
-      this.provider.importOptions(optionsString);
+      this.provider.importOptions(options);
     }
   }
 

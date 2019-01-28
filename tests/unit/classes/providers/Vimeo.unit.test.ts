@@ -171,6 +171,7 @@ inputs.forEach(input => {
     const vimeo = new Vimeo(input.source);
 
     expect(paramStringToObject(vimeo.exportOptions())).toEqual(input.options);
+    expect(vimeo.getEmbedUrl()).toBe(input.expect);
 
     const vimeoElement = vimeo.getElement() as HTMLElement;
 
@@ -190,6 +191,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach(input => {
   test(`Incorrect Source: ${input}`, () => {
     const vimeo = new Vimeo(input);
+    expect(vimeo.getEmbedUrl()).toBeFalsy();
     expect(vimeo.exportOptions()).toBeFalsy();
     expect(vimeo.getElement()).toBeNull();
   });

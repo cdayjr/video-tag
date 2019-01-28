@@ -290,6 +290,7 @@ inputs.forEach(input => {
   test(`${input.source} is handled correctly`, () => {
     const youtube = new YouTube(input.source);
 
+    expect(youtube.getEmbedUrl()).toBe(input.expect);
     expect(paramStringToObject(youtube.exportOptions())).toEqual(input.options);
 
     const youtubeElement = youtube.getElement() as HTMLElement;
@@ -314,6 +315,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach(input => {
   test(`Incorrect Source: ${input}`, () => {
     const youtube = new YouTube(input);
+    expect(youtube.getEmbedUrl()).toBeFalsy();
     expect(youtube.exportOptions()).toBeFalsy();
     expect(youtube.getElement()).toBeNull();
   });

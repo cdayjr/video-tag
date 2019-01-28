@@ -226,6 +226,7 @@ inputs.forEach(input => {
   test(`${input.source} is handled correctly`, () => {
     const twitch = new Twitch(input.source);
 
+    expect(twitch.getEmbedUrl()).toBe(input.expect);
     expect(paramStringToObject(twitch.exportOptions())).toEqual(input.options);
 
     const twitchElement = twitch.getElement() as HTMLElement;
@@ -246,6 +247,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach(input => {
   test(`Incorrect Source: ${input}`, () => {
     const twitch = new Twitch(input);
+    expect(twitch.getEmbedUrl()).toBeFalsy();
     expect(twitch.exportOptions()).toBeFalsy();
     expect(twitch.getElement()).toBeNull();
   });

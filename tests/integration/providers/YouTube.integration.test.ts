@@ -8,8 +8,21 @@
  */
 
 import Video from "../../../src/classes/Video";
+import VideoProviderFactory from "../../../src/classes/VideoProviderFactory";
 
 import YouTube from "../../../src/classes/providers/YouTube";
+
+test("Factory creates YouTube objects", () => {
+  const video1 = VideoProviderFactory.createProvider("", "YouTube");
+
+  expect(video1).toBeInstanceOf(YouTube);
+
+  const video2 = VideoProviderFactory.createProvider(
+    "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s"
+  );
+
+  expect(video2).toBeInstanceOf(YouTube);
+});
 
 test("getProvider returns provider string from provider", () => {
   const video = new Video(

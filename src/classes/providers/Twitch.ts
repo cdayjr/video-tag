@@ -104,13 +104,13 @@ export default class Twitch extends VideoProvider {
   }
 
   /**
-   * Return the video element
+   * Get the video embed URL
    *
-   * @return An Iframe element if one can be created from the source,
-   *  null otherwise.
+   * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getElement(): HTMLIFrameElement | null {
+  public getEmbedUrl(): string {
     let sourceAddress = "";
+
     if (this.options.get("collection")) {
       // collection embed
       sourceAddress = `https://player.twitch.tv/?autoplay=false&collection=${this.options.get(
@@ -134,7 +134,21 @@ export default class Twitch extends VideoProvider {
       sourceAddress = `https://clips.twitch.tv/embed?autoplay=false&clip=${this.options.get(
         "clip"
       )}`;
-    } else {
+    }
+
+    return sourceAddress;
+  }
+
+  /**
+   * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
+   */
+  public getElement(): HTMLIFrameElement | null {
+    const sourceAddress = this.getEmbedUrl();
+
+    if (!sourceAddress) {
       return null;
     }
 

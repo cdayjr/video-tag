@@ -88,6 +88,13 @@ export default abstract class VideoProvider {
   }
 
   /**
+   * Get the video embed URL
+   *
+   * @return The appropriate embed URL to stick in an iframe element.
+   */
+  public abstract getEmbedUrl(): string;
+
+  /**
    * Get the video element
    *
    * @return An iframe element with the correct atributes to embed a video from

@@ -8,8 +8,21 @@
  */
 
 import Video from "../../../src/classes/Video";
+import VideoProviderFactory from "../../../src/classes/VideoProviderFactory";
 
 import Twitch from "../../../src/classes/providers/Twitch";
+
+test("Factory creates Twitch objects", () => {
+  const video1 = VideoProviderFactory.createProvider("", "Twitch");
+
+  expect(video1).toBeInstanceOf(Twitch);
+
+  const video2 = VideoProviderFactory.createProvider(
+    "https://www.twitch.tv/videos/355193670?t=02h16m51s"
+  );
+
+  expect(video2).toBeInstanceOf(Twitch);
+});
 
 test("getProvider returns provider string from provider", () => {
   const video = new Video("https://www.twitch.tv/videos/355193670?t=02h16m51s");

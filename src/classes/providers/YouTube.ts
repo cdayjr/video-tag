@@ -103,18 +103,17 @@ export default class YouTube extends VideoProvider {
   }
 
   /**
-   * Return the video element
+   * Get the video embed URL
    *
-   * @return An Iframe element if one can be created from the source,
-   *  null otherwise.
+   * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getElement(): HTMLIFrameElement | null {
+  public getEmbedUrl(): string {
     if (
       !this.options.get("id") &&
       !this.options.get("listType") &&
       !this.options.get("playlist")
     ) {
-      return null;
+      return "";
     }
 
     let sourceAddress = "https://www.youtube-nocookie.com/embed";
@@ -127,6 +126,22 @@ export default class YouTube extends VideoProvider {
     }
 
     sourceAddress += `?${options.toString()}`;
+
+    return sourceAddress;
+  }
+
+  /**
+   * Return the video element
+   *
+   * @return An Iframe element if one can be created from the source,
+   *  null otherwise.
+   */
+  public getElement(): HTMLIFrameElement | null {
+    const sourceAddress = this.getEmbedUrl();
+
+    if (!sourceAddress) {
+      return null;
+    }
 
     const iframe = document.createElement("iframe");
     iframe.setAttribute("allowfullscreen", "");
