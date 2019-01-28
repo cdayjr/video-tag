@@ -114,7 +114,7 @@
   ],
   "jest": {
     "clearMocks": true,
-    "coverageDirectory": ".coverage",
+    "coverageDirectory": "./coverage/",
     "globals": {
       "ts-jest": {
         "tsConfig": "./tests/tsconfig.json"
