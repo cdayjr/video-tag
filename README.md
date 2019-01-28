@@ -9,20 +9,19 @@ JavaScript for making video bbcodes and similar things as simple as they can get
 
 ## Supports
 
-- YouTube videos
-- YouTube videos with timestamps
+- YouTube videos (with timestamps)
 - YouTube playlists
-  - YouTube playlists that start from a specific video with timestamps
+  - YouTube playlists that start from a specific video (with timestamps)
   - YouTube user uploads list
   - YouTube playlists that are just comma separated video IDs
-- Vimeo videos
-- Vimeo videos with timestamps
+- Vimeo videos (with timestamps)
 - Vimeo albums
-- Twitch videos (VODs)
-- Twitch videos (VODs) with timestamps
+- Twitch videos (VODs) (with timestamps)
 - Twitch channels
 - Twitch collections
 - Twitch clips
+- Mixer channels
+- Mixer videos (VODs)
 
 ## Usage
 
@@ -108,6 +107,8 @@ the following functions:
 - ID-only sources only work for video IDs and Twitch channels- everything else
   will require a full URL as the source parameter even with the provider param
   set.
+  - For Mixer, only channel IDs work. This is because Mixer requires the
+    correct channel to embed a VOD.
 
 ## Built With
 

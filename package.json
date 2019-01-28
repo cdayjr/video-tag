@@ -1,6 +1,6 @@
 {
   "name": "video-tag",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "main": "lib/module.js",
   "module": "lib/module.js",

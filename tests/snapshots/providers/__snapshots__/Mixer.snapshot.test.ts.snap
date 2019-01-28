@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creates Mixer embed element 1`] = `
+<iframe
+  allowfullscreen=""
+  src="https://mixer.com/embed/Mixer?"
+/>
+`;
