@@ -108,5 +108,5 @@ do a few steps first:
   - `tests/snapshots/providers` - Snapshot tests
 - Finally the provider code itself; make sure to extend the `VideoProvider` abstract class and add your provider in the
   `src/classes/providers/` directory and update
-  the array in the `src/providers.ts` to include
+  the array in the `src/classes/VideoProviderFactory.ts` to include
   your provider so the code can make use of it.

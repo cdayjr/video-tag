@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - stable
 before_install:
-  - npm install -g pnpm coveralls
+  - npm install -g pnpm coveralls codacy-coverage
 install:
   - pnpm install
 script:
-  - pnpx jest --coverage --coverageReporters=text-lcov | coveralls
+  - pnpm run test-coverage -- --coverageReporters=text-lcov | tee <(coveralls) <(codacy-coverage)

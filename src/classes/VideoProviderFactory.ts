@@ -33,24 +33,16 @@ export default class VideoProviderFactory {
   ): VideoProvider | undefined {
     let Provider;
 
-    if (providerName) {
-      for (let i = 0; i < providers.length; ++i) {
-        const currentProvider = providers[i];
-        if (
+    for (let i = 0; i < providers.length; ++i) {
+      const currentProvider = providers[i];
+      if (
+        (providerName !== undefined &&
           providerName.toLowerCase() ===
-          currentProvider.getProviderString().toLowerCase()
-        ) {
-          Provider = currentProvider;
-          break;
-        }
-      }
-    } else {
-      for (let i = 0; i < providers.length; ++i) {
-        const currentProvider = providers[i];
-        if (currentProvider.isProvider(source)) {
-          Provider = currentProvider;
-          break;
-        }
+            currentProvider.getProviderString().toLowerCase()) ||
+        currentProvider.isProvider(source)
+      ) {
+        Provider = currentProvider;
+        break;
       }
     }
 

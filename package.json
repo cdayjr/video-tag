@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "autofix": "npm run typed-css-modules && npm run prettier && npm run stylelint-fix && npm run eslint-fix",
-    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && npm run build-lib",
+    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js && npm run build-lib",
     "build-lib": "rm -rf ./lib && tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
     "clean": "rm -rf ./dist",
     "lint": "npm run stylelint && npm run ts-check && npm run eslint",
@@ -49,6 +49,7 @@
     "autoprefixer": "^9.4.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "concat-cli": "^4.0.0",
     "copyfiles": "^2.1.0",
     "cssnano": "^4.1.7",
     "eslint": "^5.12.0",
