@@ -36,22 +36,13 @@ pnpm install
 
 To keep our code consistent we use some style fixers and checkers.
 
-Run the style fixers with:
-
-```bash
-pnpm run autofix
-```
-
-This'll fix everything that can be fixed automatically. It runs `prettier`, `stylelint --fix` and `eslint --fix` on the source files.
-
-Linters can be run with:
-
 ```bash
 pnpm run lint
 ```
 
-This'll do code style checks for code that can't automatically be fixed-
-be sure to read the errors and fix anything before committing. This runs `stylelint` and `eslint`.
+This'll do code style checks for code and fix that which can be automatically
+fixed- be sure to read the errors and fix anything before committing. This runs
+`tsc`, `prettier`, `stylelint` and `eslint`.
 
 ## Tests
 

@@ -72,10 +72,10 @@ interface Options {
   t?: string;
 }
 
-const mixerChannelExpect = "https://mixer.com/embed/Mixer?";
-const mixerVODExpect = "https://mixer.com/embed/Mixer?vod=34749442";
+const mixerChannelExpect = "https://mixer.com/embed/player/Mixer?";
+const mixerVODExpect = "https://mixer.com/embed/player/Mixer?vod=34749442";
 const mixerVODWithTimestampExpect =
-  "https://mixer.com/embed/Mixer?vod=34749442&t=1m";
+  "https://mixer.com/embed/player/Mixer?vod=34749442&t=1m";
 
 const mixerChannelOptions: Options = {
   channel: "Mixer"
@@ -127,7 +127,7 @@ const inputs: {
   },
   // Regular VOD URL
   {
-    source: "https://mixer.com/embed/Mixer?vod=34749442",
+    source: "https://mixer.com/Mixer?vod=34749442",
     expect: mixerVODExpect,
     options: mixerVODOptions
   },
@@ -139,7 +139,7 @@ const inputs: {
   },
   // Regular VOD URL with timestamp
   {
-    source: "https://mixer.com/embed/Mixer?vod=34749442&t=1m",
+    source: "https://mixer.com/Mixer?vod=34749442&t=1m",
     expect: mixerVODWithTimestampExpect,
     options: mixerVODWithTimestampOptions
   },

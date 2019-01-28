@@ -30,7 +30,7 @@ export default class Mixer extends VideoProvider {
 
       const match = source
         .trim()
-        .match(/^https?:\/\/(?:.+\.)?mixer\.com\/(?:embed\/)?(\w+)/);
+        .match(/^https?:\/\/(?:.+\.)?mixer\.com\/(?:embed\/player\/)?(\w+)/);
 
       if (match) {
         const [, idMatch] = match;
@@ -88,7 +88,7 @@ export default class Mixer extends VideoProvider {
       return "";
     }
 
-    let sourceAddress = `https://mixer.com/embed/${this.options.get(
+    let sourceAddress = `https://mixer.com/embed/player/${this.options.get(
       "channel"
     )}`;
 

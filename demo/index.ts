@@ -111,6 +111,18 @@ const demoTags: DemoTag[] = [
   {
     title: "Twitch Collection Link",
     source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ"
+  },
+  {
+    title: "Mixer Channel Link",
+    source: "https://www.mixer.com/Mixer"
+  },
+  {
+    title: "Mixer VOD Link",
+    source: "https://mixer.com/Mixer?vod=34749442"
+  },
+  {
+    title: "Mixer VOD Link with Timestamp",
+    source: "https://mixer.com/Mixer?vod=34749442&t=1m"
   }
 ];
 

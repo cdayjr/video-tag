@@ -3,6 +3,6 @@
 exports[`Creates Mixer embed element 1`] = `
 <iframe
   allowfullscreen=""
-  src="https://mixer.com/embed/Mixer?"
+  src="https://mixer.com/embed/player/Mixer?"
 />
 `;

@@ -1,7 +1,9 @@
 {
   "name": "video-tag",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "JavaScript to load third-party embed scripts for various video services.",
+  "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
+  "license": "MIT",
   "main": "lib/module.js",
   "module": "lib/module.js",
   "unpkg": "dist/video-tag.js",
@@ -11,21 +13,15 @@
     "lib"
   ],
   "scripts": {
-    "autofix": "npm run typed-css-modules && npm run prettier && npm run stylelint-fix && npm run eslint-fix",
-    "build": "npm run clean && parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js && npm run build-lib",
-    "build-lib": "rm -rf ./lib && tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
-    "clean": "rm -rf ./dist",
-    "lint": "npm run stylelint && npm run ts-check && npm run eslint",
-    "pre-commit": "npm run autofix && npm run lint",
-    "prettier": "prettier --write \"./**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql,html}\"",
-    "stylelint": "stylelint \"./{src,demo,tests}/**/*.{c,sa,sc,le}ss\"",
-    "stylelint-fix": "stylelint --fix \"./{src,tests}/**/*.{c,sa,sc,le}ss\"",
+    "build": "npm run clean && npm run build-dist && npm run build-lib",
+    "build-dist": "parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
+    "build-lib": "tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
+    "clean": "rm -rf ./dist ./lib",
+    "lint": "tsc --noEmit --project tsconfig.json && lint-staged",
+    "pre-commit": "npm run lint && git add \"./src/**/*.scss.d.ts\"",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "demo": "npm run clean && parcel demo/index.html --target=browser",
-    "eslint": "eslint \"./{src,demo,tests}/**/*.ts\"",
-    "eslint-fix": "eslint \"./{src,demo,tests}/**/*.ts\" --fix",
-    "typed-css-modules": "tcm -c -p \"./{src,demo,tests}/**/*.scss\"",
     "ts-check": "tsc --noEmit --project tsconfig.json",
     "prepublishOnly": "npm run build"
   },
@@ -34,8 +30,24 @@
       "pre-commit": "npm run pre-commit"
     }
   },
-  "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
-  "license": "MIT",
+  "lint-staged": {
+    "concurrent": false,
+    "linters": {
+      "./**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql,html}": [
+        "prettier --write",
+        "git add"
+      ],
+      "./{src,demo,tests}/**/*.ts": [
+        "eslint --fix",
+        "git add"
+      ],
+      "./{src,demo,tests}/**/*.scss": [
+        "stylelint --fix",
+        "tcm -c -p",
+        "git add"
+      ]
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
@@ -66,6 +78,7 @@
     "jest-css-modules-transform": "^2.1.1",
     "jest-environment-jsdom": "^23.4.0",
     "jest-serializer-html": "^6.0.0",
+    "lint-staged": "^8.1.1",
     "node-sass": "^4.11.0",
     "parcel-bundler": "^1.11.0",
     "postcss": "^7.0.7",
