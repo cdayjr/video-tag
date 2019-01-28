@@ -7,4 +7,4 @@ install:
   - pnpm install
 script:
   - pnpm run test-coverage -- --coverageReporters=text-lcov | tee coveralls | codacy-coverage
-  - codecov
+  - pnpm run test-coverage && codecov
