@@ -1,6 +1,6 @@
 {
   "name": "video-tag",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
   "license": "MIT",
@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "npm run clean && npm run build-dist && npm run build-lib",
-    "build-dist": "parcel build ./src/video-tag.ts --target=browser --no-source-maps --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
+    "build-dist": "parcel build ./src/video-tag.ts --target=browser --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
     "build-lib": "tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
     "clean": "rm -rf ./dist ./lib",
     "lint": "tsc --noEmit --project tsconfig.json && lint-staged",

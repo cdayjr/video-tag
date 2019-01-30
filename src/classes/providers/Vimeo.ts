@@ -65,12 +65,12 @@ export default class Vimeo extends VideoProvider {
   }
 
   /**
-   * Get the provider string.
+   * Get the provider string. Other than "Invalid", this must be lowercase.
    *
-   * @return "Vimeo"
+   * @return "vimeo"
    */
   public static getProviderString(): string {
-    return "Vimeo";
+    return "vimeo";
   }
 
   /**

@@ -70,12 +70,12 @@ export default class Mixer extends VideoProvider {
   }
 
   /**
-   * Get the provider string.
+   * Get the provider string. Other than "Invalid", this must be lowercase.
    *
-   * @return "Mixer"
+   * @return "mixer"
    */
   public static getProviderString(): string {
-    return "Mixer";
+    return "mixer";
   }
 
   /**

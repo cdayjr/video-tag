@@ -34,12 +34,14 @@ export default class VideoProviderFactory {
   ): VideoProvider | undefined {
     let Provider;
 
+    const providerNameLowerCase =
+      providerName && providerName.trim().toLowerCase();
+
     for (let i = 0; i < providers.length; ++i) {
       const currentProvider = providers[i];
       if (
-        (providerName !== undefined &&
-          providerName.toLowerCase() ===
-            currentProvider.getProviderString().toLowerCase()) ||
+        (providerNameLowerCase &&
+          providerNameLowerCase === currentProvider.getProviderString()) ||
         currentProvider.isProvider(source)
       ) {
         Provider = currentProvider;

@@ -17,12 +17,12 @@ const paramStringToObject = (input: string): { [key: string]: string } => {
   return output;
 };
 
-test("getProviderString is YouTube", () => {
-  expect(YouTube.getProviderString()).toBe("YouTube");
+test("getProviderString is youtube", () => {
+  expect(YouTube.getProviderString()).toBe("youtube");
 
   // test non-static variant
   const youtube = new YouTube("");
-  expect(youtube.getProviderString()).toBe("YouTube");
+  expect(youtube.getProviderString()).toBe("youtube");
 });
 
 test("Test empty source returns an empty getElement", () => {

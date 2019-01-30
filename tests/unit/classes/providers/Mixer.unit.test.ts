@@ -17,12 +17,12 @@ const paramStringToObject = (input: string): { [key: string]: string } => {
   return output;
 };
 
-test("getProviderString is Mixer", () => {
-  expect(Mixer.getProviderString()).toBe("Mixer");
+test("getProviderString is mixer", () => {
+  expect(Mixer.getProviderString()).toBe("mixer");
 
   // test non-static variant
   const mixer = new Mixer("");
-  expect(mixer.getProviderString()).toBe("Mixer");
+  expect(mixer.getProviderString()).toBe("mixer");
 });
 
 test("Test empty source returns an empty getElement", () => {

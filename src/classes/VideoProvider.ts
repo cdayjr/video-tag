@@ -29,9 +29,9 @@ export default abstract class VideoProvider {
   }
 
   /**
-   * Get the provider string.
+   * Get the provider string. Other than "Invalid", this must be lowercase.
    *
-   * @return A provider string such as "YouTube" or "Vimeo"
+   * @return A provider string such as "youtube" or "vimeo".
    */
   public static getProviderString(): string {
     return "Invalid";

@@ -95,12 +95,12 @@ export default class Twitch extends VideoProvider {
   }
 
   /**
-   * Get the provider string.
+   * Get the provider string. Other than "Invalid", this must be lowercase.
    *
-   * @return "Twitch"
+   * @return "twitch"
    */
   public static getProviderString(): string {
-    return "Twitch";
+    return "twitch";
   }
 
   /**

@@ -61,7 +61,7 @@ recommended like so:
 </div>
 ```
 
-For [Jcink Forum Hosting](https://jcink.net), a 1 paramater video tag with the
+For [Jcink Forum Hosting](https://jcink.com), a 1 paramater video tag with the
 following content:
 
 ```html

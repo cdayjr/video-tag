@@ -17,12 +17,12 @@ const paramStringToObject = (input: string): { [key: string]: string } => {
   return output;
 };
 
-test("getProviderString is Vimeo", () => {
-  expect(Vimeo.getProviderString()).toBe("Vimeo");
+test("getProviderString is vimeo", () => {
+  expect(Vimeo.getProviderString()).toBe("vimeo");
 
   // test non-static variant
   const vimeo = new Vimeo("");
-  expect(vimeo.getProviderString()).toBe("Vimeo");
+  expect(vimeo.getProviderString()).toBe("vimeo");
 });
 
 test("Test empty source returns an empty getElement", () => {

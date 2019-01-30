@@ -94,12 +94,12 @@ export default class YouTube extends VideoProvider {
   }
 
   /**
-   * Get the provider string.
+   * Get the provider string. Other than "Invalid", this must be lowercase.
    *
-   * @return "YouTube"
+   * @return "youtube"
    */
   public static getProviderString(): string {
-    return "YouTube";
+    return "youtube";
   }
 
   /**
