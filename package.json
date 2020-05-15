@@ -87,6 +87,7 @@
     "coverageDirectory": "./coverage/",
     "globals": {
       "ts-jest": {
+        "packageJson": "./package.json",
         "tsConfig": "./tests/tsconfig.json"
       }
     },
