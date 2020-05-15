@@ -8,7 +8,7 @@
  */
 
 import { parseVideoTag } from "../src/module";
-import * as style from "./index.scss";
+import style from "./index.scss";
 
 /**
  * Define how we want our demo tags to be structured
