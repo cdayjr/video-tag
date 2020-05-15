@@ -34,7 +34,7 @@ export default class ParameterMap extends Map<string, string> {
     const paramString = input.substr(0, 1) === "?" ? input.substr(1) : input;
 
     const items = paramString.split("&");
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item.search("=") > -1) {
         const [key, value] = item.split("=");
         this.set(decodeURIComponent(key), decodeURIComponent(value));

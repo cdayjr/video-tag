@@ -66,12 +66,15 @@ test("importOptions and exportOptions work as intended", () => {
 
   // Compare elements
   const videoElement = video.getElement();
-  const vimeoElement = vimeo.getElement();
+  const vimeoElement = vimeo.getElement() as HTMLIFrameElement;
+  expect(vimeoElement).toBeInstanceOf(HTMLIFrameElement);
 
   // remove classes
-  videoElement.querySelector("iframe").removeAttribute("class");
+  const videoIFrameElement = videoElement.querySelector(
+    "iframe"
+  ) as HTMLIFrameElement;
+  expect(videoIFrameElement).toBeInstanceOf(HTMLIFrameElement);
+  videoIFrameElement.removeAttribute("class");
 
-  expect(videoElement.querySelector("iframe").outerHTML).toBe(
-    vimeoElement.outerHTML
-  );
+  expect(videoIFrameElement.outerHTML).toBe(vimeoElement.outerHTML);
 });

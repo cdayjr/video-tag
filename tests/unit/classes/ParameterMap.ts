@@ -35,7 +35,7 @@ test("Create ParameterMap with arguments and ? prefix", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -50,7 +50,7 @@ test("Create ParameterMap with arguments", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -65,7 +65,7 @@ test("Create ParameterMap with arguments and import new ones", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 
   map.importParams("test5=11&test7=12");
@@ -77,6 +77,6 @@ test("Create ParameterMap with arguments and import new ones", () => {
     test4: "",
     test5: "11",
     test6: "test",
-    test7: "12"
+    test7: "12",
   });
 });

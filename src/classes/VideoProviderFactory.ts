@@ -37,7 +37,7 @@ export default class VideoProviderFactory {
     const providerNameLowerCase =
       providerName && providerName.trim().toLowerCase();
 
-    for (let i = 0; i < providers.length; ++i) {
+    for (let i = 0; i < providers.length; i += 1) {
       const currentProvider = providers[i];
       if (
         (providerNameLowerCase &&

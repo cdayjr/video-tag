@@ -1,22 +1,8 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "lib": ["ES2018", "DOM", "ScriptHost"],
-    "jsx": "react",
-    "module": "esnext",
-    "noImplicitAny": true,
-    "target": "esnext",
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules",
-        "options": {
-          "customMatcher": "\\.style\\.scss$",
-          "camelCase": "dashes"
-        }
-      }
-    ]
+    "baseUrl": "."
   },
-  "include": ["./**/*", "../src/**/*"],
-  "exclude": ["../node_modules"]
+  "exclude": ["../node_modules"],
+  "include": ["./**/*", "../src/**/*"]
 }

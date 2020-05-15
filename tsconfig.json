@@ -2,22 +2,25 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
-    "lib": ["ES2018", "DOM", "ScriptHost"],
-    "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "jsx": "react",
+    "lib": ["ESNext", "DOM", "ScriptHost"],
     "module": "esnext",
-    "noImplicitAny": true,
-    "target": "esnext",
+    "moduleResolution": "node",
     "plugins": [
       {
         "name": "typescript-plugin-css-modules",
         "options": {
-          "customMatcher": "\\.style\\.scss$",
-          "camelCase": "dashes"
+          "camelCase": "dashes",
+          "customMatcher": "\\.style\\.scss$"
         }
       }
-    ]
+    ],
+    "rootDir": "./src",
+    "strict": true,
+    "target": "esnext"
   },
-  "include": ["src/**/*", "demo/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "demo/**/*.ts"]
 }

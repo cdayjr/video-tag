@@ -44,7 +44,7 @@ test("Test importOptions and exportOptions with ? prefix", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -62,7 +62,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
     test3: "true",
     test4: "4",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -90,33 +90,33 @@ const youtubePlaylistIDsExpect =
   "https://www.youtube-nocookie.com/embed?playlist=1BZs005Hbgs%2CJZmQmJl6ek4%2CdoZzrsDJo-4";
 
 const youtubeVideoOptions: Options = {
-  id: "g4Hbz2jLxvQ"
+  id: "g4Hbz2jLxvQ",
 };
 const youtubeVideoOptionsWithStart: Options = {
   id: "g4Hbz2jLxvQ",
-  start: "10"
+  start: "10",
 };
 const youtubePlaylistOptions: Options = {
   listType: "playlist",
-  list: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
+  list: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
 };
 const youtubePlaylistWithStartVideoOptions: Options = {
   id: "wge7JK0JV0Q",
   listType: "playlist",
-  list: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
+  list: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
 };
 const youtubePlaylistWithStartVideoAndTimestampOptions: Options = {
   id: "wge7JK0JV0Q",
   listType: "playlist",
   list: "PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
-  start: "300"
+  start: "300",
 };
 const youtubeUserUploadsOptions: Options = {
   listType: "user_uploads",
-  list: "jonbois"
+  list: "jonbois",
 };
 const youtubePlaylistIDsOptions: Options = {
-  playlist: "1BZs005Hbgs,JZmQmJl6ek4,doZzrsDJo-4"
+  playlist: "1BZs005Hbgs,JZmQmJl6ek4,doZzrsDJo-4",
 };
 
 const inputs: {
@@ -128,165 +128,165 @@ const inputs: {
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // http
   {
     source: "http://www.youtube.com/watch?v=g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // no www
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // extra param
   {
     source: "https://youtube.com/watch?v=g4Hbz2jLxvQ&test=test",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // youtu.be
   {
     source: "https://youtu.be/g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // embed url
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // id alone
   {
     source: "g4Hbz2jLxvQ",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // with bogus timestamp
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=bogus",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // with timestamp
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // with timestamp of seconds only
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // with bogus start only
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=bogus",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // with start only
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&start=10",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // with start and timestamps (start will take precedence)
   {
     source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=10m&start=10&t=10m",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // embed url with timestamp
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=10",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // embed url with bogus timestamp
   {
     source: "https://www.youtube-nocookie.com/embed/g4Hbz2jLxvQ?start=bogus",
     expect: youtubeVideoExpect,
-    options: youtubeVideoOptions
+    options: youtubeVideoOptions,
   },
   // embed url with t timestamp parameter
   {
     source: "https://www.youtube.com/embed/g4Hbz2jLxvQ?t=0m10s",
     expect: youtubeVideoWithStartExpect,
-    options: youtubeVideoOptionsWithStart
+    options: youtubeVideoOptionsWithStart,
   },
   // playlist url
   {
     source:
       "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
     expect: youtubePlaylistExpect,
-    options: youtubePlaylistOptions
+    options: youtubePlaylistOptions,
   },
   // embed playlist url
   {
     source: youtubePlaylistExpect,
     expect: youtubePlaylistExpect,
-    options: youtubePlaylistOptions
+    options: youtubePlaylistOptions,
   },
   // playlist with start video url
   {
     source:
       "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q",
     expect: youtubePlaylistWithStartVideoExpect,
-    options: youtubePlaylistWithStartVideoOptions
+    options: youtubePlaylistWithStartVideoOptions,
   },
   // embed playlist with start video url
   {
     source: youtubePlaylistWithStartVideoExpect,
     expect: youtubePlaylistWithStartVideoExpect,
-    options: youtubePlaylistWithStartVideoOptions
+    options: youtubePlaylistWithStartVideoOptions,
   },
   // playlist with start video url and timestamp
   {
     source:
       "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q&t=5m",
     expect: youtubePlaylistWithStartVideoAndTimestampExpect,
-    options: youtubePlaylistWithStartVideoAndTimestampOptions
+    options: youtubePlaylistWithStartVideoAndTimestampOptions,
   },
   // embed playlist with start video url and timestamp
   {
     source: youtubePlaylistWithStartVideoAndTimestampExpect,
     expect: youtubePlaylistWithStartVideoAndTimestampExpect,
-    options: youtubePlaylistWithStartVideoAndTimestampOptions
+    options: youtubePlaylistWithStartVideoAndTimestampOptions,
   },
   // user uploads
   {
     source: "https://www.youtube.com/embed?listType=user_uploads&list=jonbois",
     expect: youtubeUserUploadsExpect,
-    options: youtubeUserUploadsOptions
+    options: youtubeUserUploadsOptions,
   },
   // embed user uploads
   {
     source: youtubeUserUploadsExpect,
     expect: youtubeUserUploadsExpect,
-    options: youtubeUserUploadsOptions
+    options: youtubeUserUploadsOptions,
   },
   // embed playlist video ID list
   {
     source:
       "https://www.youtube-nocookie.com/embed?playlist=1BZs005Hbgs%2CJZmQmJl6ek4%2CdoZzrsDJo-4",
     expect: youtubePlaylistIDsExpect,
-    options: youtubePlaylistIDsOptions
+    options: youtubePlaylistIDsOptions,
   },
   // embed playlist video ID list
   {
     source: youtubePlaylistIDsExpect,
     expect: youtubePlaylistIDsExpect,
-    options: youtubePlaylistIDsOptions
-  }
+    options: youtubePlaylistIDsOptions,
+  },
 ];
 
-inputs.forEach(input => {
+inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const youtube = new YouTube(input.source);
 
@@ -309,10 +309,10 @@ const invalidInputs: string[] = [
   "https://youtu.be/",
   "https://vimeo.com/16679115#t=600s",
   "https://www.twitch.tv/videos/355193670?t=02h16m51s",
-  "https://www.twitch.tv/impactwrestling"
+  "https://www.twitch.tv/impactwrestling",
 ];
 
-invalidInputs.forEach(input => {
+invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const youtube = new YouTube(input);
     expect(youtube.getEmbedUrl()).toBeFalsy();
