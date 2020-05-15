@@ -68,15 +68,15 @@ test("importOptions and exportOptions work as intended", () => {
 
   // Compare elements
   const videoElement = video.getElement();
-  const twitchElement = twitch.getElement();
+  const twitchElement = twitch.getElement() as HTMLIFrameElement;
+  expect(twitchElement).toBeInstanceOf(HTMLIFrameElement);
 
   // remove classes
-  const videoElementIFrame = videoElement.querySelector("iframe");
-  if (videoElementIFrame) {
-    videoElementIFrame.removeAttribute("class");
-  }
+  const videoIFrameElement = videoElement.querySelector(
+    "iframe"
+  ) as HTMLIFrameElement;
+  expect(videoIFrameElement).toBeInstanceOf(HTMLIFrameElement);
+  videoIFrameElement.removeAttribute("class");
 
-  expect(videoElement.querySelector("iframe")?.outerHTML).toBe(
-    twitchElement?.outerHTML
-  );
+  expect(videoIFrameElement.outerHTML).toBe(twitchElement.outerHTML);
 });
