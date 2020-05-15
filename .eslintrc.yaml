@@ -1,0 +1,29 @@
+env:
+  browser: true
+  es2020: true
+extends:
+  - airbnb-base
+  - plugin:@typescript-eslint/recommended
+  - plugin:compat/recommended
+  - plugin:jest/recommended
+  - plugin:prettier/recommended
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaVersion: 11
+  project: ./tsconfig.json
+  sourceType: module
+  tsconfigRootDir: .
+plugins:
+  - "@typescript-eslint"
+  - compat
+  - import
+  - jest
+  - prettier
+rules:
+  import/extensions: off
+settings:
+  import/resolver:
+    typescript: {}

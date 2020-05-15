@@ -44,7 +44,7 @@ test("Test importOptions and exportOptions with ? prefix", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -62,7 +62,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
     test3: "true",
     test4: "4",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -95,21 +95,21 @@ const twitchCollectionExpect =
   "https://player.twitch.tv/?autoplay=false&collection=BXjdJSCmeRVEpQ";
 
 const twitchVODOptions: VODOptions = {
-  id: "v355193670"
+  id: "v355193670",
 };
 const twitchVODOptionsWithTimestamp: VODOptions = {
   id: "v355193670",
-  timestamp: "2h16m51s"
+  timestamp: "2h16m51s",
 };
 const twitchOptionsWithChannel: ChannelOptions = {
-  channel: "impactwrestling"
+  channel: "impactwrestling",
 };
 const twitchOptionsWithClip: ClipOptions = {
-  clip: "ViscousSpicyBeeCoolStoryBob"
+  clip: "ViscousSpicyBeeCoolStoryBob",
 };
 
 const twitchCollectionOptions: CollectionOptions = {
-  collection: "BXjdJSCmeRVEpQ"
+  collection: "BXjdJSCmeRVEpQ",
 };
 
 const inputs: {
@@ -121,108 +121,108 @@ const inputs: {
   {
     source: twitchVODExpect,
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod url
   {
     source: "https://www.twitch.tv/videos/355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod url http
   {
     source: "http://www.twitch.tv/videos/355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod url no www
   {
     source: "http://twitch.tv/videos/355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod url param
   {
     source: "http://twitch.tv/?video=v355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod url with timestamp
   {
     source: "https://www.twitch.tv/videos/355193670?t=2h16m51s",
     expect: twitchVODWithTimestampExpect,
-    options: twitchVODOptionsWithTimestamp
+    options: twitchVODOptionsWithTimestamp,
   },
   // vod embed url with timestamp
   {
     source: twitchVODWithTimestampExpect,
     expect: twitchVODWithTimestampExpect,
-    options: twitchVODOptionsWithTimestamp
+    options: twitchVODOptionsWithTimestamp,
   },
   // vod id
   {
     source: "355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // vod id with starting v
   {
     source: "v355193670",
     expect: twitchVODExpect,
-    options: twitchVODOptions
+    options: twitchVODOptions,
   },
   // channel url
   {
     source: "https://www.twitch.tv/impactwrestling",
     expect: twitchChannelExpect,
-    options: twitchOptionsWithChannel
+    options: twitchOptionsWithChannel,
   },
   // channel url as param
   {
     source: "https://www.twitch.tv/?channel=impactwrestling",
     expect: twitchChannelExpect,
-    options: twitchOptionsWithChannel
+    options: twitchOptionsWithChannel,
   },
   // channel slug
   {
     source: "impactwrestling",
     expect: twitchChannelExpect,
-    options: twitchOptionsWithChannel
+    options: twitchOptionsWithChannel,
   },
   // channel embed url
   {
     source: twitchChannelExpect,
     expect: twitchChannelExpect,
-    options: twitchOptionsWithChannel
+    options: twitchOptionsWithChannel,
   },
   // clip url
   {
     source:
       "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob",
     expect: twitchClipExpect,
-    options: twitchOptionsWithClip
+    options: twitchOptionsWithClip,
   },
   // clip embed url
   {
     source: twitchClipExpect,
     expect: twitchClipExpect,
-    options: twitchOptionsWithClip
+    options: twitchOptionsWithClip,
   },
   // collection url
   {
     source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ",
     expect: twitchCollectionExpect,
-    options: twitchCollectionOptions
+    options: twitchCollectionOptions,
   },
   // collection embed url
   {
     source: twitchCollectionExpect,
     expect: twitchCollectionExpect,
-    options: twitchCollectionOptions
-  }
+    options: twitchCollectionOptions,
+  },
 ];
 
-inputs.forEach(input => {
+inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const twitch = new Twitch(input.source);
 
@@ -241,10 +241,10 @@ const invalidInputs: string[] = [
   "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
   "https://youtu.be/g4Hbz2jLxvQ",
   "https://vimeo.com/16679115#t=600s",
-  ":%#$#$#$"
+  ":%#$#$#$",
 ];
 
-invalidInputs.forEach(input => {
+invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const twitch = new Twitch(input);
     expect(twitch.getEmbedUrl()).toBeFalsy();

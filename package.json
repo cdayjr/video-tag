@@ -1,107 +1,5 @@
 {
-  "name": "video-tag",
-  "version": "0.7.2",
-  "description": "JavaScript to load third-party embed scripts for various video services.",
   "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
-  "license": "MIT",
-  "main": "lib/module.js",
-  "module": "lib/module.js",
-  "unpkg": "dist/video-tag.js",
-  "browser": "dist/video-tag.js",
-  "files": [
-    "dist",
-    "lib"
-  ],
-  "scripts": {
-    "build": "npm run clean && npm run build-dist && npm run build-lib",
-    "build-dist": "parcel build ./src/video-tag.ts --target=browser --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
-    "build-lib": "tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
-    "clean": "rm -rf ./dist ./lib",
-    "lint": "tsc --noEmit --project tsconfig.json && lint-staged",
-    "pre-commit": "npm run lint && git add \"./src/**/*.scss.d.ts\"",
-    "test": "jest",
-    "test-coverage": "jest --coverage",
-    "demo": "npm run clean && parcel demo/index.html --target=browser",
-    "ts-check": "tsc --noEmit --project tsconfig.json",
-    "prepublishOnly": "npm run build"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run pre-commit"
-    }
-  },
-  "lint-staged": {
-    "concurrent": false,
-    "linters": {
-      "./**/*.{{t,j}s{,x,on},{c,sa,sc,le}ss,vue,md,y{,a}ml,graphql,html}": [
-        "prettier --write",
-        "git add"
-      ],
-      "./{src,demo,tests}/**/*.ts": [
-        "eslint --fix",
-        "git add"
-      ],
-      "./{src,demo,tests}/**/*.scss": [
-        "stylelint --fix",
-        "tcm -c -p",
-        "git add"
-      ]
-    }
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/runtime": "^7.2.0",
-    "@microsoft/tsdoc": "^0.12.4",
-    "@types/jest": "^24.0.0",
-    "@typescript-eslint/eslint-plugin": "^1.1.0",
-    "@typescript-eslint/parser": "^1.1.0",
-    "autoprefixer": "^9.4.3",
-    "concat-cli": "^4.0.0",
-    "copyfiles": "^2.1.0",
-    "cssnano": "^4.1.7",
-    "eslint": "^5.12.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-import-resolver-node": "^0.3.2",
-    "eslint-import-resolver-typescript": "^1.1.1",
-    "eslint-plugin-compat": "^2.6.3",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^22.2.2",
-    "eslint-plugin-prettier": "^3.0.1",
-    "husky": "^1.3.0",
-    "jest": "^24.0.0",
-    "jest-css-modules-transform": "^2.1.1",
-    "jest-environment-jsdom": "^24.0.0",
-    "jest-serializer-html": "^6.0.0",
-    "lint-staged": "^8.1.1",
-    "node-sass": "^4.11.0",
-    "parcel-bundler": "^1.11.0",
-    "postcss": "^7.0.7",
-    "postcss-import": "^12.0.1",
-    "postcss-modules": "^1.4.1",
-    "postcss-preset-env": "^6.5.0",
-    "postcss-syntax": "^0.34.0",
-    "prettier": "^1.15.3",
-    "rxjs": "^6.4.0",
-    "stylelint": "^9.9.0",
-    "stylelint-config-standard": "^18.2.0",
-    "ts-jest": "^23.10.5",
-    "typed-css-modules": "^0.3.7",
-    "typescript": "^3.2.2",
-    "typescript-eslint-parser": "^21.0.2",
-    "typescript-plugin-css-modules": "^1.0.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cdayjr/video-tag.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cdayjr/video-tag/issues"
-  },
-  "homepage": "https://github.com/cdayjr/video-tag",
   "babel": {
     "plugins": [
       [
@@ -117,12 +15,73 @@
       ]
     ]
   },
+  "browser": "dist/video-tag.js",
   "browserslist": [
     "> 0.25%",
     "last 2 versions",
     "Firefox ESR",
     "not dead"
   ],
+  "bugs": {
+    "url": "https://github.com/cdayjr/video-tag/issues"
+  },
+  "description": "JavaScript to load third-party embed scripts for various video services.",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/runtime": "^7.9.6",
+    "@microsoft/tsdoc": "^0.12.19",
+    "@types/jest": "^25.2.2",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "autoprefixer": "^9.7.6",
+    "concat-cli": "^4.0.0",
+    "copyfiles": "^2.2.0",
+    "cssnano": "^4.1.10",
+    "eslint": "^6.0.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-node": "^0.3.3",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-compat": "^3.6.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.2.5",
+    "jest": "^25.0.0",
+    "jest-css-modules-transform": "^4.0.0",
+    "jest-diff": "^26.0.1",
+    "jest-environment-jsdom": "^26.0.1",
+    "jest-serializer-html": "^7.0.0",
+    "lint-staged": "^10.2.2",
+    "node-sass": "^4.14.1",
+    "parcel-bundler": "^1.12.4",
+    "postcss": "^7.0.30",
+    "postcss-import": "^12.0.1",
+    "postcss-modules": "^2.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-syntax": "^0.36.2",
+    "prettier": "^2.0.5",
+    "rxjs": "^6.5.5",
+    "stylelint": "^13.3.3",
+    "stylelint-config-standard": "^20.0.0",
+    "ts-jest": "^25.5.1",
+    "typed-css-modules": "^0.6.3",
+    "typescript": "^3.9.2",
+    "typescript-plugin-css-modules": "^2.3.0"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "homepage": "https://github.com/cdayjr/video-tag",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit"
+    }
+  },
   "jest": {
     "clearMocks": true,
     "coverageDirectory": "./coverage/",
@@ -143,8 +102,48 @@
       "**/*.test.+(ts|tsx|js)"
     ],
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "\\.(css|scss|less|styl)$": "jest-css-modules-transform"
+      "\\.(css|scss|less|styl)$": "jest-css-modules-transform",
+      "^.+\\.(ts|tsx)$": "ts-jest"
     }
-  }
+  },
+  "license": "MIT",
+  "lint-staged": {
+    "*.{{t,j}son,,md,y{,a}ml,html}": [
+      "prettier --write"
+    ],
+    "./{src,demo,tests}/**/*.{c,s{a,c},le}ss": [
+      "prettier --write",
+      "stylelint --fix --max-warnings=0",
+      "tcm -c -p"
+    ],
+    "./{src,demo,tests}/**/*.{j,t}s": [
+      "prettier --write",
+      "eslint --fix --max-warnings=0"
+    ]
+  },
+  "main": "lib/module.js",
+  "module": "lib/module.js",
+  "name": "video-tag",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdayjr/video-tag.git"
+  },
+  "scripts": {
+    "build": "npm run-script clean && npm run-script build-dist && npm run-script build-lib",
+    "build-dist": "parcel build ./src/video-tag.ts --target=browser --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
+    "build-lib": "tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
+    "clean": "rm -rf ./dist ./lib",
+    "demo": "npm run-script clean && parcel demo/index.html --target=browser",
+    "lint": "npm run-script ts-check && npm run-script stylelint && npm run-script eslint",
+    "eslint": "eslint --fix --max-warnings=0 --no-error-on-unmatched-pattern ./{src,demo,tests}/**/*.{j,t}s",
+    "stylelint": "stylelint --fix --max-warnings=0 ./{src,demo,tests}/**/*.{c,s{a,c},le}ss",
+    "lint-staged": "npm run-script ts-check && lint-staged",
+    "pre-commit": "npm run-script lint-staged && git add \"./src/**/*.scss.d.ts\"",
+    "prepublishOnly": "npm run-script build",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
+    "ts-check": "tsc --noEmit --project tsconfig.json"
+  },
+  "unpkg": "dist/video-tag.js",
+  "version": "0.7.2"
 }

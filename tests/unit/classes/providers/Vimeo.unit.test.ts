@@ -44,7 +44,7 @@ test("Test importOptions and exportOptions with ? prefix", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -62,7 +62,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
     test3: "true",
     test4: "4",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -81,16 +81,16 @@ const vimeoWithStartExpect =
   "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0#t=0h10m0s";
 const vimeoAlbumExpect = "https://vimeo.com/album/1719434/embed";
 const vimeoOptions: Options = {
-  id: "16679115"
+  id: "16679115",
 };
 
 const vimeoOptionsWithStart: Options = {
   id: "16679115",
-  timestamp: "0h10m0s"
+  timestamp: "0h10m0s",
 };
 
 const vimeoAlbumOptions: AlbumOptions = {
-  album: "1719434"
+  album: "1719434",
 };
 
 const inputs: {
@@ -102,71 +102,71 @@ const inputs: {
   {
     source: vimeoExpect,
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url
   {
     source: "https://vimeo.com/16679115",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url with /video
   {
     source: "https://vimeo.com/video/16679115",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url with http
   {
     source: "http://vimeo.com/16679115",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url with www
   {
     source: "http://www.vimeo.com/16679115",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url with useless param
   {
     source: "https://vimeo.com/16679115#nontimestampparam=true",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // video url with timestamp
   {
     source: "https://vimeo.com/16679115#t=0h10m0s",
     expect: vimeoWithStartExpect,
-    options: vimeoOptionsWithStart
+    options: vimeoOptionsWithStart,
   },
   // video embed url with timestamp
   {
     source: vimeoWithStartExpect,
     expect: vimeoWithStartExpect,
-    options: vimeoOptionsWithStart
+    options: vimeoOptionsWithStart,
   },
   // video id
   {
     source: "16679115",
     expect: vimeoExpect,
-    options: vimeoOptions
+    options: vimeoOptions,
   },
   // album url
   {
     source: "https://vimeo.com/album/1719434",
     expect: vimeoAlbumExpect,
-    options: vimeoAlbumOptions
+    options: vimeoAlbumOptions,
   },
   // album embed url
   {
     source: vimeoAlbumExpect,
     expect: vimeoAlbumExpect,
-    options: vimeoAlbumOptions
-  }
+    options: vimeoAlbumOptions,
+  },
 ];
 
-inputs.forEach(input => {
+inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const vimeo = new Vimeo(input.source);
 
@@ -185,10 +185,10 @@ const invalidInputs: string[] = [
   "https://www.twitch.tv/videos/355193670",
   "https://www.twitch.tv/videos/355193670?t=02h16m51s",
   "https://www.twitch.tv/impactwrestling",
-  "impactwrestling"
+  "impactwrestling",
 ];
 
-invalidInputs.forEach(input => {
+invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const vimeo = new Vimeo(input);
     expect(vimeo.getEmbedUrl()).toBeFalsy();

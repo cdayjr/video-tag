@@ -6,7 +6,9 @@ before_install:
 install:
   - pnpm install
 script:
-  - pnpm run test-coverage
+  - pnpm run-script lint
+  - pnpm run-script build
+  - pnpm run-script test-coverage
   - cat ./coverage/lcov.info | coveralls
   - cat ./coverage/lcov.info | codacy-coverage
   - codecov

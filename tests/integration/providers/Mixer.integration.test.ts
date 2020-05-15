@@ -64,9 +64,12 @@ test("importOptions and exportOptions work as intended", () => {
   const mixerElement = mixer.getElement();
 
   // remove classes
-  videoElement.querySelector("iframe").removeAttribute("class");
+  const videoElementIFrame = videoElement.querySelector("iframe");
+  if (videoElementIFrame) {
+    videoElementIFrame.removeAttribute("class");
+  }
 
-  expect(videoElement.querySelector("iframe").outerHTML).toBe(
-    mixerElement.outerHTML
+  expect(videoElement.querySelector("iframe")?.outerHTML).toBe(
+    mixerElement?.outerHTML
   );
 });

@@ -44,7 +44,7 @@ test("Test importOptions and exportOptions with ? prefix", () => {
     test3: "true",
     test4: "",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -62,7 +62,7 @@ test("Test importOptions and exportOptions without ? prefix and duplicate keys",
     test3: "true",
     test4: "4",
     test5: "",
-    test6: "test"
+    test6: "test",
   });
 });
 
@@ -78,16 +78,16 @@ const mixerVODWithTimestampExpect =
   "https://mixer.com/embed/player/Mixer?vod=34749442&t=1m";
 
 const mixerChannelOptions: Options = {
-  channel: "Mixer"
+  channel: "Mixer",
 };
 const mixerVODOptions: Options = {
   channel: "Mixer",
-  vod: "34749442"
+  vod: "34749442",
 };
 const mixerVODWithTimestampOptions: Options = {
   channel: "Mixer",
   vod: "34749442",
-  t: "1m"
+  t: "1m",
 };
 
 const inputs: {
@@ -99,59 +99,59 @@ const inputs: {
   {
     source: "https://www.mixer.com/Mixer",
     expect: mixerChannelExpect,
-    options: mixerChannelOptions
+    options: mixerChannelOptions,
   },
   // Regular channel URL (http)
   {
     source: "http://www.mixer.com/Mixer",
     expect: mixerChannelExpect,
-    options: mixerChannelOptions
+    options: mixerChannelOptions,
   },
   // Regular channel URL (no www)
   {
     source: "https://mixer.com/Mixer",
     expect: mixerChannelExpect,
-    options: mixerChannelOptions
+    options: mixerChannelOptions,
   },
   // Channel name
   {
     source: "Mixer",
     expect: mixerChannelExpect,
-    options: mixerChannelOptions
+    options: mixerChannelOptions,
   },
   // Embed channel URL
   {
     source: mixerChannelExpect,
     expect: mixerChannelExpect,
-    options: mixerChannelOptions
+    options: mixerChannelOptions,
   },
   // Regular VOD URL
   {
     source: "https://mixer.com/Mixer?vod=34749442",
     expect: mixerVODExpect,
-    options: mixerVODOptions
+    options: mixerVODOptions,
   },
   // Embed VOD URL
   {
     source: mixerVODExpect,
     expect: mixerVODExpect,
-    options: mixerVODOptions
+    options: mixerVODOptions,
   },
   // Regular VOD URL with timestamp
   {
     source: "https://mixer.com/Mixer?vod=34749442&t=1m",
     expect: mixerVODWithTimestampExpect,
-    options: mixerVODWithTimestampOptions
+    options: mixerVODWithTimestampOptions,
   },
   // Embed VOD URL with timestamp
   {
     source: mixerVODWithTimestampExpect,
     expect: mixerVODWithTimestampExpect,
-    options: mixerVODWithTimestampOptions
-  }
+    options: mixerVODWithTimestampOptions,
+  },
 ];
 
-inputs.forEach(input => {
+inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const mixer = new Mixer(input.source);
 
@@ -170,10 +170,10 @@ const invalidInputs: string[] = [
   "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
   "https://vimeo.com/16679115#t=600s",
   "https://www.twitch.tv/videos/355193670?t=02h16m51s",
-  "https://www.twitch.tv/impactwrestling"
+  "https://www.twitch.tv/impactwrestling",
 ];
 
-invalidInputs.forEach(input => {
+invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const mixer = new Mixer(input);
     expect(mixer.getEmbedUrl()).toBeFalsy();

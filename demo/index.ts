@@ -25,105 +25,105 @@ interface DemoTag {
 const demoTags: DemoTag[] = [
   {
     title: "YouTube Video Link",
-    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ"
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ",
   },
   {
     title: "YouTu.be Video Link",
-    source: "https://youtu.be/g4Hbz2jLxvQ"
+    source: "https://youtu.be/g4Hbz2jLxvQ",
   },
   {
     title: "YouTube Video Link with Timestamp",
-    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s"
+    source: "https://www.youtube.com/watch?v=g4Hbz2jLxvQ&t=0m10s",
   },
   {
     title: "YouTube Video ID",
     source: "g4Hbz2jLxvQ",
-    provider: "YouTube"
+    provider: "YouTube",
   },
   {
     title: "YouTube Playlist Link",
     source:
-      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3"
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3",
   },
   {
     title: "YouTube Playlist Link with start video",
     source:
-      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q"
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q",
   },
   {
     title: "YouTube Playlist Link with start video with timestamp",
     source:
-      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q&t=5m"
+      "https://www.youtube.com/playlist?list=PLUXSZMIiUfFSe4gpc8PLDECqViWi-2we3&v=wge7JK0JV0Q&t=5m",
   },
   {
     title: "YouTube User Uploads Link",
-    source: "https://www.youtube.com/embed?listType=user_uploads&list=jonbois"
+    source: "https://www.youtube.com/embed?listType=user_uploads&list=jonbois",
   },
   {
     title: "YouTube Playlist Video ID list",
     source:
-      "https://www.youtube.com/embed?playlist=1BZs005Hbgs,JZmQmJl6ek4,doZzrsDJo-4"
+      "https://www.youtube.com/embed?playlist=1BZs005Hbgs,JZmQmJl6ek4,doZzrsDJo-4",
   },
   {
     title: "Vimeo Video Link",
-    source: "https://vimeo.com/16679115"
+    source: "https://vimeo.com/16679115",
   },
   {
     title: "Vimeo Video Link with Timestamp",
-    source: "https://vimeo.com/16679115#t=0h10m0s"
+    source: "https://vimeo.com/16679115#t=0h10m0s",
   },
   {
     title: "Vimeo Album",
-    source: "https://vimeo.com/album/1719434"
+    source: "https://vimeo.com/album/1719434",
   },
   {
     title: "Vimeo Video ID",
     source: "16679115",
-    provider: "Vimeo"
+    provider: "Vimeo",
   },
   {
     title: "Twitch Video",
-    source: "https://www.twitch.tv/videos/355193670"
+    source: "https://www.twitch.tv/videos/355193670",
   },
   {
     title: "Twitch Video with Timestamp",
-    source: "https://www.twitch.tv/videos/355193670?t=02h16m51s"
+    source: "https://www.twitch.tv/videos/355193670?t=02h16m51s",
   },
   {
     title: "Twitch Video ID",
     source: "355193670",
-    provider: "Twitch"
+    provider: "Twitch",
   },
   {
     title: "Twitch Channel Link",
-    source: "https://www.twitch.tv/impactwrestling"
+    source: "https://www.twitch.tv/impactwrestling",
   },
   {
     title: "Twitch Channel ID",
     source: "impactwrestling",
-    provider: "Twitch"
+    provider: "Twitch",
   },
   {
     title: "Twitch Clip Link",
     source:
-      "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob"
+      "https://www.twitch.tv/renzoandknuckles/clip/ViscousSpicyBeeCoolStoryBob",
   },
   {
     title: "Twitch Collection Link",
-    source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ"
+    source: "https://www.twitch.tv/collections/BXjdJSCmeRVEpQ",
   },
   {
     title: "Mixer Channel Link",
-    source: "https://www.mixer.com/Mixer"
+    source: "https://www.mixer.com/Mixer",
   },
   {
     title: "Mixer VOD Link",
-    source: "https://mixer.com/Mixer?vod=34749442"
+    source: "https://mixer.com/Mixer?vod=34749442",
   },
   {
     title: "Mixer VOD Link with Timestamp",
-    source: "https://mixer.com/Mixer?vod=34749442&t=1m"
-  }
+    source: "https://mixer.com/Mixer?vod=34749442&t=1m",
+  },
 ];
 
 // Create the element to store the buttons for users to select which tag
@@ -138,7 +138,7 @@ navElement.appendChild(navElementList);
 const showcase: HTMLElement = document.createElement("section");
 
 // Iterate through each demotag and create the buttons for them
-demoTags.forEach(demoTag => {
+demoTags.forEach((demoTag) => {
   const bbcode =
     undefined === demoTag.provider
       ? `[video]${demoTag.source}[/video]`

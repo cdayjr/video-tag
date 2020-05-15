@@ -1,34 +1,29 @@
 # Contributing
 
-Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before contributing to the project.
+Please read and follow our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before
+contributing to the project.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes. See deployment for notes on
+how to deploy the project on a live system.
 
 ### Prerequisites
 
-This project uses [pnpm](https://pnpm.js.org/) to manage dependencies, but should work by replacing the `pnpm` comamnds with `npm` if you have [npm](https://www.npmjs.com/).
+This project uses node and relies on [pnpm](https://pnpm.js.org/) to manage
+dependencies. If you already have node, installing pnpm is easy:
 
-For example, installing the dependencies can work with either:
-
-```bash
-pnpm install
+```sh
+npm install -g pnpm
 ```
-
-or
-
-```bash
-npm install
-```
-
-The same can apply to `pnpx` to `npx` commands. `pnpm` and `pnpx` are recommended, however.
 
 ### Installing
 
-Once you have your package manager of choice up and running, get the packages needed for this project with the following command:
+Once you have your package manager up and running, get the packages needed for
+this project with the following command:
 
-```bash
+```sh
 pnpm install
 ```
 
@@ -36,7 +31,7 @@ pnpm install
 
 To keep our code consistent we use some style fixers and checkers.
 
-```bash
+```sh
 pnpm run lint
 ```
 
@@ -48,25 +43,25 @@ fixed- be sure to read the errors and fix anything before committing. This runs
 
 We're using jest to run automated tests. Run them with the following command:
 
-```
+```sh
 pnpm run test
 ```
 
 You can also check test coverage with the following command:
 
-```
+```sh
 pnpm run test-coverage
 ```
 
 ## Demonstrating the code in your browser
 
-You can test out various embed codes with the provided demo code.
-The code in the `demo` directory is used for this- code in that directory is not
-built when the build command is run.
+You can test out various embed codes with the provided demo code. The code in
+the `demo` directory is used for this- code in that directory is not built when
+the build command is run.
 
 Run the demo with the following command:
 
-```bash
+```sh
 pnpm run demo
 ```
 
@@ -76,13 +71,14 @@ and load it up in your browser(s) of choice to see the code in action.
 
 Building this ready for deployment is as easy as:
 
-```bash
+```sh
 pnpm run build
 ```
 
 From there, the files in the `dist` folder must be uploaded to the same
 directory, and then include the `video-tag.js` file in your code with a
-`<script>` tag and the `video-tag.css` file in your code with a `<link rel="stylesheet">` tag.
+`<script>` tag and the `video-tag.css` file in your code with a
+`<link rel="stylesheet">` tag.
 
 ## Adding a new provider
 

@@ -71,9 +71,12 @@ test("importOptions and exportOptions work as intended", () => {
   const twitchElement = twitch.getElement();
 
   // remove classes
-  videoElement.querySelector("iframe").removeAttribute("class");
+  const videoElementIFrame = videoElement.querySelector("iframe");
+  if (videoElementIFrame) {
+    videoElementIFrame.removeAttribute("class");
+  }
 
-  expect(videoElement.querySelector("iframe").outerHTML).toBe(
-    twitchElement.outerHTML
+  expect(videoElement.querySelector("iframe")?.outerHTML).toBe(
+    twitchElement?.outerHTML
   );
 });

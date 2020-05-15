@@ -55,7 +55,7 @@ export const parseVideoTag = (tag: HTMLDivElement): void => {
  */
 export const parseVideoTags = (): void => {
   const videoTags = getVideoTags();
-  for (let i = 0; i < videoTags.length; ++i) {
+  for (let i = 0; i < videoTags.length; i += 1) {
     const videoTag = videoTags[i];
     parseVideoTag(videoTag);
   }

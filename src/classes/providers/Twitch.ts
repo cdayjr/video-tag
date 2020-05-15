@@ -54,9 +54,10 @@ export default class Twitch extends VideoProvider {
 
           if (!foundType) {
             if (params.get("collection")) {
-              this.options.set("collection", params.get(
-                "collection"
-              ) as string);
+              this.options.set(
+                "collection",
+                params.get("collection") as string
+              );
             } else if (params.get("channel")) {
               this.options.set("channel", params.get("channel") as string);
             } else if (params.get("video")) {

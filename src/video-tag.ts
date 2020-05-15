@@ -11,7 +11,7 @@ import {
   getVideoTags,
   parseVideoTag,
   parseVideoTags,
-  urlToEmbedUrl
+  urlToEmbedUrl,
 } from "./module";
 
 /**
