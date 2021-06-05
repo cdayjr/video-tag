@@ -7,6 +7,7 @@ extends:
   - plugin:compat/recommended
   - plugin:jest/recommended
   - plugin:prettier/recommended
+  - plugin:security/recommended
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
@@ -22,6 +23,7 @@ plugins:
   - import
   - jest
   - prettier
+  - security
 rules:
   import/extensions: off
 settings:

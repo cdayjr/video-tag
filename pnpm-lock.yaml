@@ -23,6 +23,7 @@ specifiers:
   eslint-plugin-import: ^2.23.4
   eslint-plugin-jest: ^24.3.6
   eslint-plugin-prettier: ^3.4.0
+  eslint-plugin-security: ^1.4.0
   husky: ^6.0.0
   jest: ^27.0.4
   jest-css-modules-transform: ^4.2.1
@@ -69,6 +70,7 @@ devDependencies:
   eslint-plugin-import: 2.23.4_eslint@7.28.0
   eslint-plugin-jest: 24.3.6_958dc775841839fcc31d1e9477588ac5
   eslint-plugin-prettier: 3.4.0_441ef98f5280b4c825fe505e43fc5698
+  eslint-plugin-security: 1.4.0
   husky: 6.0.0
   jest: 27.0.4
   jest-css-modules-transform: 4.2.1
@@ -5324,6 +5326,15 @@ packages:
       eslint-config-prettier: 8.3.0_eslint@7.28.0
       prettier: 2.3.1
       prettier-linter-helpers: 1.0.0
+    dev: true
+
+  /eslint-plugin-security/1.4.0:
+    resolution:
+      {
+        integrity: sha512-xlS7P2PLMXeqfhyf3NpqbvbnW04kN8M9NtmhpR3XGyOvt/vNKS7XPXT5EDbwKW9vCjWH4PpfQvgD/+JgN0VJKA==,
+      }
+    dependencies:
+      safe-regex: 1.1.0
     dev: true
 
   /eslint-scope/5.1.1:
