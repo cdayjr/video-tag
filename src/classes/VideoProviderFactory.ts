@@ -9,7 +9,6 @@
 
 import VideoProvider from "./VideoProvider";
 
-import Mixer from "./providers/Mixer";
 import Twitch from "./providers/Twitch";
 import Vimeo from "./providers/Vimeo";
 import YouTube from "./providers/YouTube";
@@ -17,7 +16,7 @@ import YouTube from "./providers/YouTube";
 /**
  * An array of available providers
  */
-const providers = [Mixer, Twitch, Vimeo, YouTube];
+const providers = [Twitch, Vimeo, YouTube];
 
 export default class VideoProviderFactory {
   /**
