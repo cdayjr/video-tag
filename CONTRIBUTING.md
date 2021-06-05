@@ -82,18 +82,24 @@ directory, and then include the `video-tag.js` file in your code with a
 
 ## Adding a new provider
 
-If you're interested in adding a new video provider, you'll want to
-do a few steps first:
+If you're interested in adding a new video provider, you'll want to do a few
+steps first:
 
-- Add relevant entries for it in the `demoTags` array in the `demo/index.ts` file so you can see the provider in action
+- Add relevant entries for it in the `demoTags` array in the `demo/index.ts`
+  file so you can see the provider in action
   in your browser.
-- Add tests; I recommend building the tests out first as a test-driven-design strategy. Tests are in the following
+
+- Add tests; I recommend building the tests out first as a test-driven-design
+  strategy. Tests are in the following
   directories- don't be afraid to look at the other providers in the directories
   for some guidance:
+
   - `tests/unit/classes/providers` - Unit tests
   - `tests/integration/providers` - Integration tests
   - `tests/snapshots/providers` - Snapshot tests
-- Finally the provider code itself; make sure to extend the `VideoProvider` abstract class and add your provider in the
-  `src/classes/providers/` directory and update
-  the array in the `src/classes/VideoProviderFactory.ts` to include
-  your provider so the code can make use of it.
+
+- Finally the provider code itself; make sure to extend the `VideoProvider`
+  abstract class and add your provider in the
+  `src/classes/providers/` directory and update the array in the
+  `src/classes/VideoProviderFactory.ts` to include your provider so the code can
+  make use of it.
