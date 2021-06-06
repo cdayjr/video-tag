@@ -13,9 +13,13 @@ get.
 - YouTube videos (with timestamps)
 
 - YouTube playlists
+
   - YouTube playlists that start from a specific video (with timestamps)
+
   - YouTube user uploads list
+
   - YouTube playlists that are just comma separated video IDs
+
 - Vimeo videos (with timestamps)
 
 - Vimeo albums
