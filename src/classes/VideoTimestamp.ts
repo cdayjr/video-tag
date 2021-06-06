@@ -32,9 +32,9 @@ export default class VideoTimestamp {
       return;
     }
 
-    const match = time.match(/^(\d+h)?(\d+m)?(\d+s)?$/);
+    const match = time.match(/^(\d+h)?+(\d+m)?+(\d+s)?+$/);
 
-    if (!match) {
+    if (!match || match[0] === "") {
       return;
     }
 

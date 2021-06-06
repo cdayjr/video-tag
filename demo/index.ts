@@ -125,6 +125,9 @@ navElement.appendChild(navElementList);
 // Create the area where the videos themselves will be shown
 const showcase: HTMLElement = document.createElement("section");
 
+// store elements to add to page
+const elements = Object.create(null);
+
 // Iterate through each demotag and create the buttons for them
 demoTags.forEach((demoTag) => {
   const bbcode =
@@ -138,45 +141,22 @@ demoTags.forEach((demoTag) => {
   if (undefined !== demoTag.provider) {
     element.setAttribute("data-provider", demoTag.provider);
   }
+  elements[demoTag.title] = element;
 
   const fallbackElement: HTMLAnchorElement = document.createElement("a");
   fallbackElement.classList.add("video-tag-fallback");
-  fallbackElement.href = demoTag.source;
+  fallbackElement.setAttribute("href", demoTag.source);
   fallbackElement.textContent = demoTag.source;
   element.appendChild(fallbackElement);
 
   const button: HTMLButtonElement = document.createElement("button");
   button.classList.add(style.navigationButton);
   button.textContent = demoTag.title;
+  button.setAttribute("data-title", demoTag.title);
   button.setAttribute("data-element", element.outerHTML);
   button.setAttribute("data-bbcode", bbcode);
+  button.classList.add("demo-button");
   parseVideoTag(element);
-
-  button.addEventListener("click", () => {
-    while (showcase.lastChild) {
-      showcase.removeChild(showcase.lastChild);
-    }
-
-    showcase.appendChild(element);
-
-    const bbcodeTitle = document.createElement("h1");
-    bbcodeTitle.textContent = "BBCode";
-    showcase.appendChild(bbcodeTitle);
-
-    const bbcodeContainer = document.createElement("code");
-    bbcodeContainer.classList.add(style.code);
-    bbcodeContainer.textContent = button.dataset.bbcode as string;
-    showcase.appendChild(bbcodeContainer);
-
-    const htmlTitle = document.createElement("h1");
-    htmlTitle.textContent = "HTML";
-    showcase.appendChild(htmlTitle);
-
-    const htmlContainer = document.createElement("code");
-    htmlContainer.classList.add(style.code);
-    htmlContainer.textContent = button.dataset.element as string;
-    showcase.appendChild(htmlContainer);
-  });
 
   const navElementItem: HTMLElement = document.createElement("li");
   navElementItem.classList.add(style.navigationListItem);
@@ -185,12 +165,70 @@ demoTags.forEach((demoTag) => {
   navElementList.appendChild(navElementItem);
 });
 
+// When clicking a button, activate our sample code
+const displaySample = (event: Event): void => {
+  const button = event?.target;
+
+  if (
+    !(button instanceof HTMLElement) ||
+    !button.classList.contains("demo-button")
+  ) {
+    // not an element we can work with
+    return;
+  }
+
+  const title = button.dataset["data-title"];
+  if (typeof title !== "string") {
+    return;
+  }
+  // eslint-disable-next-line security/detect-object-injection
+  const element = elements[title];
+  if (!(element instanceof HTMLDivElement)) {
+    return;
+  }
+
+  while (showcase.lastChild) {
+    showcase.removeChild(showcase.lastChild);
+  }
+
+  showcase.appendChild(element);
+
+  const bbcodeTitle = document.createElement("h1");
+  bbcodeTitle.textContent = "BBCode";
+  showcase.appendChild(bbcodeTitle);
+
+  const bbcodeContainer = document.createElement("code");
+  bbcodeContainer.classList.add(style.code);
+  bbcodeContainer.textContent = button.dataset.bbcode as string;
+  showcase.appendChild(bbcodeContainer);
+
+  const htmlTitle = document.createElement("h1");
+  htmlTitle.textContent = "HTML";
+  showcase.appendChild(htmlTitle);
+
+  const htmlContainer = document.createElement("code");
+  htmlContainer.classList.add(style.code);
+  htmlContainer.textContent = button.dataset.element as string;
+  showcase.appendChild(htmlContainer);
+
+  button.remove();
+  if (document.querySelectorAll(".demo-button").length < 1) {
+    document.removeEventListener("click", displaySample);
+  }
+};
+// eslint-disable-next-line scanjs-rules/call_addEventListener
+document.addEventListener("click", displaySample, false);
+
 // When the page is loaded replace all content in the body tag with our
 // navigation and showcase
-document.addEventListener("DOMContentLoaded", () => {
+//
+const loadContent = (): void => {
   while (document.body.lastChild) {
     document.body.removeChild(document.body.lastChild);
   }
   document.body.appendChild(navElement);
   document.body.appendChild(showcase);
-});
+  document.removeEventListener("DOMContentLoaded", loadContent);
+};
+// eslint-disable-next-line scanjs-rules/call_addEventListener
+document.addEventListener("DOMContentLoaded", loadContent, false);

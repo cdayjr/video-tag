@@ -57,11 +57,8 @@ export default abstract class VideoProvider {
     const test: HTMLAnchorElement = document.createElement("a");
     test.setAttribute("href", source);
 
-    // Since `String.startsWith` isn't supported everywhere, this will do
-    const protocolMatch = new RegExp(`^${window.location.protocol}`, "i");
-
     if (
-      source.match(protocolMatch) ||
+      source.startsWith(window.location.protocol) ||
       test.protocol !== window.location.protocol ||
       source.search(window.location.hostname) > -1
     ) {
