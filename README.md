@@ -11,25 +11,15 @@ get.
 ## Supports
 
 - YouTube videos (with timestamps)
-
 - YouTube playlists
-
   - YouTube playlists that start from a specific video (with timestamps)
-
   - YouTube user uploads list
-
   - YouTube playlists that are just comma separated video IDs
-
 - Vimeo videos (with timestamps)
-
 - Vimeo albums
-
 - Twitch videos (VODs) (with timestamps)
-
 - Twitch channels
-
 - Twitch collections
-
 - Twitch clips
 
 ## Usage
@@ -97,14 +87,11 @@ the following functions:
 
 - `getVideoTags` - Returns a `HTMLDivElement` `NodeList` containing all HTML
   tags that match the format that haven't been parsed.
-
 - `parseVideoTag` - Takes an `HTMLDivElement` that matches the format and parses
   it through our code, removing the contents and placing an iframe or error
   message in there.
-
 - `parseVideoTags` - Gets all the tags via `getVideoTags` and parses each of
   them with `parseVideoTag`.
-
 - `urlToEmbedUrl` - Take a video URL and get just the embed URL for it.
 
 ## Notes
@@ -113,11 +100,9 @@ the following functions:
   and not the playlist. YouTube playlist embedding does not support starting
   from a specific video and it's probably more likely a user wants to embed the
   video they have a link to and not the playlist it belongs to.
-
 - Twitch embeds don't work on Internet Explorer 11. This seems to be an issue
   on their end, let them know since they appareltny say they should support
   Internet Explorer 11.
-
 - ID-only sources only work for video IDs and Twitch channels- everything else
   will require a full URL as the source parameter even with the provider param
   set.

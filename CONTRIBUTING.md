@@ -88,16 +88,13 @@ steps first:
 - Add relevant entries for it in the `demoTags` array in the `demo/index.ts`
   file so you can see the provider in action
   in your browser.
-
 - Add tests; I recommend building the tests out first as a test-driven-design
   strategy. Tests are in the following
   directories- don't be afraid to look at the other providers in the directories
   for some guidance:
-
   - `tests/unit/classes/providers` - Unit tests
   - `tests/integration/providers` - Integration tests
   - `tests/snapshots/providers` - Snapshot tests
-
 - Finally the provider code itself; make sure to extend the `VideoProvider`
   abstract class and add your provider in the
   `src/classes/providers/` directory and update the array in the
