@@ -25,7 +25,7 @@ export default class YouTube extends VideoProvider {
   public constructor(source: string) {
     super(source);
 
-    if ((this.constructor as typeof VideoProvider).getHostName(source)) {
+    if (this.constructor.prototype.getHostName(source)) {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 

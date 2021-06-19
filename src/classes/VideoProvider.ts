@@ -43,7 +43,7 @@ export default abstract class VideoProvider {
    * @return A provider string such as "YouTube" or "Vimeo"
    */
   public getProviderString(): string {
-    return (this.constructor as typeof VideoProvider).getProviderString();
+    return this.constructor.prototype.getProviderString();
   }
 
   /**
