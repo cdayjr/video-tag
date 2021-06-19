@@ -143,8 +143,3 @@ participated in this project.
 
 This project is licensed under the MIT License - see the
 [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-- Many video bbcode tags I've seen in the past inspiring me to take my own
-  swing at it.
