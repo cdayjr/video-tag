@@ -21,7 +21,7 @@ export default class Video {
   /**
    * Stores what video provider this object contains.
    */
-  private provider: VideoProvider | undefined = undefined;
+  private provider: VideoProvider | null = null;
 
   /**
    * Build a Video object. All you need is an URL, but providng a provider
@@ -65,9 +65,10 @@ export default class Video {
     container.classList.add(style.videoContainer);
 
     if (this.provider instanceof VideoProvider) {
-      const videoElement = this.provider.getElement() as HTMLElement;
-      videoElement.classList.add(style.videoEmbed);
-      container.appendChild(videoElement);
+      const videoElementHTML = this.provider.getElement() as HTMLElement;
+      videoElementHTML.classList.add(style.videoEmbed);
+      // eslint-disable-next-line xss/no-mixed-html
+      container.appendChild(videoElementHTML);
       return container;
     }
 

@@ -131,14 +131,14 @@ const elements = Object.create(null);
 // Iterate through each demotag and create the buttons for them
 demoTags.forEach((demoTag) => {
   const bbcode =
-    undefined === demoTag.provider
+    typeof demoTag.provider === "undefined"
       ? `[video]${demoTag.source}[/video]`
       : `[video=${demoTag.provider}]${demoTag.source}[/video]`;
 
   const element: HTMLDivElement = document.createElement("div");
   element.classList.add("video-tag");
   element.setAttribute("data-source", demoTag.source);
-  if (undefined !== demoTag.provider) {
+  if (typeof demoTag.provider !== "undefined") {
     element.setAttribute("data-provider", demoTag.provider);
   }
   elements[demoTag.title] = element;
@@ -153,6 +153,7 @@ demoTags.forEach((demoTag) => {
   button.classList.add(style.navigationButton);
   button.textContent = demoTag.title;
   button.setAttribute("data-title", demoTag.title);
+  // eslint-disable-next-line xss/no-mixed-html
   button.setAttribute("data-element", element.outerHTML);
   button.setAttribute("data-bbcode", bbcode);
   button.classList.add("demo-button");
@@ -165,18 +166,8 @@ demoTags.forEach((demoTag) => {
   navElementList.appendChild(navElementItem);
 });
 
-// When clicking a button, activate our sample code
-const displaySample = (event: Event): void => {
-  const button = event?.target;
-
-  if (
-    !(button instanceof HTMLElement) ||
-    !button.classList.contains("demo-button")
-  ) {
-    // not an element we can work with
-    return;
-  }
-
+// Showcase HTML for a given button
+const showcaseHTML = (button: HTMLButtonElement): void => {
   const title = button.dataset["data-title"];
   if (typeof title !== "string") {
     return;
@@ -202,14 +193,32 @@ const displaySample = (event: Event): void => {
   bbcodeContainer.textContent = button.dataset.bbcode as string;
   showcase.appendChild(bbcodeContainer);
 
-  const htmlTitle = document.createElement("h1");
-  htmlTitle.textContent = "HTML";
-  showcase.appendChild(htmlTitle);
+  const markupTitle = document.createElement("h1");
+  markupTitle.textContent = "HTML";
+  showcase.appendChild(markupTitle);
 
-  const htmlContainer = document.createElement("code");
-  htmlContainer.classList.add(style.code);
-  htmlContainer.textContent = button.dataset.element as string;
-  showcase.appendChild(htmlContainer);
+  const markupContainer = document.createElement("code");
+  markupContainer.classList.add(style.code);
+  markupContainer.textContent = button.dataset.element as string;
+  showcase.appendChild(markupContainer);
+};
+
+// When clicking a button, activate our sample code.
+// Disables xss/no-mixed-html since it seems like a false positive for a void
+// function
+// eslint-disable-next-line xss/no-mixed-html
+const displaySample = (event: Event): void => {
+  const button = event?.target;
+
+  if (
+    !(button instanceof HTMLButtonElement) ||
+    !button.classList.contains("demo-button")
+  ) {
+    // not an element we can work with
+    return;
+  }
+
+  showcaseHTML(button);
 
   button.remove();
   if (document.querySelectorAll(".demo-button").length < 1) {

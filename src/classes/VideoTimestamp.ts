@@ -32,30 +32,7 @@ export default class VideoTimestamp {
       return;
     }
 
-    const match = time.match(/^(\d+h)?+(\d+m)?+(\d+s)?+$/);
-
-    if (!match || match[0] === "") {
-      return;
-    }
-
-    const [, hoursMatch, minutesMatch, secondsMatch] = match;
-
-    let count = 0;
-
-    const hours = parseInt(hoursMatch, 10);
-    if (hours > 0) {
-      count += hours * 60 * 60;
-    }
-    const minutes = parseInt(minutesMatch, 10);
-    if (minutes > 0) {
-      count += minutes * 60;
-    }
-    const seconds = parseInt(secondsMatch, 10);
-    if (seconds > 0) {
-      count += seconds;
-    }
-
-    this.totalSeconds = count;
+    this.totalSeconds = this.constructor.prototype.timestampToSeconds(time);
   }
 
   /**
@@ -82,5 +59,30 @@ export default class VideoTimestamp {
     const seconds = remainingSeconds;
 
     return `${hours}h${minutes}m${seconds}s`;
+  }
+
+  /**
+   * Converts a given timestamp string to seconds
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The time in seconds
+   */
+  private static timestampToSeconds(timestamp: string): number {
+    let count = 0;
+
+    const match = timestamp.match(/^(\d+h)?+(\d+m)?+(\d+s)?+$/);
+
+    if (!match || match[0] === "") {
+      return count;
+    }
+
+    const [, hours, minutes, seconds] = match;
+
+    count += parseInt(hours, 10) * 60 * 60;
+    count += parseInt(minutes, 10) * 60;
+    count += parseInt(seconds, 10);
+
+    return count;
   }
 }

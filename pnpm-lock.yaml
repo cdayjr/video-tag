@@ -26,6 +26,7 @@ specifiers:
   eslint-plugin-prettier: ^3.4.0
   eslint-plugin-scanjs-rules: ^0.2.1
   eslint-plugin-security: ^1.4.0
+  eslint-plugin-xss: ^0.1.10
   husky: ^6.0.0
   jest: ^27.0.4
   jest-css-modules-transform: ^4.2.1
@@ -75,6 +76,7 @@ devDependencies:
   eslint-plugin-prettier: 3.4.0_de2986b0c29d2faa795004f5443c76d1
   eslint-plugin-scanjs-rules: 0.2.1
   eslint-plugin-security: 1.4.0
+  eslint-plugin-xss: 0.1.10
   husky: 6.0.0
   jest: 27.0.4
   jest-css-modules-transform: 4.2.1
@@ -5634,6 +5636,16 @@ packages:
       }
     dependencies:
       safe-regex: 1.1.0
+    dev: true
+
+  /eslint-plugin-xss/0.1.10:
+    resolution:
+      {
+        integrity: sha512-Wm2QIokqBq/IYi529xDXf9EOmVoQdAclaTEw1PNk+iyzyTiWssc1dqFz00PuB6nh01vA4phw0dnseY9b3Tsg1w==,
+      }
+    engines: { node: ">=0.10.0" }
+    dependencies:
+      requireindex: 1.1.0
     dev: true
 
   /eslint-scope/5.1.1:
@@ -12432,6 +12444,11 @@ packages:
     dependencies:
       caller-path: 0.1.0
       resolve-from: 1.0.1
+    dev: true
+
+  /requireindex/1.1.0:
+    resolution: { integrity: sha1-5UBLgVV+91225JxacgBIk/4D4WI= }
+    engines: { node: ">=0.10.5" }
     dev: true
 
   /reserved-words/0.1.2:

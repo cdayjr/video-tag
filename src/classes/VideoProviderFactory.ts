@@ -30,7 +30,7 @@ export default class VideoProviderFactory {
   public static createProvider(
     source: string,
     providerName?: string
-  ): VideoProvider | undefined {
+  ): VideoProvider | null {
     const providerNameLowerCase =
       providerName && providerName.trim().toLowerCase();
 
@@ -41,10 +41,10 @@ export default class VideoProviderFactory {
         provider.isProvider(source)
     );
 
-    if (Provider !== undefined) {
+    if (typeof Provider !== "undefined") {
       return new Provider(source);
     }
 
-    return undefined;
+    return null;
   }
 }
