@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require("fs");
+const path = require("path");
 const yaml = require("yaml");
 
-const file = fs.readFileSync(__dirname + "/eslint.yaml", "utf8");
+// eslint-disable-next-line security/detect-non-literal-fs-filename
+const file = fs.readFileSync(path.resolve(__dirname, "./eslint.yaml"), "utf8");
 
 const eslintConfig = yaml.parse(file);
 

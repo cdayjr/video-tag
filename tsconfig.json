@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     "declaration": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "lib": ["ESNext", "DOM", "ScriptHost"],
-    "module": "esnext",
+    "lib": ["ES2020", "DOM", "ScriptHost"],
+    "module": "es2020",
     "moduleResolution": "node",
     "plugins": [
       {
@@ -17,10 +14,9 @@
         }
       }
     ],
-    "rootDir": ".",
-    "strict": true,
-    "target": "esnext"
+    "rootDir": "."
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "tests/**/*.ts", "demo/**/*.ts"]
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "include": [".eslintrc.js", "*.js", "*.ts", "**/*.js", "**/*.ts"]
 }

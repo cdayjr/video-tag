@@ -35,6 +35,14 @@ rules:
   no-shadow: "off"
   # Conflicts with parcel importing
   import/extensions: "off"
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies:
+        - "**/.eslintrc.js"
+        - "**/tests/**/*.ts"
+      optionalDependencies: false
+      peerDependencies: false
+      bundledDependencies: false
   valid-jsdoc:
     - error
       # disable return if return type is void

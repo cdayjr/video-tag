@@ -277,7 +277,7 @@ export default class YouTube extends VideoProvider {
       params.set("start", this.timestamp.getSeconds().toString());
     }
 
-    let sourceAddress = `https://www.youtube-nocookie.com/embed`;
+    let sourceAddress = "https://www.youtube-nocookie.com/embed";
 
     if (this.startVideoID) {
       sourceAddress += `/${this.startVideoID}`;
