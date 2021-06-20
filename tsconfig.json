@@ -16,7 +16,7 @@
     ],
     "rootDir": "."
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "lib", "dist"],
   "extends": "@tsconfig/node14/tsconfig.json",
   "include": [".eslintrc.js", "*.js", "*.ts", "**/*.js", "**/*.ts"]
 }

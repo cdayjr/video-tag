@@ -9,7 +9,7 @@
  * @link https://github.com/cdayjr/video-tag Github repo
  */
 
-import style from "./Video.style.scss";
+import { videoContainer, videoEmbed, errorMessage } from "./Video.style.scss";
 import VideoProvider from "./VideoProvider";
 import VideoProviderFactory from "./VideoProviderFactory";
 
@@ -48,18 +48,18 @@ export default class Video {
    */
   public getElement(): HTMLDivElement {
     const container: HTMLDivElement = document.createElement("div");
-    container.classList.add(style.videoContainer);
+    container.classList.add(videoContainer);
 
     if (this.provider instanceof VideoProvider) {
       const videoElementHTML = this.provider.getElement() as HTMLElement;
-      videoElementHTML.classList.add(style.videoEmbed);
+      videoElementHTML.classList.add(videoEmbed);
       // eslint-disable-next-line xss/no-mixed-html
       container.appendChild(videoElementHTML);
       return container;
     }
 
     const message = document.createElement("p");
-    message.classList.add(style.errorMessage);
+    message.classList.add(errorMessage);
     message.textContent = "Invalid Video";
     container.appendChild(message);
 

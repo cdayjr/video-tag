@@ -8,7 +8,13 @@
  */
 
 import { parseVideoTag } from "../src/module";
-import style from "./index.scss";
+import {
+  code,
+  navigation,
+  navigationButton,
+  navigationList,
+  navigationListItem,
+} from "./index.scss";
 
 /**
  * Define how we want our demo tags to be structured
@@ -117,9 +123,9 @@ const demoTags: DemoTag[] = [
 // Create the element to store the buttons for users to select which tag
 // to display
 const navElement: HTMLElement = document.createElement("nav");
-navElement.classList.add(style.navigation);
+navElement.classList.add(navigation);
 const navElementList: HTMLElement = document.createElement("ul");
-navElementList.classList.add(style.navigationList);
+navElementList.classList.add(navigationList);
 navElement.appendChild(navElementList);
 
 // Create the area where the videos themselves will be shown
@@ -150,7 +156,7 @@ demoTags.forEach((demoTag) => {
   element.appendChild(fallbackElement);
 
   const button: HTMLButtonElement = document.createElement("button");
-  button.classList.add(style.navigationButton);
+  button.classList.add(navigationButton);
   button.textContent = demoTag.title;
   button.setAttribute("data-title", demoTag.title);
   // eslint-disable-next-line xss/no-mixed-html
@@ -160,7 +166,7 @@ demoTags.forEach((demoTag) => {
   parseVideoTag(element);
 
   const navElementItem: HTMLElement = document.createElement("li");
-  navElementItem.classList.add(style.navigationListItem);
+  navElementItem.classList.add(navigationListItem);
   navElementItem.appendChild(button);
 
   navElementList.appendChild(navElementItem);
@@ -189,7 +195,7 @@ const showcaseHTML = (button: HTMLButtonElement): void => {
   showcase.appendChild(bbcodeTitle);
 
   const bbcodeContainer = document.createElement("code");
-  bbcodeContainer.classList.add(style.code);
+  bbcodeContainer.classList.add(code);
   bbcodeContainer.textContent = button.dataset.bbcode as string;
   showcase.appendChild(bbcodeContainer);
 
@@ -198,7 +204,7 @@ const showcaseHTML = (button: HTMLButtonElement): void => {
   showcase.appendChild(markupTitle);
 
   const markupContainer = document.createElement("code");
-  markupContainer.classList.add(style.code);
+  markupContainer.classList.add(code);
   markupContainer.textContent = button.dataset.element as string;
   showcase.appendChild(markupContainer);
 };

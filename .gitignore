@@ -11,6 +11,7 @@ node_modules/
 # Temp files
 var
 .cache
+.parcel-cache
 
 # Coverage
 coverage
