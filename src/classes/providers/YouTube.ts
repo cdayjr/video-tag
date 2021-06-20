@@ -9,14 +9,42 @@
  *  for YouTube iframe embeds
  */
 
+import { sanitize } from "dompurify";
 import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
 import VideoTimestamp from "../VideoTimestamp";
+
+enum EmbedType {
+  Undefined,
+  Video,
+  Playlist,
+  List,
+}
 
 /**
  * YouTube video provider
  */
 export default class YouTube extends VideoProvider {
+  /**
+   * Store what type of embed this is
+   */
+  private embedType = EmbedType.Undefined;
+
+  /**
+   * Store the video timestamp
+   */
+  private timestamp: VideoTimestamp | null = null;
+
+  /**
+   * Store the list type
+   */
+  private listType = "";
+
+  /**
+   * Store the video ID to start with when playign a playlist
+   */
+  private startVideoID = "";
+
   /**
    * Build an object from the source string
    *
@@ -25,58 +53,28 @@ export default class YouTube extends VideoProvider {
   public constructor(source: string) {
     super(source);
 
-    if (this.constructor.prototype.getHostName(source)) {
+    if ((this.constructor as typeof YouTube).isProvider(source)) {
+      // we have a URL, let's break it up
+
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      const match = source.trim().match(
-        /* eslint-disable-next-line no-useless-escape */
-        /^https?:\/\/(?:.+.)?youtu(?:be(?:-nocookie)?.com|\.be)\/(?:(?:embed(?:\/videoseries)?|watch|playlist)\/?)?([^?#\n\/]+)?/
+      const params = new ParameterMap(link.search);
+
+      this.fetchVideoFromSource(link.pathname ?? "", params);
+
+      [this.fetchListFromParams, this.fetchPlaylistFromParams].forEach(
+        (fetcher: (params: ParameterMap) => void): void => {
+          if (typeof link.pathname === "undefined") {
+            return;
+          }
+          fetcher(params);
+        }
       );
 
-      if (match) {
-        const [, idMatch] = match;
-
-        const params = new ParameterMap(link.search);
-
-        // Video ID
-        if (idMatch) {
-          this.options.set("id", idMatch);
-        } else if (params.get("v")) {
-          this.options.set("id", params.get("v") as string);
-        }
-
-        // Playlists
-        if (params.get("listType") && params.get("list")) {
-          this.options.set("listType", params.get("listType") as string);
-          this.options.set("list", params.get("list") as string);
-        } else if (params.get("list")) {
-          this.options.set("listType", "playlist");
-          this.options.set("list", params.get("list") as string);
-        } else if (params.get("playlist")) {
-          this.options.set("playlist", params.get("playlist") as string);
-        }
-
-        // Timestamp
-        if (
-          params.get("start") &&
-          parseInt(params.get("start") as string, 10) > 0
-        ) {
-          this.options.set("start", params.get("start") as string);
-        } else if (params.get("t")) {
-          const timestamp = new VideoTimestamp(params.get("t"));
-          if (timestamp.getSeconds() > 0) {
-            this.options.set("start", `${timestamp.getSeconds()}`);
-          }
-        }
-      }
-    } else if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
-      // With no URL to go off of maybe it's a video ID?
-      // YouTube video IDs may change but this matches the current format
-      // https://stackoverflow.com/a/4084332
-
-      this.options.set("id", source);
+      this.fetchTimestampFromParams(params);
     }
+    this.parseNonURL(source);
   }
 
   /**
@@ -90,7 +88,7 @@ export default class YouTube extends VideoProvider {
     // First test if it's an URL
     const hostName: string = this.getHostName(source);
 
-    return !!hostName.match(/^(?:.+\.)?youtu(?:be(?:-nocookie)?\.com|\.be)$/);
+    return !!hostName.match(/\.?youtu(?:be(?:-nocookie)?\.com|\.be)$/);
   }
 
   /**
@@ -107,27 +105,20 @@ export default class YouTube extends VideoProvider {
    *
    * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getEmbedUrl(): string {
-    if (
-      !this.options.get("id") &&
-      !this.options.get("listType") &&
-      !this.options.get("playlist")
-    ) {
-      return "";
-    }
-
-    let sourceAddress = "https://www.youtube-nocookie.com/embed";
-
-    const options = new ParameterMap(this.options.toString());
-
-    if (options.get("id")) {
-      sourceAddress += `/${options.get("id")}`;
-      options.delete("id");
-    }
-
-    sourceAddress += `?${options.toString()}`;
-
-    return sourceAddress;
+  public getEmbedURL(): string {
+    return (
+      [
+        this.generateListEmbedURL,
+        this.generatePlaylistEmbedURL,
+        this.generateVideoEmbedURL,
+      ]
+        .map((generator: () => string): string => {
+          return generator();
+        })
+        .find((url: string): boolean => {
+          return url !== "";
+        }) ?? ""
+    );
   }
 
   /**
@@ -137,7 +128,7 @@ export default class YouTube extends VideoProvider {
    *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
-    const sourceAddress = this.getEmbedUrl();
+    const sourceAddress = this.getEmbedURL();
 
     if (!sourceAddress) {
       return null;
@@ -150,8 +141,194 @@ export default class YouTube extends VideoProvider {
       "accelerometer; encrypted-media; gyroscope; picture-in-picture"
     );
 
-    iframe.src = sourceAddress;
+    // eslint-disable-next-line scanjs-rules/assign_to_src
+    iframe.src = sanitize(sourceAddress);
 
     return iframe;
+  }
+
+  /**
+   * Get a list from params, will also set the type
+   *
+   * @param params  The params to search for the list in
+   */
+  private fetchListFromParams(params: ParameterMap): void {
+    if ([EmbedType.Undefined, EmbedType.Video].indexOf(this.embedType) < 0) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("list") === "undefined") {
+      return;
+    }
+    this.setStartVideo();
+    this.embedType = EmbedType.List;
+    this.id = params.get("list") as string;
+    // default type is playlist
+    this.listType = params.get("listType") ?? "playlist";
+  }
+
+  /**
+   * Get a playlist from params, will also set the type
+   *
+   * @param params  The params to search for the list in
+   */
+  private fetchPlaylistFromParams(params: ParameterMap): void {
+    if ([EmbedType.Undefined, EmbedType.Video].indexOf(this.embedType) < 0) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("playlist") === "undefined") {
+      return;
+    }
+    this.setStartVideo();
+    this.embedType = EmbedType.Playlist;
+    this.id = params.get("playlist") as string;
+  }
+
+  /**
+   * Fetch a video from a source URL
+   *
+   * @param path  The path to search for the video ID in
+   * @param params  The params to search for the video ID in
+   */
+  private fetchVideoFromSource(path: string, params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(new RegExp("/([^/]+?)$"));
+    if (match) {
+      this.embedType = EmbedType.Video;
+      [, this.id] = match;
+      return;
+    }
+    if (typeof params.get("v") !== "undefined") {
+      this.embedType = EmbedType.Video;
+      this.id = params.get("v") as string;
+    }
+  }
+
+  /**
+   * Sometimes a playlist or list will be configured to start with a specific
+   * video
+   *
+   * Converts a stored ID to a start video ID.
+   */
+  private setStartVideo(): void {
+    if (this.embedType !== EmbedType.Video) {
+      return;
+    }
+    this.embedType = EmbedType.Undefined;
+    this.startVideoID = this.id;
+  }
+
+  /**
+   * Grabs the timetamp from the given parameters if it's found,
+   * and saves it on the object.
+   *
+   * @param params  The parameters to parse
+   */
+  private fetchTimestampFromParams(params: ParameterMap): void {
+    if (
+      typeof params.get("start") !== "undefined" &&
+      parseInt(params.get("start") as string, 10) > 0
+    ) {
+      this.timestamp = new VideoTimestamp(params.get("start") as string);
+    } else if (params.get("t")) {
+      this.timestamp = new VideoTimestamp(params.get("t"));
+    }
+  }
+
+  /**
+   * Parse a source input that isn't a URL
+   *
+   * @param source  The source to parse
+   */
+  private parseNonURL(source: string): void {
+    if (this.embedType === EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (source.match(/^[a-zA-Z0-9_-]{11}$/)) {
+      // With no URL to go off of maybe it's a video ID?
+      // YouTube video IDs may change but this matches the current format
+      // https://stackoverflow.com/a/4084332
+
+      this.embedType = EmbedType.Video;
+      this.id = source;
+    }
+  }
+
+  /**
+   * Generate a list embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateListEmbedURL(): string {
+    if (this.embedType !== EmbedType.List) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("list", this.id);
+    params.set("listtype", this.listType);
+
+    if (this.timestamp) {
+      params.set("start", this.timestamp.getSeconds().toString());
+    }
+
+    let sourceAddress = `https://www.youtube-nocookie.com/embed`;
+
+    if (this.startVideoID) {
+      sourceAddress += `/${this.startVideoID}`;
+    }
+
+    return `${sourceAddress}?${params.toString()}`;
+  }
+
+  /**
+   * Generate a playlist embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generatePlaylistEmbedURL(): string {
+    if (this.embedType !== EmbedType.Playlist) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("playlist", this.id);
+
+    if (this.timestamp) {
+      params.set("start", this.timestamp.getSeconds().toString());
+    }
+
+    let sourceAddress = `https://www.youtube-nocookie.com/embed`;
+
+    if (this.startVideoID) {
+      sourceAddress += `/${this.startVideoID}`;
+    }
+
+    return `${sourceAddress}?${params.toString()}`;
+  }
+
+  /**
+   * Generate a video embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateVideoEmbedURL(): string {
+    if (this.embedType !== EmbedType.Video) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    if (this.timestamp) {
+      params.set("start", this.timestamp.getSeconds().toString());
+    }
+
+    return `https://www.youtube-nocookie.com/embed/${
+      this.id
+    }?${params.toString()}`;
   }
 }

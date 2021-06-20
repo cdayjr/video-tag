@@ -44,39 +44,3 @@ test("ID only does not set provider", () => {
 
   expect(video.getProvider()).toBe("Invalid");
 });
-
-test("importOptions and exportOptions work as intended", () => {
-  const video = new Video("https://www.twitch.tv/videos/355193670?t=02h16m51s");
-  const twitch = new Twitch(
-    "https://www.twitch.tv/videos/355193670?t=02h16m51s"
-  );
-
-  expect(video.getProvider()).toBe(Twitch.getProviderString());
-  expect(video.exportOptions()).toBe(twitch.exportOptions());
-
-  // should clear provider and options
-  video.importOptions("", "");
-
-  expect(video.getProvider()).toBe("Invalid");
-  expect(video.exportOptions()).toBe("");
-
-  // setting the options back
-  video.importOptions(Twitch.getProviderString(), twitch.exportOptions());
-
-  expect(video.getProvider()).toBe(Twitch.getProviderString());
-  expect(video.exportOptions()).toBe(twitch.exportOptions());
-
-  // Compare elements
-  const videoElement = video.getElement();
-  const twitchElement = twitch.getElement() as HTMLIFrameElement;
-  expect(twitchElement).toBeInstanceOf(HTMLIFrameElement);
-
-  // remove classes
-  const videoIFrameElement = videoElement.querySelector(
-    "iframe"
-  ) as HTMLIFrameElement;
-  expect(videoIFrameElement).toBeInstanceOf(HTMLIFrameElement);
-  videoIFrameElement.removeAttribute("class");
-
-  expect(videoIFrameElement.outerHTML).toBe(twitchElement.outerHTML);
-});

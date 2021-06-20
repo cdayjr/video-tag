@@ -10,11 +10,11 @@
 import ParameterMap from "../../../src/classes/ParameterMap";
 
 const paramStringToObject = (input: string): { [key: string]: string } => {
-  const output: { [key: string]: string } = {};
+  const output: Map<string, string> = new Map();
   new URLSearchParams(input).forEach((value, key) => {
-    output[key] = value;
+    output.set(key, value);
   });
-  return output;
+  return Object.fromEntries(output.entries());
 };
 
 test("Create ParameterMap with no arguments", () => {

@@ -16,7 +16,7 @@ export default class VideoTimestamp {
   /**
    * Create a VideoTimestamp object
    *
-   * @param The time string, such as "0h1m25s" or just seconds
+   * @param time The time string, such as "0h1m25s" or just seconds
    */
   public constructor(time?: string | number) {
     if (!time) {
@@ -32,11 +32,15 @@ export default class VideoTimestamp {
       return;
     }
 
-    this.totalSeconds = this.constructor.prototype.timestampToSeconds(time);
+    this.totalSeconds = (
+      this.constructor as typeof VideoTimestamp
+    ).timestampToSeconds(time);
   }
 
   /**
    * Get the total seconds
+   *
+   * @returns The total seconds
    */
   public getSeconds(): number {
     return this.totalSeconds;
@@ -71,7 +75,8 @@ export default class VideoTimestamp {
   private static timestampToSeconds(timestamp: string): number {
     let count = 0;
 
-    const match = timestamp.match(/^(\d+h)?+(\d+m)?+(\d+s)?+$/);
+    // eslint-disable-next-line security/detect-unsafe-regex
+    const match = timestamp.match(/^(\d+h)?(\d+m)?(\d+s)?$/);
 
     if (!match || match[0] === "") {
       return count;

@@ -22,8 +22,8 @@ export default class VideoProviderFactory {
   /**
    * Create a new provider
    *
-   * @param The source URL
-   * @param The provider name
+   * @param source        The source URL
+   * @param providerName  The provider name
    *
    * @return A new VideoProvider object of the appropriate provider or undefined.
    */

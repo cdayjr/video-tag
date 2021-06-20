@@ -9,82 +9,69 @@
  *  Twitch iframe embeds
  */
 
+import { sanitize } from "dompurify";
 import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
 
+enum EmbedType {
+  Undefined,
+  Channel,
+  Video,
+  Clip,
+  Collection,
+}
+
 export default class Twitch extends VideoProvider {
+  /**
+   * Store the type of embed
+   */
+  private embedType = EmbedType.Undefined;
+
+  /**
+   * Store a timestamp to a specific point in a video
+   */
+  private timestamp = "";
+
   /**
    * Build an object from the source URL
    *
-   * @param A source string, usually an URL.
+   * @param source A source string, usually an URL.
    */
   public constructor(source: string) {
     super(source);
 
-    if (this.constructor.prototype.getHostName(source)) {
+    if ((this.constructor as typeof Twitch).isProvider(source)) {
+      // we have a URL, let's break it up
+
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      const match = source.match(
-        /https?:\/\/(?:.+\.)?twitch\.tv(?:\/(?:videos\/(\d+)|embed|collections\/(\w+)))?(?:\/(\w+)(?:\/clip\/(\w+))?)?/
-      );
-      if (match) {
-        const [, idMatch, collectionMatch, channelMatch, clipMatch] = match;
-
-        let foundType = false;
-
-        if (collectionMatch) {
-          this.options.set("collection", collectionMatch);
-          foundType = true;
-        } else if (clipMatch) {
-          this.options.set("clip", clipMatch);
-          foundType = true;
-        } else if (channelMatch) {
-          this.options.set("channel", channelMatch);
-          foundType = true;
-        } else if (idMatch) {
-          // If video ID is gathered this way, we need to
-          // manually add a `v` in front.
-          this.options.set("id", `v${idMatch}`);
-          foundType = true;
+      [
+        this.fetchChannelFromPath,
+        this.fetchClipFromPath,
+        this.fetchCollectionFromPath,
+        this.fetchVideoFromPath,
+      ].forEach((fetcher: (path: string) => void): void => {
+        if (typeof link.pathname === "undefined") {
+          return;
         }
+        fetcher(link.pathname);
+      });
 
-        if (link.search) {
-          const params = new ParameterMap(link.search);
-
-          if (!foundType) {
-            if (params.get("collection")) {
-              this.options.set(
-                "collection",
-                params.get("collection") as string
-              );
-            } else if (params.get("channel")) {
-              this.options.set("channel", params.get("channel") as string);
-            } else if (params.get("video")) {
-              this.options.set("id", params.get("video") as string);
-            } else if (params.get("clip")) {
-              this.options.set("clip", params.get("clip") as string);
-            }
-          }
-          if (this.options.get("id") && params.get("t")) {
-            this.options.set("timestamp", params.get("t") as string);
-          }
-        }
+      if (link.search) {
+        const params = new ParameterMap(link.search);
+        this.parseParams(params);
       }
-    } else if (source.match(/^\d+$/)) {
-      this.options.set("id", `v${source}`);
-    } else if (source.match(/^v\d+$/)) {
-      this.options.set("id", source);
-    } else if (source.match(/^\w+$/)) {
-      this.options.set("channel", source);
     }
+
+    this.parseNonURL(source);
   }
 
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
    *
-   * @param A source string, usually an URL.
+   * @param source A source string, usually an URL.
    *
    * @return True if the source is valid for the provider, false otherwise.
    */
@@ -92,7 +79,7 @@ export default class Twitch extends VideoProvider {
     // First test if it's an URL
     const hostName: string = this.getHostName(source);
 
-    return !!hostName.match(/^(?:.+\.)?twitch\.tv$/);
+    return !!hostName.match(/\.?twitch\.tv$/);
   }
 
   /**
@@ -109,35 +96,21 @@ export default class Twitch extends VideoProvider {
    *
    * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getEmbedUrl(): string {
-    let sourceAddress = "";
-
-    if (this.options.get("collection")) {
-      // collection embed
-      sourceAddress = `https://player.twitch.tv/?autoplay=false&collection=${this.options.get(
-        "collection"
-      )}`;
-    } else if (this.options.get("channel")) {
-      // stream embed
-      sourceAddress = `https://player.twitch.tv/?autoplay=false&channel=${this.options.get(
-        "channel"
-      )}`;
-    } else if (this.options.get("id")) {
-      // vod embed
-      sourceAddress = `https://player.twitch.tv/?autoplay=false&video=${this.options.get(
-        "id"
-      )}`;
-      if (this.options.get("timestamp")) {
-        sourceAddress += `&t=${this.options.get("timestamp")}`;
-      }
-    } else if (this.options.get("clip")) {
-      // Clip embed
-      sourceAddress = `https://clips.twitch.tv/embed?autoplay=false&clip=${this.options.get(
-        "clip"
-      )}`;
-    }
-
-    return sourceAddress;
+  public getEmbedURL(): string {
+    return (
+      [
+        this.generateChannelEmbedURL,
+        this.generateClipEmbedURL,
+        this.generateCollectionEmbedURL,
+        this.generateVideoEmbedURL,
+      ]
+        .map((generator: () => string): string => {
+          return generator();
+        })
+        .find((url: string): boolean => {
+          return url !== "";
+        }) ?? ""
+    );
   }
 
   /**
@@ -147,7 +120,7 @@ export default class Twitch extends VideoProvider {
    *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
-    const sourceAddress = this.getEmbedUrl();
+    const sourceAddress = this.getEmbedURL();
 
     if (!sourceAddress) {
       return null;
@@ -157,8 +130,278 @@ export default class Twitch extends VideoProvider {
     iframe.setAttribute("allowfullscreen", "");
     iframe.setAttribute("scrolling", "no");
 
-    iframe.src = sourceAddress;
+    // eslint-disable-next-line scanjs-rules/assign_to_src
+    iframe.setAttribute("src", sanitize(sourceAddress));
 
     return iframe;
+  }
+
+  /**
+   * Get a channel ID from a path, will also set the type
+   *
+   * @param path  The path to search for the channel ID in
+   */
+  private fetchChannelFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/\/(\w+)$/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Channel;
+    this.id = match.shift() as string;
+  }
+
+  /**
+   * Get a clip ID from a path, will also set the type
+   *
+   * @param path  The path to search for the clip ID in
+   */
+  private fetchClipFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/\/\w+?\/clip\/(\w+)$/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Clip;
+    this.id = match.shift() as string;
+  }
+
+  /**
+   * Fetch a collection ID from a path, will also set the type
+   *
+   * @param path  The path to search for the collection ID in
+   */
+  private fetchCollectionFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/\/collections\/(\w+)$/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Collection;
+    this.id = match.shift() as string;
+  }
+
+  /**
+   * Fetch a video from a path
+   *
+   * @param path  The path to search for the video ID in
+   */
+  private fetchVideoFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/\/videos\/(\d+)$/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Video;
+    this.id = `v${match.shift()}`;
+  }
+
+  /**
+   * Get a channel ID from params, will also set the type
+   *
+   * @param params  The params to search for the channel ID in
+   */
+  private fetchChannelFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("channel") === "undefined") {
+      return;
+    }
+    this.embedType = EmbedType.Channel;
+    this.id = params.get("channel") as string;
+  }
+
+  /**
+   * Get a clip ID from params, will also set the type
+   *
+   * @param params  The params to search for the clip ID in
+   */
+  private fetchClipFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("clip") === "undefined") {
+      return;
+    }
+    this.embedType = EmbedType.Clip;
+    this.id = params.get("clip") as string;
+  }
+
+  /**
+   * Get a collection ID from params, will also set the type
+   *
+   * @param params  The params to search for the collection ID in
+   */
+  private fetchCollectionFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("collection") === "undefined") {
+      return;
+    }
+    this.embedType = EmbedType.Collection;
+    this.id = params.get("collection") as string;
+  }
+
+  /**
+   * Get a video ID from params, will also set the type
+   *
+   * @param params  The params to search for the video ID in
+   */
+  private fetchVideoFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (typeof params.get("video") === "undefined") {
+      return;
+    }
+    this.embedType = EmbedType.Video;
+    this.id = params.get("video") as string;
+  }
+
+  /**
+   * Grabs the timetamp from the given parameters if it's found,
+   * and saves it on the object.
+   *
+   * @param params  The parameters to parse
+   */
+  private fetchTimestampFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Video) {
+      return;
+    }
+    if (params.get("t") !== "undefined") {
+      this.timestamp = params.get("t") as string;
+    }
+  }
+
+  /**
+   * Parse the given parameters to set the type, ID, and timestamp
+   *
+   * @param params  The parameters to parse
+   */
+  private parseParams(params: ParameterMap): void {
+    if (this.embedType === EmbedType.Undefined) {
+      [
+        this.fetchChannelFromParams,
+        this.fetchClipFromParams,
+        this.fetchCollectionFromParams,
+        this.fetchVideoFromParams,
+      ].forEach((fetcher: (params: ParameterMap) => void): void => {
+        fetcher(params);
+      });
+    }
+    this.fetchTimestampFromParams(params);
+  }
+
+  /**
+   * Parse a source input that isn't a URL
+   *
+   * @param source  The source to parse
+   */
+  private parseNonURL(source: string): void {
+    if (this.embedType === EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const idMatch = source.match(/^v?(\d+)$/);
+    if (idMatch) {
+      this.embedType = EmbedType.Video;
+      const [, id] = idMatch;
+      this.id = `v${id}`;
+      return;
+    }
+    if (source.match(/^\w+$/)) {
+      this.embedType = EmbedType.Channel;
+      this.id = source;
+    }
+  }
+
+  /**
+   * Generate a channel embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateChannelEmbedURL(): string {
+    if (this.embedType !== EmbedType.Channel) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("autoplay", "false");
+    params.set("channel", this.id);
+
+    return `https://player.twitch.tv/?${params.toString()}`;
+  }
+
+  /**
+   * Generate a clip embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateClipEmbedURL(): string {
+    if (this.embedType !== EmbedType.Clip) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("autoplay", "false");
+    params.set("clip", this.id);
+
+    return `https://clips.twitch.tv/embed?${params.toString()}`;
+  }
+
+  /**
+   * Generate a collection embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateCollectionEmbedURL(): string {
+    if (this.embedType !== EmbedType.Collection) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("autoplay", "false");
+    params.set("collection", this.id);
+
+    return `https://player.twitch.tv/?${params.toString()}`;
+  }
+
+  /**
+   * Generate a video embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateVideoEmbedURL(): string {
+    if (this.embedType !== EmbedType.Video) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("autoplay", "false");
+    params.set("clip", this.id);
+
+    if (this.timestamp) {
+      params.set("t", this.timestamp);
+    }
+
+    return `https://player.twitch.tv/?${params.toString()}`;
   }
 }

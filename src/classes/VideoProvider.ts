@@ -8,12 +8,15 @@
  * @link https://github.com/cdayjr/video-tag Github repo
  */
 
-import ParameterMap from "./ParameterMap";
-
 /**
  * What a video provider class should look like.
  */
 export default abstract class VideoProvider {
+  /**
+   * Store the identifier for what the embed should display
+   */
+  protected id = "";
+
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
@@ -43,13 +46,13 @@ export default abstract class VideoProvider {
    * @return A provider string such as "YouTube" or "Vimeo"
    */
   public getProviderString(): string {
-    return this.constructor.prototype.getProviderString();
+    return (this.constructor as typeof VideoProvider).getProviderString();
   }
 
   /**
    * Get the host from an URL.
    *
-   * @param An URL to figure out the host from.
+   * @param source An URL to figure out the host from.
    *
    * @return The host string, defaults to "" if host can't be found.
    */
@@ -58,8 +61,12 @@ export default abstract class VideoProvider {
     test.setAttribute("href", source);
 
     if (
+      // if source string starts with window protocol, we know its a valid URL
       source.startsWith(window.location.protocol) ||
+      // protocol will match window protocol if href tag is empty
       test.protocol !== window.location.protocol ||
+      // if for some reason the source URL has the same hostname as the current
+      // window, then we can consider it a valid hostname
       source.search(window.location.hostname) > -1
     ) {
       return test.hostname;
@@ -67,11 +74,6 @@ export default abstract class VideoProvider {
 
     return "";
   }
-
-  /**
-   * All options related to the video, including its ID.
-   */
-  protected options = new ParameterMap();
 
   /**
    * Build the object from the source URL
@@ -89,7 +91,7 @@ export default abstract class VideoProvider {
    *
    * @return The appropriate embed URL to stick in an iframe element.
    */
-  public abstract getEmbedUrl(): string;
+  public abstract getEmbedURL(): string;
 
   /**
    * Get the video element
@@ -98,23 +100,4 @@ export default abstract class VideoProvider {
    *  the provider, or null.
    */
   public abstract getElement(): HTMLIFrameElement | null;
-
-  /**
-   * Import options
-   *
-   * @param An options string such as "id=7&start=15"
-   */
-  public importOptions(options: string): void {
-    this.options.clear();
-    this.options.importParams(options);
-  }
-
-  /**
-   * Get the options
-   *
-   * @return An options string such as "id=7&start=15"
-   */
-  public exportOptions(): string {
-    return this.options.toString();
-  }
 }

@@ -9,14 +9,6 @@
 
 import Twitch from "../../../../src/classes/providers/Twitch";
 
-const paramStringToObject = (input: string): { [key: string]: string } => {
-  const output: { [key: string]: string } = {};
-  new URLSearchParams(input).forEach((value, key) => {
-    output[key] = value;
-  });
-  return output;
-};
-
 test("getProviderString is twitch", () => {
   expect(Twitch.getProviderString()).toBe("twitch");
 
@@ -25,45 +17,10 @@ test("getProviderString is twitch", () => {
   expect(twitch.getProviderString()).toBe("twitch");
 });
 
-test("Test empty source returns an empty getElement", () => {
+test("empty source returns an empty getElement", () => {
   const twitch = new Twitch("");
 
   expect(twitch.getElement()).toBeNull();
-});
-
-test("Test importOptions and exportOptions with ? prefix", () => {
-  const twitch = new Twitch("");
-
-  const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
-
-  twitch.importOptions(`?${initialString}`);
-
-  expect(paramStringToObject(twitch.exportOptions())).toEqual({
-    test: "test",
-    test2: "2",
-    test3: "true",
-    test4: "",
-    test5: "",
-    test6: "test",
-  });
-});
-
-test("Test importOptions and exportOptions without ? prefix and duplicate keys", () => {
-  const twitch = new Twitch("");
-
-  const initialString =
-    "test=test&test2=2&test3=true&test4&test5=&test6=test&test=test2&test4=4";
-
-  twitch.importOptions(initialString);
-
-  expect(paramStringToObject(twitch.exportOptions())).toEqual({
-    test: "test2",
-    test2: "2",
-    test3: "true",
-    test4: "4",
-    test5: "",
-    test6: "test",
-  });
 });
 
 interface VODOptions {
@@ -226,12 +183,11 @@ inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const twitch = new Twitch(input.source);
 
-    expect(twitch.getEmbedUrl()).toBe(input.expect);
-    expect(paramStringToObject(twitch.exportOptions())).toEqual(input.options);
+    expect(twitch.getEmbedURL()).toBe(input.expect);
 
-    const twitchElement = twitch.getElement() as HTMLElement;
+    const twitchElementHTML = twitch.getElement() as HTMLElement;
 
-    expect(twitchElement.getAttribute("src")).toBe(input.expect);
+    expect(twitchElementHTML.getAttribute("src")).toBe(input.expect);
   });
 });
 
@@ -247,8 +203,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const twitch = new Twitch(input);
-    expect(twitch.getEmbedUrl()).toBeFalsy();
-    expect(twitch.exportOptions()).toBeFalsy();
+    expect(twitch.getEmbedURL()).toBeFalsy();
     expect(twitch.getElement()).toBeNull();
   });
 });

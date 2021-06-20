@@ -15,20 +15,20 @@ export default class ParameterMap extends Map<string, string> {
   /**
    * Build a new ParameterMap object
    *
-   * @param An url parameter string such as "id=777&start=15"
+   * @param parameters An url parameter string such as "id=777&start=15"
    */
-  public constructor(parameterString?: string) {
+  public constructor(parameters?: string) {
     super();
 
-    if (parameterString) {
-      this.importParams(parameterString);
+    if (parameters) {
+      this.importParams(parameters);
     }
   }
 
   /**
    * Import parameter options from a string.
    *
-   * @param An URL param string such as "id=777&start=15"
+   * @param input An URL param string such as "id=777&start=15"
    */
   public importParams(input: string): void {
     const paramString = input.substr(0, 1) === "?" ? input.substr(1) : input;

@@ -9,14 +9,6 @@
 
 import YouTube from "../../../../src/classes/providers/YouTube";
 
-const paramStringToObject = (input: string): { [key: string]: string } => {
-  const output: { [key: string]: string } = {};
-  new URLSearchParams(input).forEach((value, key) => {
-    output[key] = value;
-  });
-  return output;
-};
-
 test("getProviderString is youtube", () => {
   expect(YouTube.getProviderString()).toBe("youtube");
 
@@ -25,45 +17,10 @@ test("getProviderString is youtube", () => {
   expect(youtube.getProviderString()).toBe("youtube");
 });
 
-test("Test empty source returns an empty getElement", () => {
+test("empty source returns an empty getElement", () => {
   const youtube = new YouTube("");
 
   expect(youtube.getElement()).toBeNull();
-});
-
-test("Test importOptions and exportOptions with ? prefix", () => {
-  const youtube = new YouTube("");
-
-  const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
-
-  youtube.importOptions(`?${initialString}`);
-
-  expect(paramStringToObject(youtube.exportOptions())).toEqual({
-    test: "test",
-    test2: "2",
-    test3: "true",
-    test4: "",
-    test5: "",
-    test6: "test",
-  });
-});
-
-test("Test importOptions and exportOptions without ? prefix and duplicate keys", () => {
-  const youtube = new YouTube("");
-
-  const initialString =
-    "test=test&test2=2&test3=true&test4&test5=&test6=test&test=test2&test4=4";
-
-  youtube.importOptions(initialString);
-
-  expect(paramStringToObject(youtube.exportOptions())).toEqual({
-    test: "test2",
-    test2: "2",
-    test3: "true",
-    test4: "4",
-    test5: "",
-    test6: "test",
-  });
 });
 
 interface Options {
@@ -290,12 +247,11 @@ inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const youtube = new YouTube(input.source);
 
-    expect(youtube.getEmbedUrl()).toBe(input.expect);
-    expect(paramStringToObject(youtube.exportOptions())).toEqual(input.options);
+    expect(youtube.getEmbedURL()).toBe(input.expect);
 
-    const youtubeElement = youtube.getElement() as HTMLElement;
+    const youtubeElementHTML = youtube.getElement() as HTMLElement;
 
-    expect(youtubeElement.getAttribute("src")).toBe(input.expect);
+    expect(youtubeElementHTML.getAttribute("src")).toBe(input.expect);
   });
 });
 
@@ -315,8 +271,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const youtube = new YouTube(input);
-    expect(youtube.getEmbedUrl()).toBeFalsy();
-    expect(youtube.exportOptions()).toBeFalsy();
+    expect(youtube.getEmbedURL()).toBeFalsy();
     expect(youtube.getElement()).toBeNull();
   });
 });

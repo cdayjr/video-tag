@@ -9,51 +9,61 @@
  *  Documentation for Vimeo iframe embeds
  */
 
+import { sanitize } from "dompurify";
 import ParameterMap from "../ParameterMap";
 import VideoProvider from "../VideoProvider";
 
+enum EmbedType {
+  Undefined,
+  Video,
+  Album,
+}
+
 export default class Vimeo extends VideoProvider {
+  /**
+   * Store what type of embed this is
+   */
+  private embedType = EmbedType.Undefined;
+
+  /**
+   * Store a video timestamp
+   */
+  private timestamp = "";
+
   /**
    * Build an object from the source URL
    *
-   * @param A source string, usually an URL.
+   * @param source A source string, usually an URL.
    */
   public constructor(source: string) {
     super(source);
 
-    if (this.constructor.prototype.getHostName(source)) {
+    if ((this.constructor as typeof Vimeo).isProvider(source)) {
+      // we have a URL, let's break it up
+
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      const match = source.match(
-        /^https?:\/\/(?:.+\.)?vimeo\.com\/(?:album\/(\d+)|(?:video\/)?(\d+))\??(?:.*)?$/
-      );
-      if (match) {
-        const [, albumMatch, idMatch] = match;
-
-        if (albumMatch) {
-          this.options.set("album", albumMatch);
-        } else {
-          this.options.set("id", idMatch);
-
-          const params = new ParameterMap(link.hash.substr(1));
-          if (params.get("t")) {
-            this.options.set("timestamp", params.get("t") as string);
+      [this.fetchAlbumFromPath, this.fetchVideoFromPath].forEach(
+        (fetcher: (path: string) => void): void => {
+          if (typeof link.pathname === "undefined") {
+            return;
           }
+          fetcher(link.pathname);
         }
-      }
-    } else if (source.match(/^\d+$/)) {
-      // With no URL to go off of maybe it's a video ID?
+      );
 
-      this.options.set("id", source);
+      const params = new ParameterMap(link.hash.substr(1));
+      this.fetchTimestampFromParams(params);
     }
+    this.parseNonURL(source);
   }
 
   /**
    * Let us know if this is a valid provider for the source
    * (usually a URL)
    *
-   * @param A source string, usually an URL.
+   * @param source A source string, usually an URL.
    *
    * @return True if the source is valid for the provider, false otherwise.
    */
@@ -61,7 +71,7 @@ export default class Vimeo extends VideoProvider {
     // First test if it's an URL
     const hostName: string = this.getHostName(source);
 
-    return !!hostName.match(/^(?:.+\.)?vimeo\.com$/);
+    return !!hostName.match(/\.?vimeo\.com$/);
   }
 
   /**
@@ -78,22 +88,16 @@ export default class Vimeo extends VideoProvider {
    *
    * @return The appropriate embed URL to stick in an iframe element.
    */
-  public getEmbedUrl(): string {
-    if (!this.options.get("id") && !this.options.get("album")) {
-      return "";
-    }
-
-    let sourceAddress = this.options.get("id")
-      ? `https://player.vimeo.com/video/${this.options.get(
-          "id"
-        )}?color=ffffff&title=0&byline=0&portrait=0&autoplay=0`
-      : `https://vimeo.com/album/${this.options.get("album")}/embed`;
-
-    if (this.options.get("id") && this.options.get("timestamp")) {
-      sourceAddress += `#t=${this.options.get("timestamp")}`;
-    }
-
-    return sourceAddress;
+  public getEmbedURL(): string {
+    return (
+      [this.generateAlbumEmbedURL, this.generateVideoEmbedURL]
+        .map((generator: () => string): string => {
+          return generator();
+        })
+        .find((url: string): boolean => {
+          return url !== "";
+        }) ?? ""
+    );
   }
 
   /**
@@ -103,7 +107,7 @@ export default class Vimeo extends VideoProvider {
    *  null otherwise.
    */
   public getElement(): HTMLIFrameElement | null {
-    const sourceAddress = this.getEmbedUrl();
+    const sourceAddress = this.getEmbedURL();
 
     if (!sourceAddress) {
       return null;
@@ -114,8 +118,117 @@ export default class Vimeo extends VideoProvider {
     iframe.setAttribute("webkitallowfullscreen", "");
     iframe.setAttribute("mozallowfullscreen", "");
 
-    iframe.src = sourceAddress;
+    // eslint-disable-next-line scanjs-rules/assign_to_src
+    iframe.src = sanitize(sourceAddress);
 
     return iframe;
+  }
+
+  /**
+   * Fetch an album from a path
+   *
+   * @param path  The path to search for the album ID in
+   */
+  private fetchAlbumFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/^\/album\/(\d+)/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Album;
+    this.id = match.shift() as string;
+  }
+
+  /**
+   * Fetch a video from a path
+   *
+   * @param path  The path to search for the video ID in
+   */
+  private fetchVideoFromPath(path: string): void {
+    if (this.embedType !== EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    const match = path.match(/^\/(?:video\/)?(\d+)/);
+    if (!match || match.shift() === "") {
+      return;
+    }
+    this.embedType = EmbedType.Video;
+    this.id = match.shift() as string;
+  }
+
+  /**
+   * Grabs the timetamp from the given parameters if it's found,
+   * and saves it on the object.
+   *
+   * @param params  The params to parse
+   */
+  private fetchTimestampFromParams(params: ParameterMap): void {
+    if (this.embedType !== EmbedType.Video) {
+      return;
+    }
+    if (params.get("t") !== "undefined") {
+      this.timestamp = params.get("t") as string;
+    }
+  }
+
+  /**
+   * Parse a source input that isn't a URL
+   *
+   * @param source  The source to parse
+   */
+  private parseNonURL(source: string): void {
+    if (this.embedType === EmbedType.Undefined) {
+      // don't reset type
+      return;
+    }
+    if (source.match(/^\d+$/)) {
+      this.embedType = EmbedType.Video;
+      this.id = source;
+    }
+  }
+
+  /**
+   * Generate an album embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateAlbumEmbedURL(): string {
+    if (this.embedType !== EmbedType.Album) {
+      return "";
+    }
+
+    return `https://vimeo.com/album/${this.id}/embed`;
+  }
+
+  /**
+   * Generate a video embed URL
+   *
+   * @return  The generated URL or empty string if it could not be generated
+   */
+  private generateVideoEmbedURL(): string {
+    if (this.embedType !== EmbedType.Video) {
+      return "";
+    }
+    const params = new ParameterMap();
+
+    params.set("autoplay", "0");
+    params.set("byline", "0");
+    params.set("color", "ffffff");
+    params.set("portrait", "0");
+    params.set("title", "0");
+
+    let sourceAddress = `https://player.vimeo.com/video/${
+      this.id
+    }?${params.toString()}`;
+
+    if (this.timestamp) {
+      sourceAddress += `#t=${this.timestamp}`;
+    }
+
+    return sourceAddress;
   }
 }

@@ -31,10 +31,20 @@ plugins:
   - no-unsafe-innerhtml
   - xss
 rules:
+  # Conflicts with typescript
+  no-shadow: "off"
+  # Conflicts with parcel importing
+  import/extensions: "off"
+  valid-jsdoc:
+    - error
+      # disable return if return type is void
+    - requireReturn: false
+      # disable types in jsdoc as typescript has those already
+      requireReturnType: false
+      requireParamType: false
   complexity:
     - error
     - max: 4
-  import/extensions: "off"
   no-undefined: error
   no-unsafe-innerhtml/no-unsafe-innerhtml: error
   scanjs-rules/accidental_assignment: warn
