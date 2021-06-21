@@ -51,7 +51,11 @@ export default class Video {
     container.classList.add(videoContainer);
 
     if (this.provider instanceof VideoProvider) {
-      const videoElementHTML = this.provider.getElement() as HTMLElement;
+      // eslint-disable-next-line xss/no-mixed-html
+      const videoElementHTML = this.provider.getElement();
+      if (videoElementHTML === null) {
+        return container;
+      }
       videoElementHTML.classList.add(videoEmbed);
       // eslint-disable-next-line xss/no-mixed-html
       container.appendChild(videoElementHTML);

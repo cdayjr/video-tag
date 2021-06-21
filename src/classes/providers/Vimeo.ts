@@ -44,14 +44,12 @@ export default class Vimeo extends VideoProvider {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      [this.fetchAlbumFromPath, this.fetchVideoFromPath].forEach(
-        (fetcher: (path: string) => void): void => {
-          if (typeof link.pathname === "undefined") {
-            return;
-          }
-          fetcher(link.pathname);
-        }
-      );
+      if (typeof link.pathname === "undefined") {
+        return;
+      }
+
+      this.fetchAlbumFromPath(link.pathname);
+      this.fetchVideoFromPath(link.pathname);
 
       const params = new ParameterMap(link.hash.substr(1));
       this.fetchTimestampFromParams(params);
@@ -90,13 +88,11 @@ export default class Vimeo extends VideoProvider {
    */
   public getEmbedURL(): string {
     return (
-      [this.generateAlbumEmbedURL, this.generateVideoEmbedURL]
-        .map((generator: () => string): string => {
-          return generator();
-        })
-        .find((url: string): boolean => {
+      [this.generateAlbumEmbedURL(), this.generateVideoEmbedURL()].find(
+        (url: string): boolean => {
           return url !== "";
-        }) ?? ""
+        }
+      ) ?? ""
     );
   }
 

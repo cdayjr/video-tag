@@ -46,17 +46,11 @@ export default class Twitch extends VideoProvider {
       const link = document.createElement("a");
       link.setAttribute("href", source.trim());
 
-      [
-        this.fetchChannelFromPath,
-        this.fetchClipFromPath,
-        this.fetchCollectionFromPath,
-        this.fetchVideoFromPath,
-      ].forEach((fetcher: (path: string) => void): void => {
-        if (typeof link.pathname === "undefined") {
-          return;
-        }
-        fetcher(link.pathname);
-      });
+      this.fetchCollectionFromPath(link.pathname);
+      this.fetchVideoFromPath(link.pathname);
+      this.fetchChannelFromPath(link.pathname);
+      // must be checked last
+      this.fetchClipFromPath(link.pathname);
 
       if (link.search) {
         const params = new ParameterMap(link.search);
@@ -99,17 +93,13 @@ export default class Twitch extends VideoProvider {
   public getEmbedURL(): string {
     return (
       [
-        this.generateChannelEmbedURL,
-        this.generateClipEmbedURL,
-        this.generateCollectionEmbedURL,
-        this.generateVideoEmbedURL,
-      ]
-        .map((generator: () => string): string => {
-          return generator();
-        })
-        .find((url: string): boolean => {
-          return url !== "";
-        }) ?? ""
+        this.generateChannelEmbedURL(),
+        this.generateClipEmbedURL(),
+        this.generateCollectionEmbedURL(),
+        this.generateVideoEmbedURL(),
+      ].find((url: string): boolean => {
+        return url !== "";
+      }) ?? ""
     );
   }
 
@@ -298,14 +288,10 @@ export default class Twitch extends VideoProvider {
    */
   private parseParams(params: ParameterMap): void {
     if (this.embedType === EmbedType.Undefined) {
-      [
-        this.fetchChannelFromParams,
-        this.fetchClipFromParams,
-        this.fetchCollectionFromParams,
-        this.fetchVideoFromParams,
-      ].forEach((fetcher: (params: ParameterMap) => void): void => {
-        fetcher(params);
-      });
+      this.fetchChannelFromParams(params);
+      this.fetchClipFromParams(params);
+      this.fetchCollectionFromParams(params);
+      this.fetchVideoFromParams(params);
     }
     this.fetchTimestampFromParams(params);
   }

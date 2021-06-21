@@ -63,14 +63,8 @@ export default class YouTube extends VideoProvider {
 
       this.fetchVideoFromSource(link.pathname ?? "", params);
 
-      [this.fetchListFromParams, this.fetchPlaylistFromParams].forEach(
-        (fetcher: (params: ParameterMap) => void): void => {
-          if (typeof link.pathname === "undefined") {
-            return;
-          }
-          fetcher(params);
-        }
-      );
+      this.fetchListFromParams(params);
+      this.fetchPlaylistFromParams(params);
 
       this.fetchTimestampFromParams(params);
     }
@@ -108,16 +102,12 @@ export default class YouTube extends VideoProvider {
   public getEmbedURL(): string {
     return (
       [
-        this.generateListEmbedURL,
-        this.generatePlaylistEmbedURL,
-        this.generateVideoEmbedURL,
-      ]
-        .map((generator: () => string): string => {
-          return generator();
-        })
-        .find((url: string): boolean => {
-          return url !== "";
-        }) ?? ""
+        this.generateListEmbedURL(),
+        this.generatePlaylistEmbedURL(),
+        this.generateVideoEmbedURL(),
+      ].find((url: string): boolean => {
+        return url !== "";
+      }) ?? ""
     );
   }
 
@@ -196,7 +186,7 @@ export default class YouTube extends VideoProvider {
       // don't reset type
       return;
     }
-    const match = path.match(new RegExp("/([^/]+?)$"));
+    const match = path.match(new RegExp("/[a-zA-Z0-9_-]{11}$"));
     if (match) {
       this.embedType = EmbedType.Video;
       [, this.id] = match;
@@ -270,8 +260,8 @@ export default class YouTube extends VideoProvider {
     }
     const params = new ParameterMap();
 
+    params.set("listType", this.listType);
     params.set("list", this.id);
-    params.set("listtype", this.listType);
 
     if (this.timestamp) {
       params.set("start", this.timestamp.getSeconds().toString());

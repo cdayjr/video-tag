@@ -73,21 +73,46 @@ export default class VideoTimestamp {
    * @return  The time in seconds
    */
   private static timestampToSeconds(timestamp: string): number {
-    let count = 0;
+    const [hoursInSeconds, remainingTimestamp] =
+      VideoTimestamp.convertHours(timestamp);
+    const [minutesInSeconds, remainingTimestamp2] =
+      VideoTimestamp.convertMinutes(remainingTimestamp);
+    return (
+      parseInt(remainingTimestamp2, 10) + hoursInSeconds + minutesInSeconds
+    );
+  }
 
-    // eslint-disable-next-line security/detect-unsafe-regex
-    const match = timestamp.match(/^(\d+h)?(\d+m)?(\d+s)?$/);
-
-    if (!match || match[0] === "") {
-      return count;
+  /**
+   * Grab hours from a timestamp string
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The hours in seconds as a number and the remaining timestamp
+   *          string.
+   */
+  private static convertHours(timestamp: string): [number, string] {
+    const parts = timestamp.toLowerCase().split("h");
+    if (parts.length !== 2) {
+      return [0, timestamp];
     }
+    const [hours, remainingTimestamp] = parts;
+    return [parseInt(hours, 10) * 60 * 60, remainingTimestamp];
+  }
 
-    const [, hours, minutes, seconds] = match;
-
-    count += parseInt(hours, 10) * 60 * 60;
-    count += parseInt(minutes, 10) * 60;
-    count += parseInt(seconds, 10);
-
-    return count;
+  /**
+   * Grab minutes from a timestamp string
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The minutes in seconds as a number and the remaining timestamp
+   *          string.
+   */
+  private static convertMinutes(timestamp: string): [number, string] {
+    const parts = timestamp.toLowerCase().split("m");
+    if (parts.length !== 2) {
+      return [0, timestamp];
+    }
+    const [minutes, remainingTimestamp] = parts;
+    return [parseInt(minutes, 10) * 60, remainingTimestamp];
   }
 }
