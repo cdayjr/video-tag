@@ -17,6 +17,7 @@ import {
 /**
  * Parse all video tags on current page
  */
+// eslint-disable-next-line scanjs-rules/call_addEventListener
 document.addEventListener("DOMContentLoaded", parseVideoTags);
 
 export { getVideoTags, parseVideoTag, parseVideoTags, urlToEmbedUrl };

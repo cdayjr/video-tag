@@ -9,14 +9,6 @@
 
 import Vimeo from "../../../../src/classes/providers/Vimeo";
 
-const paramStringToObject = (input: string): { [key: string]: string } => {
-  const output: { [key: string]: string } = {};
-  new URLSearchParams(input).forEach((value, key) => {
-    output[key] = value;
-  });
-  return output;
-};
-
 test("getProviderString is vimeo", () => {
   expect(Vimeo.getProviderString()).toBe("vimeo");
 
@@ -25,45 +17,10 @@ test("getProviderString is vimeo", () => {
   expect(vimeo.getProviderString()).toBe("vimeo");
 });
 
-test("Test empty source returns an empty getElement", () => {
+test("empty source returns an empty getElement", () => {
   const vimeo = new Vimeo("");
 
   expect(vimeo.getElement()).toBeNull();
-});
-
-test("Test importOptions and exportOptions with ? prefix", () => {
-  const vimeo = new Vimeo("");
-
-  const initialString = "test=test&test2=2&test3=true&test4&test5=&test6=test";
-
-  vimeo.importOptions(`?${initialString}`);
-
-  expect(paramStringToObject(vimeo.exportOptions())).toEqual({
-    test: "test",
-    test2: "2",
-    test3: "true",
-    test4: "",
-    test5: "",
-    test6: "test",
-  });
-});
-
-test("Test importOptions and exportOptions without ? prefix and duplicate keys", () => {
-  const vimeo = new Vimeo("");
-
-  const initialString =
-    "test=test&test2=2&test3=true&test4&test5=&test6=test&test=test2&test4=4";
-
-  vimeo.importOptions(initialString);
-
-  expect(paramStringToObject(vimeo.exportOptions())).toEqual({
-    test: "test2",
-    test2: "2",
-    test3: "true",
-    test4: "4",
-    test5: "",
-    test6: "test",
-  });
 });
 
 interface Options {
@@ -170,12 +127,11 @@ inputs.forEach((input) => {
   test(`${input.source} is handled correctly`, () => {
     const vimeo = new Vimeo(input.source);
 
-    expect(paramStringToObject(vimeo.exportOptions())).toEqual(input.options);
-    expect(vimeo.getEmbedUrl()).toBe(input.expect);
+    expect(vimeo.getEmbedURL()).toBe(input.expect);
 
-    const vimeoElement = vimeo.getElement() as HTMLElement;
+    const vimeoElementHTML = vimeo.getElement() as HTMLElement;
 
-    expect(vimeoElement.getAttribute("src")).toBe(input.expect);
+    expect(vimeoElementHTML.getAttribute("src")).toBe(input.expect);
   });
 });
 
@@ -191,8 +147,7 @@ const invalidInputs: string[] = [
 invalidInputs.forEach((input) => {
   test(`Incorrect Source: ${input}`, () => {
     const vimeo = new Vimeo(input);
-    expect(vimeo.getEmbedUrl()).toBeFalsy();
-    expect(vimeo.exportOptions()).toBeFalsy();
+    expect(vimeo.getEmbedURL()).toBeFalsy();
     expect(vimeo.getElement()).toBeNull();
   });
 });

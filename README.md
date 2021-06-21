@@ -5,7 +5,8 @@
 [![Coverage Status](https://api.codacy.com/project/badge/Coverage/1fed0cfae9a943318f77132d9cd4f674)](https://www.codacy.com/app/cdayjr/video-tag?utm_source=github.com&utm_medium=referral&utm_content=cdayjr/video-tag&utm_campaign=Badge_Coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/62571b6fd46f4ea0b7550359cdb93e03)](https://app.codacy.com/app/cdayjr/video-tag?utm_source=github.com&utm_medium=referral&utm_content=cdayjr/video-tag&utm_campaign=Badge_Grade_Dashboard)
 
-JavaScript for making video bbcodes and similar things as simple as they can get.
+JavaScript for making video bbcodes and similar things as simple as they can
+get.
 
 ## Supports
 
@@ -32,9 +33,9 @@ Run the build script (`pnpm run build`) and upload the files from the `dist`
 folder or the contents of a release zip file and include `video-tag.js` and
 `video-tag.css` with a `<script>` and `<link>` tag, respectively.
 
-Once the code has been deployed to your site, it'll look for `div` tags with
-the `video-tag` class. If the tag has a `data-source` attribute with a URL in
-it. An example would be:
+Once the code has been deployed to your site, it'll look for `div` tags with the
+`video-tag` class. If the tag has a `data-source` attribute with a URL in it. An
+example would be:
 
 ```html
 <div
@@ -96,9 +97,9 @@ the following functions:
 ## Notes
 
 - YouTube links that include both a playlist and video ID will embed the video
-  and not the playlist. YouTube playlist embedding does not support
-  starting from a specific video and it's probably more likely a user wants to
-  embed the video they have a link to and not the playlist it belongs to.
+  and not the playlist. YouTube playlist embedding does not support starting
+  from a specific video and it's probably more likely a user wants to embed the
+  video they have a link to and not the playlist it belongs to.
 - Twitch embeds don't work on Internet Explorer 11. This seems to be an issue
   on their end, let them know since they appareltny say they should support
   Internet Explorer 11.
@@ -134,15 +135,11 @@ see the [tags on this repository](https://github.com/cdayjr/video-tag/tags).
 
 - **Chad Wade Day, Jr.** - _Initial work_ - [@cdayjr](https://github.com/cdayjr)
 
-See also the list of [contributors](https://github.com/cdayjr/video-tag/contributors)
-who participated in this project.
+See also the list of
+[contributors](https://github.com/cdayjr/video-tag/contributors) who
+participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md)
-file for details
-
-## Acknowledgments
-
-- Many video bbcode tags I've seen in the past inspiring me to take my own
-  swing at it.
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details.

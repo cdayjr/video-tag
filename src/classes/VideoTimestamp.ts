@@ -16,7 +16,7 @@ export default class VideoTimestamp {
   /**
    * Create a VideoTimestamp object
    *
-   * @param The time string, such as "0h1m25s" or just seconds
+   * @param time The time string, such as "0h1m25s" or just seconds
    */
   public constructor(time?: string | number) {
     if (!time) {
@@ -32,34 +32,15 @@ export default class VideoTimestamp {
       return;
     }
 
-    const match = time.match(/^(\d+h)?(\d+m)?(\d+s)?$/);
-
-    if (!match) {
-      return;
-    }
-
-    const [, hoursMatch, minutesMatch, secondsMatch] = match;
-
-    let count = 0;
-
-    const hours = parseInt(hoursMatch, 10);
-    if (hours > 0) {
-      count += hours * 60 * 60;
-    }
-    const minutes = parseInt(minutesMatch, 10);
-    if (minutes > 0) {
-      count += minutes * 60;
-    }
-    const seconds = parseInt(secondsMatch, 10);
-    if (seconds > 0) {
-      count += seconds;
-    }
-
-    this.totalSeconds = count;
+    this.totalSeconds = (
+      this.constructor as typeof VideoTimestamp
+    ).timestampToSeconds(time);
   }
 
   /**
    * Get the total seconds
+   *
+   * @returns The total seconds
    */
   public getSeconds(): number {
     return this.totalSeconds;
@@ -82,5 +63,56 @@ export default class VideoTimestamp {
     const seconds = remainingSeconds;
 
     return `${hours}h${minutes}m${seconds}s`;
+  }
+
+  /**
+   * Converts a given timestamp string to seconds
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The time in seconds
+   */
+  private static timestampToSeconds(timestamp: string): number {
+    const [hoursInSeconds, remainingTimestamp] =
+      VideoTimestamp.convertHours(timestamp);
+    const [minutesInSeconds, remainingTimestamp2] =
+      VideoTimestamp.convertMinutes(remainingTimestamp);
+    return (
+      parseInt(remainingTimestamp2, 10) + hoursInSeconds + minutesInSeconds
+    );
+  }
+
+  /**
+   * Grab hours from a timestamp string
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The hours in seconds as a number and the remaining timestamp
+   *          string.
+   */
+  private static convertHours(timestamp: string): [number, string] {
+    const parts = timestamp.toLowerCase().split("h");
+    if (parts.length !== 2) {
+      return [0, timestamp];
+    }
+    const [hours, remainingTimestamp] = parts;
+    return [parseInt(hours, 10) * 60 * 60, remainingTimestamp];
+  }
+
+  /**
+   * Grab minutes from a timestamp string
+   *
+   * @param timestamp The timestamp to convert
+   *
+   * @return  The minutes in seconds as a number and the remaining timestamp
+   *          string.
+   */
+  private static convertMinutes(timestamp: string): [number, string] {
+    const parts = timestamp.toLowerCase().split("m");
+    if (parts.length !== 2) {
+      return [0, timestamp];
+    }
+    const [minutes, remainingTimestamp] = parts;
+    return [parseInt(minutes, 10) * 60, remainingTimestamp];
   }
 }
