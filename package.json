@@ -1,20 +1,5 @@
 {
   "author": "Chad Wade Day, Jr. <cdayjr@chadwadedayjr.info>",
-  "babel": {
-    "plugins": [
-      [
-        "@babel/plugin-transform-runtime"
-      ]
-    ],
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "useBuiltIns": "usage"
-        }
-      ]
-    ]
-  },
   "browser": "dist/video-tag.js",
   "browserslist": [
     "> 0.25%",
@@ -25,13 +10,11 @@
   "bugs": {
     "url": "https://github.com/cdayjr/video-tag/issues"
   },
+  "dependencies": {},
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.8",
-    "@babel/plugin-transform-runtime": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
     "@microsoft/tsdoc": "^0.13.2",
+    "@parcel/transformer-sass": "^2.0.0",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
@@ -116,7 +99,6 @@
       "eslint --fix --max-warnings=0"
     ]
   },
-  "main": "lib/module.js",
   "module": "lib/module.js",
   "name": "video-tag",
   "repository": {
@@ -125,10 +107,10 @@
   },
   "scripts": {
     "build": "npm run-script clean && npm run-script build-dist && npm run-script build-lib",
-    "build-dist": "parcel build ./src/video-tag.ts --target=browser --global videoTag && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
+    "build-dist": "parcel build ./src/video-tag.ts --log-level verbose && concat-cli -f copyright.js dist/video-tag.js -o dist/video-tag.js",
     "build-lib": "tsc --build tsconfig.lib.json && prettier --write \"./lib/**/*.js\" && copyfiles -u 1 src/**/*.scss lib/",
     "clean": "rm -rf ./dist ./lib",
-    "demo": "npm run-script clean && parcel demo/index.html --target=browser",
+    "demo": "npm run-script clean && parcel --log-level verbose demo/index.html",
     "lint": "npm run-script ts-check && npm run-script stylelint && npm run-script eslint",
     "eslint": "eslint --fix --max-warnings=0 --no-error-on-unmatched-pattern ./{src,demo,tests}/**/*.{j,t}s",
     "stylelint": "stylelint --fix --max-warnings=0 ./{src,demo,tests}/**/*.{c,s{a,c},le}ss",
