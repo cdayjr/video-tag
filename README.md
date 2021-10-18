@@ -20,8 +20,6 @@ JavaScript for making video bbcodes and similar things as simple as they can get
 - Twitch channels
 - Twitch collections
 - Twitch clips
-- Mixer channels
-- Mixer videos (VODs)
 
 ## Usage
 
@@ -107,8 +105,6 @@ the following functions:
 - ID-only sources only work for video IDs and Twitch channels- everything else
   will require a full URL as the source parameter even with the provider param
   set.
-  - For Mixer, only channel IDs work. This is because Mixer requires the
-    correct channel to embed a VOD.
 
 ## Built With
 
