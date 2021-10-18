@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "declaration": true,
-    "lib": ["ES2020", "DOM", "ScriptHost"],
+    "lib": ["ES2021", "DOM", "ScriptHost"],
     "module": "es2020",
     "moduleResolution": "node",
     "plugins": [
@@ -17,6 +17,6 @@
     "rootDir": "."
   },
   "exclude": ["node_modules", "lib", "dist"],
-  "extends": "@tsconfig/node14/tsconfig.json",
+  "extends": "@tsconfig/node16/tsconfig.json",
   "include": [".eslintrc.js", "*.js", "*.ts", "**/*.js", "**/*.ts"]
 }

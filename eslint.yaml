@@ -13,13 +13,14 @@ extends:
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
+ignorePatterns:
+  - "**/dist/*"
 parser: "@typescript-eslint/parser"
 parserOptions:
   allowJs: true
-  ecmaVersion: 11
-  project: ./tsconfig.json
+  ecmaVersion: 2021
   sourceType: module
-  tsconfigRootDir: REPLACEME
+  tsconfigRootDir: .
 plugins:
   - "@typescript-eslint"
   - compat

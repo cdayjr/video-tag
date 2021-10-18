@@ -1,6 +1,6 @@
 # Logs
-logs
 *.log
+logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -9,9 +9,8 @@ yarn-error.log*
 node_modules/
 
 # Temp files
-var
-.cache
 .parcel-cache
+var
 
 # Coverage
 coverage
