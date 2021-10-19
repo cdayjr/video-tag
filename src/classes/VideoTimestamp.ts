@@ -77,9 +77,11 @@ export default class VideoTimestamp {
       VideoTimestamp.convertHours(timestamp);
     const [minutesInSeconds, remainingTimestamp2] =
       VideoTimestamp.convertMinutes(remainingTimestamp);
-    return (
-      parseInt(remainingTimestamp2, 10) + hoursInSeconds + minutesInSeconds
-    );
+    const parsedRemains = parseInt(remainingTimestamp2, 10);
+    if (Number.isNaN(parsedRemains)) {
+      return hoursInSeconds + minutesInSeconds;
+    }
+    return parsedRemains + hoursInSeconds + minutesInSeconds;
   }
 
   /**
@@ -96,7 +98,11 @@ export default class VideoTimestamp {
       return [0, timestamp];
     }
     const [hours, remainingTimestamp] = parts;
-    return [parseInt(hours, 10) * 60 * 60, remainingTimestamp];
+    const parsedHours = parseInt(hours, 10) * 60 * 60;
+    if (Number.isNaN(parsedHours)) {
+      return [0, remainingTimestamp];
+    }
+    return [parsedHours, remainingTimestamp];
   }
 
   /**
@@ -113,6 +119,10 @@ export default class VideoTimestamp {
       return [0, timestamp];
     }
     const [minutes, remainingTimestamp] = parts;
-    return [parseInt(minutes, 10) * 60, remainingTimestamp];
+    const parsedMinutes = parseInt(minutes, 10) * 60;
+    if (Number.isNaN(parsedMinutes)) {
+      return [0, remainingTimestamp];
+    }
+    return [parsedMinutes, remainingTimestamp];
   }
 }
