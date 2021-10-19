@@ -186,7 +186,7 @@ export default class YouTube extends VideoProvider {
       // don't reset type
       return;
     }
-    const match = path.match(new RegExp("/[a-zA-Z0-9_-]{11}$"));
+    const match = path.match(new RegExp("/([a-zA-Z0-9_-]{11})$"));
     if (match) {
       this.embedType = EmbedType.Video;
       [, this.id] = match;
