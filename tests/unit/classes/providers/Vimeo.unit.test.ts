@@ -33,9 +33,9 @@ interface AlbumOptions {
 }
 
 const vimeoExpect =
-  "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0";
+  "https://player.vimeo.com/video/16679115?autoplay=0&byline=0&color=ffffff&portrait=0&title=0";
 const vimeoWithStartExpect =
-  "https://player.vimeo.com/video/16679115?color=ffffff&title=0&byline=0&portrait=0&autoplay=0#t=0h10m0s";
+  "https://player.vimeo.com/video/16679115?autoplay=0&byline=0&color=ffffff&portrait=0&title=0#t=0h10m0s";
 const vimeoAlbumExpect = "https://vimeo.com/album/1719434/embed";
 const vimeoOptions: Options = {
   id: "16679115",
