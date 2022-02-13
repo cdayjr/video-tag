@@ -29,7 +29,7 @@ platform-specific installation instructions.
 
 Here's a simple installation guide:
 
-Run the build script (`pnpm run build`) and upload the files from the `dist`
+Run the build script (`npx pnpm run build`) and upload the files from the `dist`
 folder or the contents of a release zip file and include `video-tag.js` and
 `video-tag.css` with a `<script>` and `<link>` tag, respectively.
 

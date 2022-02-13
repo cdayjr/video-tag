@@ -18,13 +18,16 @@ dependencies. If you already have node, installing pnpm is easy:
 npm install -g pnpm
 ```
 
+If you don't wish to install it globally, you can run it via `npx` instead for
+just this package.
+
 ### Installing
 
 Once you have your package manager up and running, get the packages needed for
 this project with the following command:
 
 ```sh
-pnpm install
+npx pnpm install
 ```
 
 ### Code style fixing / checking
@@ -32,7 +35,7 @@ pnpm install
 To keep our code consistent we use some style fixers and checkers.
 
 ```sh
-pnpm run lint
+npx pnpm run lint
 ```
 
 This'll do code style checks for code and fix that which can be automatically
@@ -44,13 +47,13 @@ fixed- be sure to read the errors and fix anything before committing. This runs
 We're using jest to run automated tests. Run them with the following command:
 
 ```sh
-pnpm run test
+npx pnpm run test
 ```
 
 You can also check test coverage with the following command:
 
 ```sh
-pnpm run test-coverage
+npx pnpm run test-coverage
 ```
 
 ## Demonstrating the code in your browser
@@ -62,7 +65,7 @@ the build command is run.
 Run the demo with the following command:
 
 ```sh
-pnpm run demo
+npx pnpm run demo
 ```
 
 and load it up in your browser(s) of choice to see the code in action.
@@ -72,7 +75,7 @@ and load it up in your browser(s) of choice to see the code in action.
 Building this ready for deployment is as easy as:
 
 ```sh
-pnpm run build
+npx pnpm run build
 ```
 
 From there, the files in the `dist` folder must be uploaded to the same
