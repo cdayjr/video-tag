@@ -302,7 +302,7 @@ export default class Twitch extends VideoProvider {
    * @param source  The source to parse
    */
   private parseNonURL(source: string): void {
-    if (this.embedType === EmbedType.Undefined) {
+    if (this.embedType !== EmbedType.Undefined) {
       // don't reset type
       return;
     }
