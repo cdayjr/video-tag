@@ -14,7 +14,7 @@ specifiers:
   concat-cli: ^4.0.0
   copyfiles: ^2.4.1
   cssnano: ^5.0.17
-  dompurify: ^2.4.7
+  dompurify: ^3.0.5
   eslint: ^8.9.0
   eslint-config-airbnb-base: ^15.0.0
   eslint-config-prettier: ^8.3.0
@@ -55,7 +55,7 @@ specifiers:
 
 dependencies:
   "@swc/helpers": 0.5.1
-  dompurify: 2.4.7
+  dompurify: 3.0.5
 
 devDependencies:
   "@microsoft/tsdoc": 0.13.2
@@ -4725,10 +4725,10 @@ packages:
       domelementtype: 2.3.0
     dev: true
 
-  /dompurify/2.4.7:
+  /dompurify/3.0.5:
     resolution:
       {
-        integrity: sha512-kxxKlPEDa6Nc5WJi+qRgPbOAbgTpSULL+vI3NUXsZMlkJxTqYI9wg5ZTay2sFrdZRWHPWNi+EdAhcJf81WtoMQ==,
+        integrity: sha512-F9e6wPGtY+8KNMRAVfxeCOHU0/NPWMSENNq4pQctuXRqqdEPW7q3CrLbR5Nse044WwacyjHGOMlvNsBe1y6z9A==,
       }
     dev: false
 

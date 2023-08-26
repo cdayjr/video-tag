@@ -13,7 +13,7 @@
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "dependencies": {
     "@swc/helpers": "^0.5.1",
-    "dompurify": "^2.4.7"
+    "dompurify": "^3.0.5"
   },
   "devDependencies": {
     "@microsoft/tsdoc": "^0.13.2",
