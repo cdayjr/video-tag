@@ -1,5 +1,13 @@
 lockfileVersion: 5.4
 
+overrides:
+  postcss@<7.0.36: ">=7.0.36"
+  json5@<1.0.2: ">=1.0.2"
+  semver@>=7.0.0 <7.5.2: ">=7.5.2"
+  tough-cookie@<4.1.3: ">=4.1.3"
+  pnpm@<7.33.4: ">=7.33.4"
+  loader-utils@<1.4.1: ">=1.4.1"
+
 specifiers:
   "@microsoft/tsdoc": ^0.13.2
   "@parcel/core": ^2.3.1
@@ -38,7 +46,7 @@ specifiers:
   lint-staged: ^12.3.4
   node-sass: ^7.0.1
   parcel: ^2.3.1
-  pnpm: ^6.30.1
+  pnpm: ">=7.33.4"
   postcss: ^8.4.6
   postcss-import: ^14.0.2
   postcss-modules: ^4.3.0
@@ -93,7 +101,7 @@ devDependencies:
   lint-staged: 12.5.0
   node-sass: 7.0.3
   parcel: 2.9.3_vtosvap3uaimodjfbijfnnhfnm
-  pnpm: 6.35.1
+  pnpm: 8.7.0
   postcss: 8.4.28
   postcss-import: 14.1.0_postcss@8.4.28
   postcss-modules: 4.3.1_postcss@8.4.28
@@ -3526,13 +3534,6 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
-  /big.js/3.2.0:
-    resolution:
-      {
-        integrity: sha512-+hN/Zh2D08Mx65pZ/4g5bsmNiZUuChDiQfTUQ7qJr4/kuopCr88xZsAXv6mBoZEsUI4OuGHlX59qE94K2mMW8Q==,
-      }
-    dev: true
-
   /binary-extensions/2.2.0:
     resolution:
       {
@@ -4204,7 +4205,7 @@ packages:
       }
     dependencies:
       icss-replace-symbols: 1.1.0
-      postcss: 6.0.1
+      postcss: 8.4.28
       postcss-modules-extract-imports: 1.1.0
       postcss-modules-local-by-default: 1.2.0
       postcss-modules-scope: 1.1.0
@@ -4822,14 +4823,6 @@ packages:
       }
     dev: true
 
-  /emojis-list/2.1.0:
-    resolution:
-      {
-        integrity: sha512-knHEZMgs8BB+MInokmNTg/OyPlAddghe1YBgNwJBc5zsJi/uyIcXoSDsL/W9ymOsBoBGdPIHXYJ9+qKFwRwDng==,
-      }
-    engines: { node: ">= 0.10" }
-    dev: true
-
   /encoding/0.1.13:
     resolution:
       {
@@ -5141,7 +5134,7 @@ packages:
       eslint: 8.48.0
       find-up: 5.0.0
       lodash.memoize: 4.1.2
-      semver: 7.3.8
+      semver: 7.5.4
     dev: true
 
   /eslint-plugin-import/2.28.1_4txe5oj6cg3oloxjtzbckmvtti:
@@ -5776,7 +5769,7 @@ packages:
         integrity: sha512-b6OHfQuKasIKM9b6YPkX+KUj/TLBTx3B/1aT1T5F12FEuEqyFMdr59OMS53aoaSw8eVtapdqieX6lbg5opaOhA==,
       }
     dependencies:
-      loader-utils: 0.2.17
+      loader-utils: 3.2.1
     dev: true
 
   /generic-names/4.0.0:
@@ -6066,14 +6059,6 @@ packages:
       {
         integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==,
       }
-    dev: true
-
-  /has-flag/1.0.0:
-    resolution:
-      {
-        integrity: sha512-DyYHfIYwAJmjAjSSPKANxI8bFY9YtFrgkAfinBojQ8YJTOuOuav64tMUJv584SES4xl74PmuaevIyaLESHdTAA==,
-      }
-    engines: { node: ">=0.10.0" }
     dev: true
 
   /has-flag/3.0.0:
@@ -6381,7 +6366,7 @@ packages:
         integrity: sha512-ANhVLoEfe0KoC9+z4yiTaXOneB49K6JIXdS+yAgH0NERELpdIT7kkj2XxUPuHafeHnn8umXnECSpsfk1RTaUew==,
       }
     dependencies:
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /icss-utils/5.1.0_postcss@8.4.28:
@@ -7673,14 +7658,6 @@ packages:
       }
     dev: true
 
-  /json5/0.5.1:
-    resolution:
-      {
-        integrity: sha512-4xrs1aW+6N5DalkqSVA8fxh458CXvR99WU8WLKmq4v8eWAL86Xo3BVqyd3SkA9wEVjCMqyvvRRkshAdOnBp5rw==,
-      }
-    hasBin: true
-    dev: true
-
   /json5/1.0.2:
     resolution:
       {
@@ -8016,18 +7993,6 @@ packages:
       "@lmdb/lmdb-linux-arm64": 2.7.11
       "@lmdb/lmdb-linux-x64": 2.7.11
       "@lmdb/lmdb-win32-x64": 2.7.11
-    dev: true
-
-  /loader-utils/0.2.17:
-    resolution:
-      {
-        integrity: sha512-tiv66G0SmiOx+pLWMtGEkfSEejxvb6N6uRrQjfWJIT79W9GMpgKeCAmm9aVBKtd4WEgntciI8CsGqjpDoCWJug==,
-      }
-    dependencies:
-      big.js: 3.2.0
-      emojis-list: 2.1.0
-      json5: 0.5.1
-      object-assign: 4.1.1
     dev: true
 
   /loader-utils/3.2.1:
@@ -9179,12 +9144,12 @@ packages:
       find-up: 4.1.0
     dev: true
 
-  /pnpm/6.35.1:
+  /pnpm/8.7.0:
     resolution:
       {
-        integrity: sha512-Pt5JEjV2JSORAqw/XtjfF4k34PBQFpqV3kUMFYSlyrWJsio5Hr3lqy2oJkpprMrVbOyBJsxXfZDQOlvmytIrgA==,
+        integrity: sha512-HWH4wQ6KWl2/vd6g8fXvt9vVF3IjBzrslTzyMKpGQWiEuUJ6ZCHbp48orQ+T++3ji6VwgyN7NQJD3mseOoznHQ==,
       }
-    engines: { node: ">=12.17" }
+    engines: { node: ">=16.14" }
     hasBin: true
     dev: true
 
@@ -9429,7 +9394,7 @@ packages:
         integrity: sha512-tRKbW4wWBEkSSFuJtamV2wkiV9rj6Yy7P3Y13+zaynlPEEZt8EgYKn3y/RBpMeIhNmHXFlSdzofml65hD5OafA==,
       }
     dependencies:
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-focus-visible/6.0.4_postcss@8.4.28:
@@ -9488,7 +9453,7 @@ packages:
       }
     dependencies:
       icss-utils: 3.0.1
-      postcss: 6.0.23
+      postcss: 8.4.28
       postcss-value-parser: 3.3.1
     dev: true
 
@@ -9502,7 +9467,7 @@ packages:
       generic-names: 1.0.3
       icss-utils: 3.0.1
       lodash: 4.17.21
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-image-set-function/4.0.7_postcss@8.4.28:
@@ -9701,7 +9666,7 @@ packages:
         integrity: sha512-zF9+UIEvtpeqMGxhpeT9XaIevQSrBBCz9fi7SwfkmjVacsSj8DY5eFVgn+wY8I9vvdDDwK5xC8Myq4UkoLFIkA==,
       }
     dependencies:
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-modules-extract-imports/3.0.0_postcss@8.4.28:
@@ -9723,7 +9688,7 @@ packages:
       }
     dependencies:
       css-selector-tokenizer: 0.7.3
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-modules-local-by-default/4.0.3_postcss@8.4.28:
@@ -9748,7 +9713,7 @@ packages:
       }
     dependencies:
       css-selector-tokenizer: 0.7.3
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-modules-scope/3.0.0_postcss@8.4.28:
@@ -9771,7 +9736,7 @@ packages:
       }
     dependencies:
       icss-replace-symbols: 1.1.0
-      postcss: 6.0.23
+      postcss: 8.4.28
     dev: true
 
   /postcss-modules-values/4.0.0_postcss@8.4.28:
@@ -10237,30 +10202,6 @@ packages:
       }
     dev: true
 
-  /postcss/6.0.1:
-    resolution:
-      {
-        integrity: sha512-VbGX1LQgQbf9l3cZ3qbUuC3hGqIEOGQFHAEHQ/Diaeo0yLgpgK5Rb8J+OcamIfQ9PbAU/fzBjVtQX3AhJHUvZw==,
-      }
-    engines: { node: ">=4.0.0" }
-    dependencies:
-      chalk: 1.1.3
-      source-map: 0.5.7
-      supports-color: 3.2.3
-    dev: true
-
-  /postcss/6.0.23:
-    resolution:
-      {
-        integrity: sha512-soOk1h6J3VMTZtVeVpv15/Hpdl2cBLX3CAw4TAbkpTJiNPk9YP/zWcD1ND+xEtvyuuvKzbxliTOIyvkSeSJ6ag==,
-      }
-    engines: { node: ">=4.0.0" }
-    dependencies:
-      chalk: 2.4.2
-      source-map: 0.6.1
-      supports-color: 5.5.0
-    dev: true
-
   /postcss/7.0.39:
     resolution:
       {
@@ -10626,7 +10567,7 @@ packages:
       performance-now: 2.1.0
       qs: 6.5.3
       safe-buffer: 5.2.1
-      tough-cookie: 2.5.0
+      tough-cookie: 4.1.3
       tunnel-agent: 0.6.0
       uuid: 3.4.0
     dev: true
@@ -10916,17 +10857,6 @@ packages:
     hasBin: true
     dev: true
 
-  /semver/7.3.8:
-    resolution:
-      {
-        integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==,
-      }
-    engines: { node: ">=10" }
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-    dev: true
-
   /semver/7.5.4:
     resolution:
       {
@@ -11102,14 +11032,6 @@ packages:
         integrity: sha512-cPiFOTLUKvJFIg4SKVScy4ilPPW6rFgMgfuZJPNoDuMs3nC1HbMUycBoJw77xFIp6z1UJQJOfx6C9GMH80DiTw==,
       }
     deprecated: See https://github.com/lydell/source-map-url#deprecated
-    dev: true
-
-  /source-map/0.5.7:
-    resolution:
-      {
-        integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==,
-      }
-    engines: { node: ">=0.10.0" }
     dev: true
 
   /source-map/0.6.1:
@@ -11547,16 +11469,6 @@ packages:
     engines: { node: ">=0.8.0" }
     dev: true
 
-  /supports-color/3.2.3:
-    resolution:
-      {
-        integrity: sha512-Jds2VIYDrlp5ui7t8abHN2bjAu4LV/q4N2KivFPpGH0lrka0BMq/33AmECUXlKPcHigkNaqfXRENFju+rlcy+A==,
-      }
-    engines: { node: ">=0.8.0" }
-    dependencies:
-      has-flag: 1.0.0
-    dev: true
-
   /supports-color/5.5.0:
     resolution:
       {
@@ -11766,17 +11678,6 @@ packages:
     engines: { node: ">=8.0" }
     dependencies:
       is-number: 7.0.0
-    dev: true
-
-  /tough-cookie/2.5.0:
-    resolution:
-      {
-        integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==,
-      }
-    engines: { node: ">=0.8" }
-    dependencies:
-      psl: 1.9.0
-      punycode: 2.3.0
     dev: true
 
   /tough-cookie/4.1.3:
