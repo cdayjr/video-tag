@@ -22,36 +22,29 @@ export default class VideoProviderFactory {
   /**
    * Create a new provider
    *
-   * @param The source URL
-   * @param The provider name
+   * @param source        The source URL
+   * @param providerName  The provider name
    *
    * @return A new VideoProvider object of the appropriate provider or undefined.
    */
   public static createProvider(
     source: string,
     providerName?: string
-  ): VideoProvider | undefined {
-    let Provider;
-
+  ): VideoProvider | null {
     const providerNameLowerCase =
       providerName && providerName.trim().toLowerCase();
 
-    for (let i = 0; i < providers.length; i += 1) {
-      const currentProvider = providers[i];
-      if (
+    const Provider = providers.find(
+      (provider): boolean =>
         (providerNameLowerCase &&
-          providerNameLowerCase === currentProvider.getProviderString()) ||
-        currentProvider.isProvider(source)
-      ) {
-        Provider = currentProvider;
-        break;
-      }
-    }
+          providerNameLowerCase === provider.getProviderString()) ||
+        provider.isProvider(source)
+    );
 
-    if (Provider) {
+    if (typeof Provider !== "undefined") {
       return new Provider(source);
     }
 
-    return undefined;
+    return null;
   }
 }

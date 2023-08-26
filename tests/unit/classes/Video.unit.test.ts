@@ -20,9 +20,3 @@ test("getProvider returns Invalid", () => {
 
   expect(video.getProvider()).toBe("Invalid");
 });
-
-test("exportOptions returns nothing", () => {
-  const video = new Video();
-
-  expect(video.exportOptions()).toBeFalsy();
-});

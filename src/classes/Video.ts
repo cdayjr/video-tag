@@ -9,7 +9,7 @@
  * @link https://github.com/cdayjr/video-tag Github repo
  */
 
-import style from "./Video.style.scss";
+import { videoContainer, videoEmbed, errorMessage } from "./Video.style.scss";
 import VideoProvider from "./VideoProvider";
 import VideoProviderFactory from "./VideoProviderFactory";
 
@@ -21,35 +21,21 @@ export default class Video {
   /**
    * Stores what video provider this object contains.
    */
-  private provider: VideoProvider | undefined = undefined;
+  private provider: VideoProvider | null = null;
 
   /**
    * Build a Video object. All you need is an URL, but providng a provider
    * means you can get by with just a video ID.
    *
-   * @param source - The video URL or ID.
-   * @param provider - We can figure this out form an URL, but if an ID is
-   *  provided, you'll want to share this. A string like "YouTube" or "Vimeo".
+   * @param source        The video URL or ID.
+   * @param providerName  We can figure this out form an URL, but if an ID is
+   *                      provided, you'll want to share this. A string like
+   *                      "YouTube" or "Vimeo".
    *
    */
   public constructor(source?: string, providerName?: string) {
     if (source) {
       this.provider = VideoProviderFactory.createProvider(source, providerName);
-    }
-  }
-
-  /**
-   * If you already have parsed out options, you can call this to
-   * rebuild the object based on those parameters.
-   *
-   * @param A string representing the provider, ex. "YouTube" or "Vimeo".
-   * @param A string representing the options, ex. "id=777&start=15".
-   */
-  public importOptions(providerName: string, options: string): void {
-    this.provider = VideoProviderFactory.createProvider("", providerName);
-
-    if (this.provider) {
-      this.provider.importOptions(options);
     }
   }
 
@@ -62,34 +48,26 @@ export default class Video {
    */
   public getElement(): HTMLDivElement {
     const container: HTMLDivElement = document.createElement("div");
-    container.classList.add(style.videoContainer);
+    container.classList.add(videoContainer);
 
     if (this.provider instanceof VideoProvider) {
-      const videoElement = this.provider.getElement() as HTMLElement;
-      videoElement.classList.add(style.videoEmbed);
-      container.appendChild(videoElement);
+      // eslint-disable-next-line xss/no-mixed-html
+      const videoElementHTML = this.provider.getElement();
+      if (videoElementHTML === null) {
+        return container;
+      }
+      videoElementHTML.classList.add(videoEmbed);
+      // eslint-disable-next-line xss/no-mixed-html
+      container.appendChild(videoElementHTML);
       return container;
     }
 
     const message = document.createElement("p");
-    message.classList.add(style.errorMessage);
+    message.classList.add(errorMessage);
     message.textContent = "Invalid Video";
     container.appendChild(message);
 
     return container;
-  }
-
-  /**
-   * Get an options string compatible with our `importOptions` function.
-   *
-   * @return An options string such as 'id=7&start=15'.
-   */
-  public exportOptions(): string {
-    if (this.provider instanceof VideoProvider) {
-      return this.provider.exportOptions();
-    }
-    // No options if no provider
-    return "";
   }
 
   /**

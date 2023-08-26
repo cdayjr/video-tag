@@ -8,7 +8,13 @@
  */
 
 import { parseVideoTag } from "../src/module";
-import style from "./index.scss";
+import {
+  code,
+  navigation,
+  navigationButton,
+  navigationList,
+  navigationListItem,
+} from "./index.scss";
 
 /**
  * Define how we want our demo tags to be structured
@@ -117,80 +123,127 @@ const demoTags: DemoTag[] = [
 // Create the element to store the buttons for users to select which tag
 // to display
 const navElement: HTMLElement = document.createElement("nav");
-navElement.classList.add(style.navigation);
+navElement.classList.add(navigation);
 const navElementList: HTMLElement = document.createElement("ul");
-navElementList.classList.add(style.navigationList);
+navElementList.classList.add(navigationList);
 navElement.appendChild(navElementList);
 
 // Create the area where the videos themselves will be shown
 const showcase: HTMLElement = document.createElement("section");
 
+// store elements to add to page
+const elements = Object.create(null);
+
 // Iterate through each demotag and create the buttons for them
 demoTags.forEach((demoTag) => {
   const bbcode =
-    undefined === demoTag.provider
+    typeof demoTag.provider === "undefined"
       ? `[video]${demoTag.source}[/video]`
       : `[video=${demoTag.provider}]${demoTag.source}[/video]`;
 
   const element: HTMLDivElement = document.createElement("div");
   element.classList.add("video-tag");
   element.setAttribute("data-source", demoTag.source);
-  if (undefined !== demoTag.provider) {
+  if (typeof demoTag.provider !== "undefined") {
     element.setAttribute("data-provider", demoTag.provider);
   }
+  elements[demoTag.title] = element;
 
   const fallbackElement: HTMLAnchorElement = document.createElement("a");
   fallbackElement.classList.add("video-tag-fallback");
-  fallbackElement.href = demoTag.source;
+  fallbackElement.setAttribute("href", demoTag.source);
   fallbackElement.textContent = demoTag.source;
   element.appendChild(fallbackElement);
 
   const button: HTMLButtonElement = document.createElement("button");
-  button.classList.add(style.navigationButton);
+  button.classList.add(navigationButton);
   button.textContent = demoTag.title;
+  button.setAttribute("data-title", demoTag.title);
+  // eslint-disable-next-line xss/no-mixed-html
   button.setAttribute("data-element", element.outerHTML);
   button.setAttribute("data-bbcode", bbcode);
+  button.classList.add("demo-button");
   parseVideoTag(element);
 
-  button.addEventListener("click", () => {
-    while (showcase.lastChild) {
-      showcase.removeChild(showcase.lastChild);
-    }
-
-    showcase.appendChild(element);
-
-    const bbcodeTitle = document.createElement("h1");
-    bbcodeTitle.textContent = "BBCode";
-    showcase.appendChild(bbcodeTitle);
-
-    const bbcodeContainer = document.createElement("code");
-    bbcodeContainer.classList.add(style.code);
-    bbcodeContainer.textContent = button.dataset.bbcode as string;
-    showcase.appendChild(bbcodeContainer);
-
-    const htmlTitle = document.createElement("h1");
-    htmlTitle.textContent = "HTML";
-    showcase.appendChild(htmlTitle);
-
-    const htmlContainer = document.createElement("code");
-    htmlContainer.classList.add(style.code);
-    htmlContainer.textContent = button.dataset.element as string;
-    showcase.appendChild(htmlContainer);
-  });
-
   const navElementItem: HTMLElement = document.createElement("li");
-  navElementItem.classList.add(style.navigationListItem);
+  navElementItem.classList.add(navigationListItem);
   navElementItem.appendChild(button);
 
   navElementList.appendChild(navElementItem);
 });
 
+// Showcase HTML for a given button
+const showcaseHTML = (button: HTMLButtonElement): void => {
+  const title = button.dataset["data-title"];
+  if (typeof title !== "string") {
+    return;
+  }
+  // eslint-disable-next-line security/detect-object-injection
+  const element = elements[title];
+  if (!(element instanceof HTMLDivElement)) {
+    return;
+  }
+
+  while (showcase.lastChild) {
+    showcase.removeChild(showcase.lastChild);
+  }
+
+  showcase.appendChild(element);
+
+  const bbcodeTitle = document.createElement("h1");
+  bbcodeTitle.textContent = "BBCode";
+  showcase.appendChild(bbcodeTitle);
+
+  const bbcodeContainer = document.createElement("code");
+  bbcodeContainer.classList.add(code);
+  bbcodeContainer.textContent = button.dataset.bbcode as string;
+  showcase.appendChild(bbcodeContainer);
+
+  const markupTitle = document.createElement("h1");
+  markupTitle.textContent = "HTML";
+  showcase.appendChild(markupTitle);
+
+  const markupContainer = document.createElement("code");
+  markupContainer.classList.add(code);
+  markupContainer.textContent = button.dataset.element as string;
+  showcase.appendChild(markupContainer);
+};
+
+// When clicking a button, activate our sample code.
+// Disables xss/no-mixed-html since it seems like a false positive for a void
+// function
+// eslint-disable-next-line xss/no-mixed-html
+const displaySample = (event: Event): void => {
+  const button = event?.target;
+
+  if (
+    !(button instanceof HTMLButtonElement) ||
+    !button.classList.contains("demo-button")
+  ) {
+    // not an element we can work with
+    return;
+  }
+
+  showcaseHTML(button);
+
+  button.remove();
+  if (document.querySelectorAll(".demo-button").length < 1) {
+    document.removeEventListener("click", displaySample);
+  }
+};
+// eslint-disable-next-line scanjs-rules/call_addEventListener
+document.addEventListener("click", displaySample, false);
+
 // When the page is loaded replace all content in the body tag with our
 // navigation and showcase
-document.addEventListener("DOMContentLoaded", () => {
+//
+const loadContent = (): void => {
   while (document.body.lastChild) {
     document.body.removeChild(document.body.lastChild);
   }
   document.body.appendChild(navElement);
   document.body.appendChild(showcase);
-});
+  document.removeEventListener("DOMContentLoaded", loadContent);
+};
+// eslint-disable-next-line scanjs-rules/call_addEventListener
+document.addEventListener("DOMContentLoaded", loadContent, false);

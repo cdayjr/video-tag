@@ -19,3 +19,6 @@ coverage
 # Build files
 dist
 lib
+
+# Cache
+.cache
