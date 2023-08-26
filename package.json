@@ -12,8 +12,8 @@
   },
   "description": "JavaScript to load third-party embed scripts for various video services.",
   "dependencies": {
-    "@swc/helpers": "^0.3.17",
-    "dompurify": "^2.3.5"
+    "@swc/helpers": "^0.5.1",
+    "dompurify": "^2.4.7"
   },
   "devDependencies": {
     "@microsoft/tsdoc": "^0.13.2",
