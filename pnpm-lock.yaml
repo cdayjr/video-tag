@@ -7303,7 +7303,7 @@ packages:
       source-map: 0.6.1
       terser: 3.17.0
       v8-compile-cache: 2.1.0
-      ws: 5.2.2
+      ws: 5.2.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -10482,8 +10482,8 @@ packages:
       mkdirp: 0.5.5
     dev: true
 
-  /ws@5.2.2:
-    resolution: {integrity: sha512-jaHFD6PFv6UgoIVda6qZllptQsMlDEJkTQcybzzXDYM1XO9Y8em691FGMPmM46WGyLU4z9KMgQN+qrux/nhlHA==}
+  /ws@5.2.4:
+    resolution: {integrity: sha512-fFCejsuC8f9kOSu9FYaOw8CdO68O3h5v0lg4p74o8JqWpwTf9tniOD+nOB78aWoVSS6WptVUmDrp/KPsMVBWFQ==}
     peerDependencies:
       bufferutil: ^4.0.1
       utf-8-validate: ^5.0.2
